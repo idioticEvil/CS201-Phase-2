@@ -14,6 +14,7 @@ using namespace std;
 template <typename KeyType, typename ValueType> class two4Tree {
     private:
         Node* rootNode;
+        int treeSize;
 
         void split(Node* node) {
             // IMPLEMENT THIS
@@ -25,6 +26,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
          */
         two4Tree() {
             rootNode = nullptr;
+            treeSize = 0;
         }
 
         /**
@@ -106,6 +108,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
                     // Split
                 }
             }
+            treeSize++;
         }
 
         /**
@@ -154,7 +157,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @return int The number of keys in the tree
          */
         int size() {
-            // IMPLEMENT THIS
+            return treeSize;
         }
 
         /**
@@ -179,7 +182,12 @@ template <typename KeyType, typename ValueType> class two4Tree {
         }
 };
 
-// Node: A node that can be used to store any type of data in a 2-4 tree
+/**
+ * @brief Node class that can be used to store any type of data in a 2-4 tree
+ * 
+ * @tparam K Key type
+ * @tparam V Value type
+ */
 template <class K, class V> class Node {
     private:
         CircularDynamicArray<K> keys;
@@ -191,7 +199,9 @@ template <class K, class V> class Node {
         int rank;
 
     public:
-        // Basic Constructor: Creates a node with no keys, values, or children
+        /**
+         * @brief Creates a new node with no keys, values, or children
+         */
         Node() {
             keys = CircularDynamicArray<K>(3);
             values = CircularDynamicArray<V>(3);
@@ -202,7 +212,12 @@ template <class K, class V> class Node {
             rank = 0;
         }
 
-        // Key-Value Constructor: Creates a node with one key and value
+        /**
+         * @brief Creates a new node with one key and value
+         * 
+         * @param k Key
+         * @param v Value
+         */
         Node(K k, V v) {
             keys = CircularDynamicArray<K>(3);
             values = CircularDynamicArray<V>(3);
@@ -215,7 +230,12 @@ template <class K, class V> class Node {
             values.addEnd(v);
         }
 
-        // Multiple Key-Value Constructor: Creates a node with multiple keys and values
+        /**
+         * @brief Creates a new node with multiple keys and values
+         * 
+         * @param k Array of keys
+         * @param v Array of values
+         */
         Node(CircularDynamicArray<K> k, CircularDynamicArray<V> v) {
             keys = k;
             values = v;
@@ -226,7 +246,13 @@ template <class K, class V> class Node {
             rank = k.size();
         }
 
-        // Key-Value-Parent Constructor: Creates a node with one key, value, and parent
+        /**
+         * @brief Creates a new node with one key, value, and parent
+         * 
+         * @param k Key
+         * @param v Value
+         * @param parent Parent node
+         */
         Node(K k, V v, Node* parent) {
             keys = CircularDynamicArray<K>(3);
             values = CircularDynamicArray<V>(3);
@@ -239,7 +265,13 @@ template <class K, class V> class Node {
             values.addEnd(v);
         }
 
-        // Multiple Key-Value-Parent Constructor: Creates a node with multiple keys, values, and parent
+        /**
+         * @brief Creates a new node with multiple keys, values, and parent
+         * 
+         * @param k Array of keys
+         * @param v Array of values
+         * @param parent Parent node
+         */
         Node(CircularDynamicArray<K> k, CircularDynamicArray<V> v, Node* parent) {
             keys = k;
             values = v;
@@ -250,10 +282,14 @@ template <class K, class V> class Node {
             rank = k.size();
         }
 
-        // Destructor: Frees all space used by the node
-        ~Node() {
-            delete keys;
-            delete values;
-            delete children;
+        /**
+         * @brief Prints the keys of the node
+         */
+        void printKeys() {
+            for (int i = 0; i < size; i++) {
+                if (i == size - 1) cout << keys[i];
+                else cout << keys[i] << " ";
+            }
+            cout << endl;
         }
 };
