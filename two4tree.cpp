@@ -5,19 +5,13 @@
 #include "CircularDynamicArray.cpp"
 using namespace std;
 
-/*
-TODO:
-- Remove unnecessary functions from CircularDynamicArray
-- Add any needed functions to Node
-*/
-
 /**
  * @brief A 2-4 tree that can store any type of data
  * 
  * @tparam KeyType The type of the keys in the tree
  * @tparam ValueType The type of the values in the tree
  */
-template <typename KeyType, typename ValueType> class two4tree {
+template <typename KeyType, typename ValueType> class two4Tree {
     private:
         Node* rootNode;
 
@@ -29,7 +23,7 @@ template <typename KeyType, typename ValueType> class two4tree {
         /**
          * @brief Creates an empty 2-4 tree
          */
-        two4tree() {
+        two4Tree() {
             rootNode = nullptr;
         }
 
@@ -40,14 +34,14 @@ template <typename KeyType, typename ValueType> class two4tree {
          * @param values The array of values to insert into the tree
          * @param size The size of the arrays
          */
-        two4tree(KeyType keys[], ValueType values[], int size) {
+        two4Tree(KeyType keys[], ValueType values[], int size) {
             // IMPLEMENT THIS
         }
 
         /**
          * @brief Destroy the 2-4 tree object
          */
-        ~two4tree() {
+        ~two4Tree() {
             // IMPLEMENT THIS
         }
 
