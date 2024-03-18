@@ -4,7 +4,11 @@
 #include <stdexcept> 
 using namespace std;
 
-// CircularDynamicArray: A circular dynamic array that can be used to store any type of data
+/**
+ * @brief A circular dynamic array that can store any type of data
+ * 
+ * @tparam T The type of data to store
+ */
 template <typename T> class CircularDynamicArray {
     private:
         T *data;
@@ -14,7 +18,9 @@ template <typename T> class CircularDynamicArray {
         bool isSorted;
         
     public:
-        // Basic Constructor: Creates an array of size 2
+        /**
+         * @brief Creates an empty Circular Array of size 2
+         */
         CircularDynamicArray() {
             srand(time(0));
             data = new T[2];
@@ -24,7 +30,11 @@ template <typename T> class CircularDynamicArray {
             isSorted = false;
         }
 
-        // Capacity Constructor: Creates an array of size s
+        /**
+         * @brief Creates an empty Circular Array of size s
+         * 
+         * @param s The size of the array
+         */
         CircularDynamicArray(int s) {
             srand(time(0));
             data = new T[s];
@@ -34,7 +44,11 @@ template <typename T> class CircularDynamicArray {
             isSorted = false;
         }
 
-        // Copy Constructor: Uses deep copy to create a new array
+        /**
+         * @brief Uses deep copy to create a new array
+         * 
+         * @param src The array to copy
+         */
         CircularDynamicArray(const CircularDynamicArray &src) {
             data = new T[src.cap];
             cap = src.cap;
@@ -47,12 +61,16 @@ template <typename T> class CircularDynamicArray {
             }
         }
 
-        // Destructor: Frees all space used by the array
+        /**
+         * @brief Deletes the array
+         */
         ~CircularDynamicArray() {
             delete[] data;
         }
 
-        // IncreaseSize: Increases size of array when needed by doubling capacity
+        /**
+         * @brief Increases size of array when needed by doubling capacity
+         */
         void increaseSize() {
             int newcap = cap * 2;
             T* new_data = new T[newcap];
@@ -65,7 +83,9 @@ template <typename T> class CircularDynamicArray {
             front = 0;
         }
 
-        // DecreaseSize: Decreases size of array when needed by halving capacity
+        /**
+         * @brief Decreases size of array when needed by halving capacity
+         */
         void decreaseSize() {
             int newcap = int(cap * 0.5);
             T* new_data = new T[newcap];
@@ -78,7 +98,12 @@ template <typename T> class CircularDynamicArray {
             front = 0;
         }
 
-        // Copy Assignment Constructor: Uses deep copy to create a new array
+        /**
+         * @brief Uses deep copy to assign one array to another
+         * 
+         * @param src The array to copy
+         * @return CircularDynamicArray& The new array
+         */
         CircularDynamicArray& operator=(const CircularDynamicArray &src) {
             if (this != &src) {
                 delete[] data;
@@ -95,7 +120,13 @@ template <typename T> class CircularDynamicArray {
             return *this;
         }
 
-        // Operator==: Compares two arrays to see if they are equal
+        /**
+         * @brief Compares two arrays to see if they are equal
+         * 
+         * @param src The array to compare to
+         * @return true Array is equal
+         * @return false Array is not equal
+         */
         bool operator==(const CircularDynamicArray &src) {
             if (size != src.size) {
                 return false;
@@ -112,7 +143,12 @@ template <typename T> class CircularDynamicArray {
             return true;
         }
 
-        // Operator[]: Returns the value at index i
+        /**
+         * @brief Returns the value at index i
+         * 
+         * @param i Index of the value to return
+         * @return T& The value at index i
+         */
         T& operator[](int i) {
             if (i < 0 || i >= size) {
                 throw std::out_of_range("Index out of range");
@@ -120,7 +156,11 @@ template <typename T> class CircularDynamicArray {
             return data[(front + i) % cap];
         }
 
-        // AddFront: Stores v at the front of the array, and increases size by one
+        /**
+         * @brief Stores value at the front of the array, and increases size by one
+         * 
+         * @param v The value to store
+         */
         void addFront(T v) {
             if (size == cap) increaseSize();
             front = (front == 0) ? cap - 1 : front - 1;
@@ -129,7 +169,11 @@ template <typename T> class CircularDynamicArray {
             isSorted = false;
         }
 
-        // AddEnd: Stores v at the end of the array, and increases size by one
+        /**
+         * @brief Stores value at the end of the array, and increases size by one
+         * 
+         * @param v The value to store
+         */
         void addEnd(T v) {
             if (size == cap) increaseSize();
             data[(front + size) % cap] = v;
@@ -137,7 +181,9 @@ template <typename T> class CircularDynamicArray {
             isSorted = false;
         }
 
-        // DelFront: Decreases size by one and removes the value at the front of the array
+        /**
+         * @brief Decreases size by one and removes the value at the front of the array
+         */
         void delFront() {
             if ((size) <= int(cap * 0.25)) decreaseSize();
             data[front] = T();
@@ -145,14 +191,21 @@ template <typename T> class CircularDynamicArray {
             size--;
         }
 
-        // DelEnd: Decreases size by one and removes the value at the end of the array
+        /**
+         * @brief Decreases size by one and removes the value at the end of the array
+         */
         void delEnd() {
             if ((size) <= int(cap * 0.25)) decreaseSize();
             data[(front + size - 1) % cap] = T();
             size--;
         }
 
-        // AddAt: Stores v at index i, and increases size by one
+        /**
+         * @brief Stores value at index i, and increases size by one
+         * 
+         * @param v The value to store
+         * @param i The index to store the value at
+         */
         void addAt(T v, int i) {
             if (i < 0 || i > size) {
                 throw std::out_of_range("Index out of range");
@@ -167,7 +220,9 @@ template <typename T> class CircularDynamicArray {
             isSorted = false;
         }
 
-        // Clear: Clears the array and sets size to 0, capacity to 2, and front to 0
+        /**
+         * @brief Deletes all data in the array, starts fresh with size 2
+         */
         void clear() {
             delete[] data;
             data = new T[2];
@@ -176,29 +231,48 @@ template <typename T> class CircularDynamicArray {
             front = 0;
         }
 
-        // Length: Returns the size of the array
+        /**
+         * @brief Returns the length of the array
+         * 
+         * @return int The length of the array
+         */
         int length() {
             return size;
         }
 
-        // Capacity: Returns the capacity of the array
+        /**
+         * @brief Returns the capacity of the array
+         * 
+         * @return int The capacity of the array
+         */
         int capacity() {
             return cap;
         }
 
-        // GetFront: Returns the index of the front of the array
+        /**
+         * @brief Returns the value at the front of the array
+         * 
+         * @return T The value at the front of the array
+         */
         int getFront() {
             return front;
         }
 
-        // PrintArray: Prints the array
+        /**
+         * @brief Prints the array
+         */
         void printArray() {
             for (int i = front; i < front + size; i++) {
                 cout << data[i % cap] << " ";
             }
         }
 
-        // Linear Search: Searches for value e in the array, returns index if found, -1 if not
+        /**
+         * @brief Linear search: Searches for value e in the array, returns index if found, -1 if not
+         * 
+         * @param e The value to search for
+         * @return int The index of the value
+         */
         int linearSearch(T e) {
             for (int i = 0; i < size; i++) {
                 if (data[(front + i) % cap] == e) {
@@ -208,7 +282,9 @@ template <typename T> class CircularDynamicArray {
             return -1;
         }
 
-        // Insertion Sort: Sorts the array using insertion sort when size is less than 10
+        /**
+         * @brief Insertion Sort: Sorts the array using insertion sort
+         */
         void insertionSort() {
             int i, j;
             T key;
@@ -225,7 +301,9 @@ template <typename T> class CircularDynamicArray {
             }
         }
 
-        // Merge Sort: Sorts the array using merge sort
+        /**
+         * @brief Sorts the array using merge sort
+         */
         void mergesort(int start, int end) {
             if (start != end) {
                 int distance = (end - start + cap) % cap;
@@ -237,7 +315,13 @@ template <typename T> class CircularDynamicArray {
             }
         }
 
-        // Merge: Merges two subarrays
+        /**
+         * @brief Merges the array after it has been split
+         * 
+         * @param start The start of the array
+         * @param mid The middle of the array
+         * @param end The end of the array
+         */
         void merge(int start, int mid, int end) {
             int n1 = (mid - start + cap) % cap + 1;
             int n2 = (end - mid + cap) % cap;
@@ -268,14 +352,21 @@ template <typename T> class CircularDynamicArray {
             delete[] right;
         }
 
-        // Sort: Selects which sorting algorithm to use
+        /**
+         * @brief Sorts the array
+         */
         void Sort() {
             if (size <= 10) insertionSort();
             else mergesort(front, (front + size - 1) % cap);
             isSorted = true;
         }
 
-        // Binary Search: Searches for value e in the array, returns index if found, -1 if not
+        /**
+         * @brief Searches for value e in the array, returns index if found, -1 if not
+         * 
+         * @param e The value to search for
+         * @return int The index of the value
+         */
         int binSearch(T e) {
             if (!isSorted) Sort();
 
@@ -294,12 +385,23 @@ template <typename T> class CircularDynamicArray {
             return -1;
         }
 
-        // QSelect: Shell function for quickselect algorithm
+        /**
+         * @brief Returns the value at index i, shell function for quickSelect
+         * 
+         * @param i The index of the value to return
+         * @return T The value at index i
+         */
         T QSelect(int k) {
             return quickSelect(*this, k);
         }
 
-        // Quickselect: Actual quickselect algorithm, returns the kth smallest value in the array
+        /**
+         * @brief Returns the value at index i
+         * 
+         * @param arr The array to search
+         * @param k The index of the value to return
+         * @return T The value at index i
+         */
         T quickSelect(CircularDynamicArray<T>& arr, int k) {
             if (k > 0 && k <= arr.size) {
                 int randomIndex = rand() % arr.size;
