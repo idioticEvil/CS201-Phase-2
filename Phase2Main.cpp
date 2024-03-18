@@ -1,6 +1,6 @@
 #include <iostream>
-using namespace std;
 #include "two4Tree.cpp"
+using namespace std;
 
 int main(){
 	string K[10] = {"A","B","C","D","E","F","G","H","I","K","L","M"};
