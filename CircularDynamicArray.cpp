@@ -152,6 +152,21 @@ template <typename T> class CircularDynamicArray {
             size--;
         }
 
+        // AddAt: Stores v at index i, and increases size by one
+        void addAt(T v, int i) {
+            if (i < 0 || i > size) {
+                throw std::out_of_range("Index out of range");
+            }
+
+            if (size == cap) increaseSize();
+            for (int j = size; j > i; j--) {
+                data[(front + j) % cap] = data[(front + j - 1) % cap];
+            }
+            data[(front + i) % cap] = v;
+            size++;
+            isSorted = false;
+        }
+
         // Clear: Clears the array and sets size to 0, capacity to 2, and front to 0
         void clear() {
             delete[] data;
