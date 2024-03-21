@@ -5,6 +5,18 @@
 #include "CircularDynamicArray.cpp"
 using namespace std;
 
+/*
+TODO:
+- Change way that duplicate keys are handled, one key to an array of values (Side note: Are you 
+  fucking serious?)
+    - Change arrays for keys, values, and children in nodes to be of static size
+    - Make the value arrays be an array of circular dynamic arrays for the values (which is fucking
+      stupid but I digress)
+    - Update necessary program logic
+- Implement Split function
+- Add subtree size values to node class, figure out how to update them for insertion & deletion
+*/
+
 /**
  * @brief A 2-4 tree that can store any type of data
  * 
@@ -72,17 +84,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
 
                 // Traverse the tree to find the correct leaf node
                 while (!refNode->isLeaf) {
-                    for (int i = 0; i < refNode->size; i++) {
-                        if (key < refNode->keys[i]) {
-                            refNode = refNode->children[i];
-                            break;
-                        }
- 
-                        if (i == refNode->size - 1) {
-                            refNode = refNode->children[i + 1];
-                            break;
-                        }
-                    }
+                    refNode = refNode->traverseDirection(key);
                 }
 
                 /*
@@ -191,24 +193,26 @@ template <typename KeyType, typename ValueType> class two4Tree {
 template <class K, class V> class Node {
     private:
         CircularDynamicArray<K> keys;
-        CircularDynamicArray<V> values;
+        CircularDynamicArray<V> values[3];
         CircularDynamicArray<Node*> children;
         Node* parent;
         bool isLeaf;
         int size;
+        int subtreeSize;
         int rank;
 
     public:
         /**
-         * @brief Creates a new node with no keys, values, or children
+         * @brief Creates a new node with no keys or values
          */
         Node() {
-            keys = CircularDynamicArray<K>(3);
-            values = CircularDynamicArray<V>(3);
-            children = CircularDynamicArray<Node*>(4);
+            keys = new CircularDynamicArray<K>;
+            values = new CircularDynamicArray<V>[3];
+            children = new CircularDynamicArray<Node*>;
             parent = nullptr;
             isLeaf = true;
             size = 0;
+            subtreeSize = 0;
             rank = 0;
         }
 
@@ -219,15 +223,16 @@ template <class K, class V> class Node {
          * @param v Value
          */
         Node(K k, V v) {
-            keys = CircularDynamicArray<K>(3);
-            values = CircularDynamicArray<V>(3);
-            children = CircularDynamicArray<Node*>(4);
+            keys = new CircularDynamicArray<K>;
+            values = new CircularDynamicArray<V>[3];
+            children = new CircularDynamicArray<Node*>;
+            keys[0] = k;
+            values[0].addEnd(v);
             parent = nullptr;
             isLeaf = true;
             size = 1;
+            subtreeSize = 0;
             rank = 1;
-            keys.addEnd(k);
-            values.addEnd(v);
         }
 
         /**
@@ -235,15 +240,24 @@ template <class K, class V> class Node {
          * 
          * @param k Array of keys
          * @param v Array of values
+         * @param size Size of the arrays
          */
-        Node(CircularDynamicArray<K> k, CircularDynamicArray<V> v) {
-            keys = k;
-            values = v;
-            children = CircularDynamicArray<Node*>(4);
+        // Note: This program logic currently assumes that the values are sorted
+        Node(K k[], V v[], int size) { 
+            keys = new CircularDynamicArray<K>;
+            values = new CircularDynamicArray<V>[3];
+            children = new CircularDynamicArray<Node*>;
+
+            for (int i = 0; i < size; i++) {
+                keys.addEnd(k[i]);
+                values[i].addEnd(v[i]);
+            }
+
             parent = nullptr;
             isLeaf = true;
-            size = k.size();
-            rank = k.size();
+            this->size = size;
+            subtreeSize = 0;
+            rank = size;
         }
 
         /**
@@ -254,15 +268,16 @@ template <class K, class V> class Node {
          * @param parent Parent node
          */
         Node(K k, V v, Node* parent) {
-            keys = CircularDynamicArray<K>(3);
-            values = CircularDynamicArray<V>(3);
-            children = CircularDynamicArray<Node*>(4);
+            keys = new CircularDynamicArray<K>;
+            values = new CircularDynamicArray<V>[3];
+            children = new CircularDynamicArray<Node*>;
+            keys.addEnd(k);
+            values[0].addEnd(v);
             this->parent = parent;
             isLeaf = true;
             size = 1;
-            rank = 1;
-            keys.addEnd(k);
-            values.addEnd(v);
+            subtreeSize = 0;
+            rank = parent.rank + 1;
         }
 
         /**
@@ -270,16 +285,77 @@ template <class K, class V> class Node {
          * 
          * @param k Array of keys
          * @param v Array of values
+         * @param size Size of the arrays
          * @param parent Parent node
          */
-        Node(CircularDynamicArray<K> k, CircularDynamicArray<V> v, Node* parent) {
-            keys = k;
-            values = v;
-            children = CircularDynamicArray<Node*>(4);
+        // Note: This program logic currently assumes that the values are sorted
+        Node(K k[], V v[], int size, Node* parent) {
+            keys = new CircularDynamicArray<K>;
+            values = new CircularDynamicArray<V>[3];
+            children = new CircularDynamicArray<Node*>;
+
+            for (int i = 0; i < size; i++) {
+                keys.addEnd(k[i]);
+                values[i].addEnd(v[i]);
+            }
+
             this->parent = parent;
             isLeaf = true;
-            size = k.size();
-            rank = k.size();
+            this->size = size;
+            subtreeSize = 0;
+            rank = parent.rank + size;
+        }
+
+        /**
+         * @brief Destroys the node
+         */
+        ~Node() {
+            delete keys;
+
+            for(int i = 0; i < 3; i++) {
+                delete values[i];
+            }
+
+            delete children;
+        }
+
+        /**
+         * @brief Returns the child node that should be traversed to
+         * 
+         * @param key The key that is being checked
+         * @return Node* The child node that should be traversed to
+         */
+        Node* traverseDirection(K key) {
+            for (int i = 0; i < size; i++) {
+                if (key <= keys[i]) return children[i]; // Should this be less than or equal to?
+                else if (i == size - 1) return children[i + 1];
+            }
+        }
+
+        /**
+         * @brief Inserts a key-value pair into the node
+         * 
+         * @param key Key to insert
+         * @param value Value to insert
+         */
+        void insertKeyValPair(K key, V value) {
+            for (int i = 0; i < size; i++) {
+                if (key < keys[i]) {
+                    keys.addAt(key, i);
+                    values[i].addAt(value, i);
+                    size++;
+                    break;
+                } else if (key == keys[i]) {
+                    values[i].addEnd(value);
+                    break;
+                } else if (i == size - 1) {
+                    keys.addEnd(key);
+                    values[i].addEnd(value);
+                    size++;
+                    break;
+                }
+            }
+            // Do I need to do something for updating the rank? Also subtree size?
         }
 
         /**
@@ -287,8 +363,8 @@ template <class K, class V> class Node {
          */
         void printKeys() {
             for (int i = 0; i < size; i++) {
-                if (i == size - 1) cout << keys[i];
-                else cout << keys[i] << " ";
+                if (i < size - 1) cout << keys[i] << " ";
+                else cout << keys[i];
             }
             cout << endl;
         }
