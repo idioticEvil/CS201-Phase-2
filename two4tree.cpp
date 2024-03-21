@@ -29,15 +29,31 @@ template <typename KeyType, typename ValueType> class two4Tree {
         Node<KeyType, ValueType>* rootNode;
         int treeSize;
 
-        // Splits a node when overfull
-        void split(Node<KeyType, ValueType>* nodeToSplit, KeyType newKey, ValueType newVals[]) {
+        /**
+         * @brief Splits a node when it is overfull
+         * 
+         * @param nodeToSplit Node to be split
+         * @param newKey Key that would make the node overfull
+         * @param newVals Value(s) corresponding to the key
+         */
+        void split(Node<KeyType, ValueType>* nodeToSplit, KeyType newKey, CircularDynamicArray<ValueType>& newValue) {
             if (nodeToSplit == rootNode) {
-                Node<KeyType, ValueType>* rootNodeRef = rootNode;
-                KeyType keyHold = rootNodeRef->keys[1];
-                CircularDynamicArray<ValueType> valueHold = rootNodeRef->values[1];
-                Node<KeyType, ValueType> newRootNode = new Node(rootNodeRef->keys[1], rootNodeRef->values[1]);
+                KeyType keyHold = nodeToSplit->keys[1];
+                CircularDynamicArray<ValueType> valueHold = nodeToSplit->values[1];
+                Node<KeyType, ValueType> newRootNode = new Node(keyHold, valueHold);
                 rootNode = newRootNode;
+
+                Node<KeyType, ValueType>* leftChild = new Node(nodeToSplit->keys[0], nodeToSplit->values[0]);
+                Node<KeyType, ValueType>* rightChild = new Node(nodeToSplit->keys[2], nodeToSplit->values[2]);
                 
+                if (newKey <= keyHold) leftChild->insertKeyValPair(newKey, newValue);
+                else rightChild->insertKeyValPair(newKey, newValue);
+
+                rootNode->addChildNode(leftChild);
+                rootNode->addChildNode(rightChild);
+                leftChild->setParentNode(rootNode);
+                rightChild->setParentNode(rootNode);
+                delete nodeToSplit;  
             }
         }
 

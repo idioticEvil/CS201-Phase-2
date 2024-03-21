@@ -24,20 +24,6 @@ template <class K, class V> class Node {
 
     public:
         /**
-         * @brief Creates a new node with no keys or values
-         */
-        Node() {
-            keys = new CircularDynamicArray<K>;
-            values = new CircularDynamicArray<V>[3];
-            children = new CircularDynamicArray<Node*>;
-            parent = nullptr;
-            isLeaf = true;
-            size = 0;
-            subtreeSize = 0;
-            rank = 0;
-        }
-
-        /**
          * @brief Creates a new node with one key and possibly multiple values
          * 
          * @param k Key
@@ -80,7 +66,7 @@ template <class K, class V> class Node {
         }
 
         /**
-         * @brief Creates a new node with multiple keys and values
+         * @brief Creates a new node with multiple keys and values from an array
          * 
          * @param k Array of keys
          * @param v Array of values
@@ -95,6 +81,32 @@ template <class K, class V> class Node {
             for (int i = 0; i < size; i++) {
                 keys.addEnd(k[i]);
                 values[i].addEnd(v[i]);
+            }
+
+            parent = nullptr;
+            isLeaf = true;
+            this->size = size;
+            subtreeSize = 0;
+            rank = size;
+        }
+
+        /**
+         * @brief Creates a new node with multiple keys and values from a CircularDynamicArray
+         * 
+         * @param k Array of keys
+         * @param v Array of values
+         * @param size Size of the arrays
+         */
+        Node(K k[], CircularDynamicArray<V> v[], int size) {
+            keys = new CircularDynamicArray<K>;
+            values = new CircularDynamicArray<V>[3];
+            children = new CircularDynamicArray<Node*>;
+
+            for (int i = 0; i < size; i++) {
+                keys.addEnd(k[i]);
+                for (int j = 0; j < v[i].size; j++) {
+                    values[i].addEnd(v[i][j]);
+                }
             }
 
             parent = nullptr;
@@ -164,30 +176,78 @@ template <class K, class V> class Node {
         }
 
         /**
+         * @brief Inserts a key-value pair into the node
+         * 
+         * @param key Key to insert
+         * @param value Value to insert
+         */
+        void insertKeyValPair(K key, CircularDynamicArray<V>& value) {
+            for (int i = 0; i < size; i++) {
+                if (key <= keys[i]) {
+                    keys.addAt(key, i);
+                    values[i] = value;
+                    size++;
+                    break;
+                } else if (i == size - 1) {
+                    keys.addEnd(key);
+                    values[i + 1] = value;
+                    size++;
+                }
+            }
+            // Do I need to do something for updating the rank? Also subtree size?
+        }
+
+        /**
          * @brief Removes a key-value pair from the node
          * 
          * @param key Key to remove
          * @param value Value to remove
          */
-        void removeKeyValPair(K key, V value) {
+        void removeKeyValPair(K key, CircularDynamicArray<V>& value) {
             for (int i = 0; i < size; i++) {
-                if (keys[i] == key) {
-                    for (int j = 0; j < values[i].size; j++) {
-                        if (values[i][j] == value) {
-                            values[i].removeAt(j);
-                            if (values[i].size == 0) {
-                                keys.removeAt(i);
-                                for (int k = i; k < size - 1; k++) {
-                                    keys[k] = keys[k + 1];
-                                    values[k] = values[k + 1];
-                                }
-                                size--;
-                            }
-                            break;
-                        }
+                if (key == keys[i]) {
+                    keys.removeAt(i);
+                    values[i].removeAt(i);
+                    size--;
+                    break;
+                }
+            }
+        }
+
+        /**
+         * @brief Set the Parent object of the node
+         * 
+         * @param parent New parent node
+         */
+        void setParentNode(Node* parent) {
+            this->parent = parent;
+        }
+
+        /**
+         * @brief Inserts a child node into the node at the correct spot
+         * 
+         * @param child Child node to insert
+         */
+        void addChildNode(Node* child) {
+            // Check first if the node doesn't have any children
+            if (children.size == 0) {
+                children.addEnd(child);
+            } else {
+                // Use the last key of the child node to compare
+                K comparisonKey = child->keys.getEndValue();
+
+                for (int i = 0; i < size; i++) {
+                    if (comparisonKey <= keys[i]) {
+                        children.addAt(child, i);
+                        break;
+                    } else if (i == size - 1) {
+                        children.addEnd(child);
+                        break;
                     }
                 }
             }
+
+            this->isLeaf = false;
         }
 
         /**
@@ -201,32 +261,6 @@ template <class K, class V> class Node {
                 if (key <= keys[i]) return children[i]; // Should this be less than or equal to?
                 else if (i == size - 1) return children[i + 1];
             }
-        }
-
-        /**
-         * @brief Inserts a key-value pair into the node
-         * 
-         * @param key Key to insert
-         * @param value Value to insert
-         */
-        void insertKeyValPair(K key, V value) {
-            for (int i = 0; i < size; i++) {
-                if (key < keys[i]) {
-                    keys.addAt(key, i);
-                    values[i].addAt(value, i);
-                    size++;
-                    break;
-                } else if (key == keys[i]) {
-                    values[i].addEnd(value);
-                    break;
-                } else if (i == size - 1) {
-                    keys.addEnd(key);
-                    values[i].addEnd(value);
-                    size++;
-                    break;
-                }
-            }
-            // Do I need to do something for updating the rank? Also subtree size?
         }
 
         /**

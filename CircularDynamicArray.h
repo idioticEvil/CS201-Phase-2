@@ -260,6 +260,24 @@ template <typename T> class CircularDynamicArray {
         int getFront() {
             return front;
         }
+        
+        /**
+         * @brief Returns the value at the end of the array
+         * 
+         * @return T The value at the end of the array
+         */
+        T& getFrontValue() {
+            return data[front];
+        }
+
+        /**
+         * @brief Returns the value at the end of the array
+         * 
+         * @return T The value at the end of the array
+         */
+        T& getEndValue() {
+            return data[(front + size - 1) % cap];
+        }
 
         /**
          * @brief Prints the array
