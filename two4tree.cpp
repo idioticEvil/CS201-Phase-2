@@ -2,7 +2,8 @@
 #include <ctime>
 #include <cstdlib>
 #include <stdexcept> 
-#include "CircularDynamicArray.cpp"
+#include "Node.cpp"
+#include "CircularDynamicArray.h"
 using namespace std;
 
 /*
@@ -25,20 +26,19 @@ TODO:
  */
 template <typename KeyType, typename ValueType> class two4Tree {
     private:
-        Node* rootNode;
+        Node<KeyType, ValueType>* rootNode;
         int treeSize;
 
-        void split(Node* node) {
-            // IMPLEMENT THIS
-        }
-        
-    public:
-        /**
-         * @brief Creates an empty 2-4 tree
-         */
-        two4Tree() {
-            rootNode = nullptr;
-            treeSize = 0;
+        // Splits a node when overfull
+        void split(Node<KeyType, ValueType>* nodeToSplit, KeyType newKey, ValueType newVals[]) {
+            if (nodeToSplit == rootNode) {
+                Node<KeyType, ValueType>* rootNodeRef = rootNode;
+                KeyType keyHold = rootNodeRef->keys[1];
+                CircularDynamicArray<ValueType> valueHold = rootNodeRef->values[1];
+                Node<KeyType, ValueType> newRootNode = new Node(rootNodeRef->keys[1], rootNodeRef->values[1]);
+                rootNode = newRootNode;
+                
+            }
         }
 
         /**
@@ -80,7 +80,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
             if (rootNode == nullptr) rootNode = new Node(key, value);
             // If the tree is not empty, find the correct leaf node to insert the key-value pair
             else { 
-                refNode = rootNode;
+                Node<KeyType, ValueType>* refNode = rootNode;
 
                 // Traverse the tree to find the correct leaf node
                 while (!refNode->isLeaf) {
@@ -98,13 +98,11 @@ template <typename KeyType, typename ValueType> class two4Tree {
                             refNode->values.addAt(value, i);
                             refNode->size++;
                             break;
+                        } else if (i == refNode->size - 1) {
+                            refNode->keys.addEnd(key);
+                            refNode->values.addEnd(value);
+                            refNode->size++;
                         }
-                    }
-
-                    if (i == refNode->size - 1) {
-                        refNode->keys.addEnd(key);
-                        refNode->values.addEnd(value);
-                        refNode->size++;
                     }
                 } else {
                     // Split
@@ -181,191 +179,5 @@ template <typename KeyType, typename ValueType> class two4Tree {
          */
         void postorder() {
             // IMPLEMENT THIS
-        }
-};
-
-/**
- * @brief Node class that can be used to store any type of data in a 2-4 tree
- * 
- * @tparam K Key type
- * @tparam V Value type
- */
-template <class K, class V> class Node {
-    private:
-        CircularDynamicArray<K> keys;
-        CircularDynamicArray<V> values[3];
-        CircularDynamicArray<Node*> children;
-        Node* parent;
-        bool isLeaf;
-        int size;
-        int subtreeSize;
-        int rank;
-
-    public:
-        /**
-         * @brief Creates a new node with no keys or values
-         */
-        Node() {
-            keys = new CircularDynamicArray<K>;
-            values = new CircularDynamicArray<V>[3];
-            children = new CircularDynamicArray<Node*>;
-            parent = nullptr;
-            isLeaf = true;
-            size = 0;
-            subtreeSize = 0;
-            rank = 0;
-        }
-
-        /**
-         * @brief Creates a new node with one key and value
-         * 
-         * @param k Key
-         * @param v Value
-         */
-        Node(K k, V v) {
-            keys = new CircularDynamicArray<K>;
-            values = new CircularDynamicArray<V>[3];
-            children = new CircularDynamicArray<Node*>;
-            keys[0] = k;
-            values[0].addEnd(v);
-            parent = nullptr;
-            isLeaf = true;
-            size = 1;
-            subtreeSize = 0;
-            rank = 1;
-        }
-
-        /**
-         * @brief Creates a new node with multiple keys and values
-         * 
-         * @param k Array of keys
-         * @param v Array of values
-         * @param size Size of the arrays
-         */
-        // Note: This program logic currently assumes that the values are sorted
-        Node(K k[], V v[], int size) { 
-            keys = new CircularDynamicArray<K>;
-            values = new CircularDynamicArray<V>[3];
-            children = new CircularDynamicArray<Node*>;
-
-            for (int i = 0; i < size; i++) {
-                keys.addEnd(k[i]);
-                values[i].addEnd(v[i]);
-            }
-
-            parent = nullptr;
-            isLeaf = true;
-            this->size = size;
-            subtreeSize = 0;
-            rank = size;
-        }
-
-        /**
-         * @brief Creates a new node with one key, value, and parent
-         * 
-         * @param k Key
-         * @param v Value
-         * @param parent Parent node
-         */
-        Node(K k, V v, Node* parent) {
-            keys = new CircularDynamicArray<K>;
-            values = new CircularDynamicArray<V>[3];
-            children = new CircularDynamicArray<Node*>;
-            keys.addEnd(k);
-            values[0].addEnd(v);
-            this->parent = parent;
-            isLeaf = true;
-            size = 1;
-            subtreeSize = 0;
-            rank = parent.rank + 1;
-        }
-
-        /**
-         * @brief Creates a new node with multiple keys, values, and parent
-         * 
-         * @param k Array of keys
-         * @param v Array of values
-         * @param size Size of the arrays
-         * @param parent Parent node
-         */
-        // Note: This program logic currently assumes that the values are sorted
-        Node(K k[], V v[], int size, Node* parent) {
-            keys = new CircularDynamicArray<K>;
-            values = new CircularDynamicArray<V>[3];
-            children = new CircularDynamicArray<Node*>;
-
-            for (int i = 0; i < size; i++) {
-                keys.addEnd(k[i]);
-                values[i].addEnd(v[i]);
-            }
-
-            this->parent = parent;
-            isLeaf = true;
-            this->size = size;
-            subtreeSize = 0;
-            rank = parent.rank + size;
-        }
-
-        /**
-         * @brief Destroys the node
-         */
-        ~Node() {
-            delete keys;
-
-            for(int i = 0; i < 3; i++) {
-                delete values[i];
-            }
-
-            delete children;
-        }
-
-        /**
-         * @brief Returns the child node that should be traversed to
-         * 
-         * @param key The key that is being checked
-         * @return Node* The child node that should be traversed to
-         */
-        Node* traverseDirection(K key) {
-            for (int i = 0; i < size; i++) {
-                if (key <= keys[i]) return children[i]; // Should this be less than or equal to?
-                else if (i == size - 1) return children[i + 1];
-            }
-        }
-
-        /**
-         * @brief Inserts a key-value pair into the node
-         * 
-         * @param key Key to insert
-         * @param value Value to insert
-         */
-        void insertKeyValPair(K key, V value) {
-            for (int i = 0; i < size; i++) {
-                if (key < keys[i]) {
-                    keys.addAt(key, i);
-                    values[i].addAt(value, i);
-                    size++;
-                    break;
-                } else if (key == keys[i]) {
-                    values[i].addEnd(value);
-                    break;
-                } else if (i == size - 1) {
-                    keys.addEnd(key);
-                    values[i].addEnd(value);
-                    size++;
-                    break;
-                }
-            }
-            // Do I need to do something for updating the rank? Also subtree size?
-        }
-
-        /**
-         * @brief Prints the keys of the node
-         */
-        void printKeys() {
-            for (int i = 0; i < size; i++) {
-                if (i < size - 1) cout << keys[i] << " ";
-                else cout << keys[i];
-            }
-            cout << endl;
         }
 };

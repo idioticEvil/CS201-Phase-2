@@ -1,3 +1,6 @@
+#ifndef CIRCULAR_DYNAMIC_ARRAY_H 
+#define CIRCULAR_DYNAMIC_ARRAY_H 
+
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
@@ -423,3 +426,5 @@ template <typename T> class CircularDynamicArray {
             }
         }
 };
+
+#endif // End of the include guard CIRCULAR_DYNAMIC_ARRAY_H
