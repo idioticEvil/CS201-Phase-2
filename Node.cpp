@@ -12,7 +12,7 @@ using namespace std;
  * @tparam V Value type
  */
 template <class K, class V> class Node {
-    private:
+    public:
         CircularDynamicArray<K> keys;
         CircularDynamicArray<V> values[3];
         CircularDynamicArray<Node*> children;
@@ -21,7 +21,6 @@ template <class K, class V> class Node {
         int size;
         int subtreeSize;
 
-    public:
         /**
          * @brief Creates a new node with one key and a CircularDynamicArray of values
          * 
@@ -131,15 +130,6 @@ template <class K, class V> class Node {
                     break;
                 }
             }
-        }
-
-        /**
-         * @brief Set the Parent object of the node
-         * 
-         * @param parent New parent node
-         */
-        void setParentNode(Node* parent) {
-            this->parent = parent;
         }
 
         /**

@@ -60,11 +60,6 @@ template <typename KeyType, typename ValueType> class two4Tree {
                 leftChild->setParentNode(rootNode);
                 rightChild->setParentNode(rootNode);
             } else { // Splitting Leaf or Internal Node
-                // Recursively split parent nodes if they are overfull
-                if (nodeToSplit->parent->size == 3) split(nodeToSplit->parent, keyHold, valueHold);
-                else {
-                    nodeToSplit->parent->insertKeyValPair(keyHold, valueHold);
-                }
 
                 // If the node to split is an internal node, distribute the children 
                 // to the new left and right children
@@ -79,13 +74,21 @@ template <typename KeyType, typename ValueType> class two4Tree {
                         }
                     }
                 }
+                
+                // Set the parent node of the left and right children
+                leftChild->setParentNode(nodeToSplit->parent);
+                rightChild->setParentNode(nodeToSplit->parent);
+
+                // Recursively split parent nodes if they are overfull
+                if (nodeToSplit->parent->size == 3) split(nodeToSplit->parent, keyHold, valueHold);
+                else {
+                    nodeToSplit->parent->insertKeyValPair(keyHold, valueHold);
+                }
 
                 // Delete old node from the parent node's children array, and add the new children
                 nodeToSplit->parent->removeChildNode(nodeToSplit);
                 nodeToSplit->parent->addChildNode(leftChild);
                 nodeToSplit->parent->addChildNode(rightChild);
-                leftChild->setParentNode(nodeToSplit->parent);
-                rightChild->setParentNode(nodeToSplit->parent);
             }
             delete nodeToSplit;
             return;
@@ -144,7 +147,11 @@ template <typename KeyType, typename ValueType> class two4Tree {
          */
         void insert(KeyType key, ValueType value) {
             // Check if the tree is empty, if so, create a new root node
-            if (rootNode == nullptr) rootNode = new Node(key, value);
+            if (rootNode == nullptr){
+                CircularDynamicArray<ValueType> *valueHolder = new CircularDynamicArray<ValueType>();
+                valueHolder->addEnd(value);
+                rootNode = new Node<KeyType, ValueType>(key, *valueHolder);
+            } 
             // If the tree is not empty, find the correct leaf node to insert the key-value pair
             else { 
                 Node<KeyType, ValueType>* refNode = rootNode;
@@ -162,12 +169,12 @@ template <typename KeyType, typename ValueType> class two4Tree {
                     for (int i = 0; i < refNode->size; i++) {
                         if (key <= refNode->keys[i]) {
                             refNode->keys.addAt(key, i);
-                            refNode->values.addAt(value, i);
+                            refNode->values[i].addEnd(value);
                             refNode->size++;
                             break;
                         } else if (i == refNode->size - 1) {
                             refNode->keys.addEnd(key);
-                            refNode->values.addEnd(value);
+                            refNode->values[i].addEnd(value);
                             refNode->size++;
                         }
                     }

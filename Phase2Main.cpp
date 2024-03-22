@@ -51,7 +51,7 @@ int main(){
 	cout << T1.rank("I") << endl;
 	//Should output 11
 
-	cout << T2.remove("H"); << endl;
+	cout << T2.remove("H") << endl;
 	//Should output 1
 	
 	cout << *(T2.search("H")) << endl;
