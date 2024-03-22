@@ -8,7 +8,6 @@ using namespace std;
 
 /*
 TODO:
-- Figure out how to properly update the subtree size values when splitting a node
 - Implement the remove function
     - Going to fucking suck to implement
 - Implement the rank function
@@ -19,6 +18,7 @@ TODO:
 - Implement the preorder function
 - Implement the inorder function
 - Implement the postorder function
+- Implement the destructor
 - Write a function that prints the tree in a readable format for debugging
 */
 
@@ -58,30 +58,31 @@ template <typename KeyType, typename ValueType> class two4Tree {
                 Node<KeyType, ValueType>* newRootNode = new Node(keyHold, valueHold);
                 rootNode = newRootNode;
 
-                // Add the children to the new root node and delete the old root node
+                // Add the children to the new root node, set children node's parents 
+                // and delete the old root node
                 rootNode->addChildNode(leftChild);
                 rootNode->addChildNode(rightChild);
-                leftChild->setParentNode(rootNode);
-                rightChild->setParentNode(rootNode);
+                leftChild->parent = rootNode;
+                rightChild->parent = rootNode;
+                
             } else { // Splitting Leaf or Internal Node
-
                 // If the node to split is an internal node, distribute the children 
                 // to the new left and right children
                 if (nodeToSplit->isLeaf == false) { 
                     for (int i = 0; i < nodeToSplit->size; i++) {
                         if (i < 2) {
                             leftChild->addChildNode(nodeToSplit->children[i]);
-                            nodeToSplit->children[i]->setParentNode(leftChild);
+                            nodeToSplit->children[i]->parent = leftChild;
                         } else {
                             rightChild->addChildNode(nodeToSplit->children[i]);
-                            nodeToSplit->children[i]->setParentNode(rightChild);
+                            nodeToSplit->children[i]->parent = rightChild;
                         }
                     }
                 }
                 
                 // Set the parent node of the left and right children
-                leftChild->setParentNode(nodeToSplit->parent);
-                rightChild->setParentNode(nodeToSplit->parent);
+                leftChild->parent = nodeToSplit->parent;
+                rightChild->parent = nodeToSplit->parent;
 
                 // Recursively split parent nodes if they are overfull
                 if (nodeToSplit->parent->size == 3) split(nodeToSplit->parent, keyHold, valueHold);
@@ -94,24 +95,13 @@ template <typename KeyType, typename ValueType> class two4Tree {
                 nodeToSplit->parent->addChildNode(leftChild);
                 nodeToSplit->parent->addChildNode(rightChild);
             }
+
+            // Calculate the subtree sizes of the left and right children
+            leftChild->calculateLeftSubtreeSize();
+            rightChild->calculateLeftSubtreeSize();
+
             delete nodeToSplit;
             return;
-        }
-
-        /**
-         * @brief Updates the subtree size values of a node and its ancestors
-         * 
-         * @param checkNode The node to start updating from
-         * @param sizeChange The amount to change the subtree size by
-         */
-        void updateLSubtreeSize(Node<KeyType, ValueType>* checkNode, int sizeChange) {
-            Node<KeyType, ValueType>* refNode = checkNode;
-
-            // Update the subtree size of the node and its ancestors
-            while (refNode != nullptr) {
-                refNode->subtreeSize += sizeChange;
-                refNode = refNode->parent;
-            }
         }
 
     public:
@@ -189,10 +179,10 @@ template <typename KeyType, typename ValueType> class two4Tree {
                     }
 
                     // Update the subtree size values of the node and its ancestors
-                    updateLSubtreeSize(refNode, 1);
+                    refNode->calculateLeftSubtreeSize();
                 } else {
-                    split(refNode, key, value);
-                    // NOTE: Gotta figure out how to update the subtree size values here
+                    split(refNode, key, value); // Something is wrong with the 
+                                                // way that values are being passed here
                 }
             }
             treeSize++;

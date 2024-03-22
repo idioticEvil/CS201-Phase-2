@@ -210,17 +210,47 @@ template <typename T> class CircularDynamicArray {
          * @param i The index to store the value at
          */
         void addAt(T v, int i) {
+            // Check if index is out of range
             if (i < 0 || i > size) {
                 throw std::out_of_range("Index out of range");
             }
 
+            // Check if array is full
             if (size == cap) increaseSize();
+
+            // Shift elements to the right
             for (int j = size; j > i; j--) {
                 data[(front + j) % cap] = data[(front + j - 1) % cap];
             }
+
+            // Insert value at index i
             data[(front + i) % cap] = v;
             size++;
             isSorted = false;
+        }
+
+        /**
+         * @brief Decreases size by one and removes the value at index i
+         * 
+         * @param i The index to remove the value from
+         */
+        void removeAt(int i) {
+            // Check if index is out of range
+            if (i < 0 || i >= size) {
+                throw std::out_of_range("Index out of range");
+            }
+
+            // Decrease array size if necessary
+            if ((size) <= int(cap * 0.25)) decreaseSize();
+
+            // Shift elements to the left
+            for (int j = i; j < size - 1; j++) {
+                data[(front + j) % cap] = data[(front + j + 1) % cap];
+            }
+
+            // Remove value at index i
+            data[(front + size - 1) % cap] = T();
+            size--;
         }
 
         /**

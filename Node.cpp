@@ -19,7 +19,7 @@ template <class K, class V> class Node {
         Node* parent;
         bool isLeaf;
         int size;
-        int subtreeSize;
+        int leftSubtreeSize;
 
         /**
          * @brief Creates a new node with one key and a CircularDynamicArray of values
@@ -33,7 +33,7 @@ template <class K, class V> class Node {
             parent = nullptr;
             isLeaf = true;
             size = 1;
-            subtreeSize = 0;
+            leftSubtreeSize = 0;
         }
 
         /**
@@ -53,7 +53,7 @@ template <class K, class V> class Node {
             parent = nullptr;
             isLeaf = true;
             this->size = size;
-            subtreeSize = 0;
+            leftSubtreeSize = 0;
         }
 
         /**
@@ -74,7 +74,7 @@ template <class K, class V> class Node {
             parent = nullptr;
             isLeaf = true;
             this->size = size;
-            subtreeSize = 0;
+            leftSubtreeSize = 0;
         }
 
         /**
@@ -90,7 +90,7 @@ template <class K, class V> class Node {
             this->parent = parent;
             isLeaf = true;
             size = 1;
-            subtreeSize = 0;
+            leftSubtreeSize = 0;
         }
 
         /**
@@ -138,18 +138,20 @@ template <class K, class V> class Node {
          * @param child Child node to insert
          */
         void addChildNode(Node* child) {
+            int childSize = children.length();
+
             // Check first if the node doesn't have any children
-            if (children.size == 0) {
+            if (childSize == 0) {
                 children.addEnd(child);
             } else {
                 // Use the last key of the child node to compare
                 K comparisonKey = child->keys.getEndValue();
 
-                for (int i = 0; i < size; i++) {
+                for (int i = 0; i < childSize; i++) {
                     if (comparisonKey <= keys[i]) {
                         children.addAt(child, i);
                         break;
-                    } else if (i == size - 1) {
+                    } else if (i == childSize - 1) {
                         children.addEnd(child);
                         break;
                     }
@@ -165,14 +167,44 @@ template <class K, class V> class Node {
          * @param child Child node to remove
          */
         void removeChildNode(Node* child) {
-            for (int i = 0; i < size; i++) {
+            int childSize = children.length();
+
+            for (int i = 0; i < childSize; i++) {
                 if (child == children[i]) {
                     children.removeAt(i);
                     break;
                 }
             }
 
-            if (children.size == 0) this->isLeaf = true;
+            if (childSize == 0) this->isLeaf = true;
+        }
+
+        /**
+         * @brief Recalculates the left subtree size of a node
+         * 
+         * @param checkNode The node to recalculate the subtree size of
+         */
+        void calculateLeftSubtreeSize() {
+            Node<K, V>* refNode = this;
+
+            while (refNode != nullptr) {
+                // Reset the subtree size of the node before recalculating
+                refNode->leftSubtreeSize = 0;
+
+                if (refNode->isLeaf) {
+                    return;
+                }
+
+                // Recalculate the left subtree size of the node
+                for (int i = 0; i < refNode->children.length(); i++) {
+                    if (refNode->children[i]->keys[i] <= refNode->keys[i]) {
+                        refNode->leftSubtreeSize += (refNode->children[i]->leftSubtreeSize + 
+                        refNode->children[i]->size);
+                    } 
+                }
+
+                refNode = refNode->parent;
+            }
         }
 
         /**
