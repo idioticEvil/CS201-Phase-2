@@ -40,14 +40,17 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @param newKey Key that would make the node overfull
          * @param newVals Value(s) corresponding to the key
          */
-        void split(Node<KeyType, ValueType>* nodeToSplit, KeyType newKey, CircularDynamicArray<ValueType>& newValue) {
+        void split(Node<KeyType, ValueType>* nodeToSplit, KeyType newKey, 
+        CircularDynamicArray<ValueType>& newValue) {
             // Get the middle key and value(s) and get ready to push them to the parent node
             KeyType keyHold = nodeToSplit->keys[1];
             CircularDynamicArray<ValueType> valueHold = nodeToSplit->values[1];
 
             // Start creating the left and right children of the new root node
-            Node<KeyType, ValueType>* leftChild = new Node(nodeToSplit->keys[0], nodeToSplit->values[0]);
-            Node<KeyType, ValueType>* rightChild = new Node(nodeToSplit->keys[2], nodeToSplit->values[2]);
+            Node<KeyType, ValueType>* leftChild = new Node(nodeToSplit->keys[0], 
+            nodeToSplit->values[0]);
+            Node<KeyType, ValueType>* rightChild = new Node(nodeToSplit->keys[2], 
+            nodeToSplit->values[2]);
                 
             // Insert the new key-value pair into the correct child node
             if (newKey <= keyHold) leftChild->insertKeyValPair(newKey, newValue);

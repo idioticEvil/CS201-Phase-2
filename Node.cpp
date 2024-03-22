@@ -147,6 +147,7 @@ template <class K, class V> class Node {
                 // Use the last key of the child node to compare
                 K comparisonKey = child->keys.getEndValue();
 
+                // Find the correct spot to insert the child node
                 for (int i = 0; i < childSize; i++) {
                     if (comparisonKey <= keys[i]) {
                         children.addAt(child, i);
@@ -158,6 +159,7 @@ template <class K, class V> class Node {
                 }
             }
 
+            // Update the leaf status of the node
             this->isLeaf = false;
         }
 
@@ -169,6 +171,7 @@ template <class K, class V> class Node {
         void removeChildNode(Node* child) {
             int childSize = children.length();
 
+            // Find the child node to remove
             for (int i = 0; i < childSize; i++) {
                 if (child == children[i]) {
                     children.removeAt(i);
@@ -176,6 +179,7 @@ template <class K, class V> class Node {
                 }
             }
 
+            // Check if the node is now a leaf
             if (childSize == 0) this->isLeaf = true;
         }
 
@@ -185,24 +189,24 @@ template <class K, class V> class Node {
          * @param checkNode The node to recalculate the subtree size of
          */
         void calculateLeftSubtreeSize() {
+            // Create a reference node to traverse up the tree
             Node<K, V>* refNode = this;
 
+            // Traverse up the tree to recalculate the left subtree size of the node
             while (refNode != nullptr) {
                 // Reset the subtree size of the node before recalculating
                 refNode->leftSubtreeSize = 0;
 
-                if (refNode->isLeaf) {
-                    return;
+                // Check if the node is not a leaf
+                if (!refNode->isLeaf) {
+                    // Recalculate the left subtree size of the node
+                    for (int i = 0; i < refNode->children.length(); i++) {
+                        if (refNode->children[i]->keys[i] <= refNode->keys[i]) {
+                            refNode->leftSubtreeSize += (refNode->children[i]->leftSubtreeSize + 
+                            refNode->children[i]->size);
+                        } 
+                    }
                 }
-
-                // Recalculate the left subtree size of the node
-                for (int i = 0; i < refNode->children.length(); i++) {
-                    if (refNode->children[i]->keys[i] <= refNode->keys[i]) {
-                        refNode->leftSubtreeSize += (refNode->children[i]->leftSubtreeSize + 
-                        refNode->children[i]->size);
-                    } 
-                }
-
                 refNode = refNode->parent;
             }
         }
@@ -214,6 +218,7 @@ template <class K, class V> class Node {
          * @return Node* The child node that should be traversed to
          */
         Node* traverseDirection(K key) {
+            // Traverse the tree to find the correct child node to go to
             for (int i = 0; i < size; i++) {
                 if (key <= keys[i]) return children[i];
                 else if (i == size - 1) return children[i + 1];
