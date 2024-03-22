@@ -37,26 +37,79 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @param newVals Value(s) corresponding to the key
          */
         void split(Node<KeyType, ValueType>* nodeToSplit, KeyType newKey, CircularDynamicArray<ValueType>& newValue) {
-            if (nodeToSplit == rootNode) {
+            if (nodeToSplit == rootNode) { // Splitting root node
+                // Get the middle key and value(s) and use them to create a new root node
                 KeyType keyHold = nodeToSplit->keys[1];
                 CircularDynamicArray<ValueType> valueHold = nodeToSplit->values[1];
-                Node<KeyType, ValueType> newRootNode = new Node(keyHold, valueHold);
+                Node<KeyType, ValueType>* newRootNode = new Node(keyHold, valueHold);
                 rootNode = newRootNode;
 
+                // Start creating the left and right children of the new root node
                 Node<KeyType, ValueType>* leftChild = new Node(nodeToSplit->keys[0], nodeToSplit->values[0]);
                 Node<KeyType, ValueType>* rightChild = new Node(nodeToSplit->keys[2], nodeToSplit->values[2]);
                 
+                // Insert the new key-value pair into the correct child node
                 if (newKey <= keyHold) leftChild->insertKeyValPair(newKey, newValue);
                 else rightChild->insertKeyValPair(newKey, newValue);
 
+                // Add the children to the new root node and delete the old root node
                 rootNode->addChildNode(leftChild);
                 rootNode->addChildNode(rightChild);
                 leftChild->setParentNode(rootNode);
                 rightChild->setParentNode(rootNode);
-                delete nodeToSplit;  
+                delete nodeToSplit;
+
+                return;
+            } else if (nodeToSplit->isLeaf == true) { // Splitting Leaf Node
+                // Get the middle key and value(s) and get ready to push them to the parent node
+                KeyType keyHold = nodeToSplit->keys[1];
+                CircularDynamicArray<ValueType> valueHold = nodeToSplit->values[1];
+
+                // Recursively split parent nodes if they are overfull
+                if (nodeToSplit->parent->size == 3) split(nodeToSplit->parent, keyHold, valueHold);
+                else {
+                    nodeToSplit->parent->insertKeyValPair(keyHold, valueHold);
+                }
+
+                // Start creating the left and right children of the new parent node
+                Node<KeyType, ValueType>* leftChild = new Node(nodeToSplit->keys[0], nodeToSplit->values[0]);
+                Node<KeyType, ValueType>* rightChild = new Node(nodeToSplit->keys[2], nodeToSplit->values[2]);
+
+                // Insert the new key-value pair into the correct child node
+                if (newKey <= keyHold) leftChild->insertKeyValPair(newKey, newValue);
+                else rightChild->insertKeyValPair(newKey, newValue);
+
+                // Delete old node from the parent node's children array, and add the new children
+                nodeToSplit->parent->removeChildNode(nodeToSplit);
+                nodeToSplit->parent->addChildNode(leftChild);
+                nodeToSplit->parent->addChildNode(rightChild);
+                leftChild->setParentNode(nodeToSplit->parent);
+                rightChild->setParentNode(nodeToSplit->parent);
+                delete nodeToSplit;
+
+                return;
+            } else { // Splitting internal node
+                // IMPLEMENT THIS
             }
         }
 
+        /**
+         * @brief Updates the subtree size values of a node and its ancestors
+         * 
+         * @param checkNode The node to start updating from
+         * @param sizeChange The amount to change the subtree size by
+         */
+        void updateLSubtreeSize(Node<KeyType, ValueType>* checkNode, int sizeChange) {
+            Node<KeyType, ValueType>* refNode = checkNode;
+
+            // Update the subtree size of the node and its ancestors
+            while (refNode != nullptr) {
+                refNode->subtreeSize += sizeChange;
+                refNode = refNode->parent;
+            }
+        }
+
+    public:
         /**
          * @brief Construct a new 2-4 tree object from an array of keys and an array of values
          * 
@@ -120,8 +173,12 @@ template <typename KeyType, typename ValueType> class two4Tree {
                             refNode->size++;
                         }
                     }
+
+                    // Update the subtree size values of the node and its ancestors
+                    updateLSubtreeSize(refNode, 1);
                 } else {
                     // Split
+                    // NOTE: Gotta figure out how to update the subtree size values here
                 }
             }
             treeSize++;

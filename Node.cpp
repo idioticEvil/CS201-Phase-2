@@ -20,32 +20,8 @@ template <class K, class V> class Node {
         bool isLeaf;
         int size;
         int subtreeSize;
-        int rank;
 
     public:
-        /**
-         * @brief Creates a new node with one key and possibly multiple values
-         * 
-         * @param k Key
-         * @param v Value(s)
-         */
-        Node(K k, V v[]) {
-            keys = new CircularDynamicArray<K>;
-            values = new CircularDynamicArray<V>[3];
-            children = new CircularDynamicArray<Node*>;
-            keys.addEnd(k);
-
-            for (int i = 0; i < values->size; i++) {
-                values[i].addEnd(v[i]);
-            }
-            
-            parent = nullptr;
-            isLeaf = true;
-            size = 1;
-            subtreeSize = 0;
-            rank = 1;
-        }
-
         /**
          * @brief Creates a new node with one key and a CircularDynamicArray of values
          * 
@@ -53,16 +29,12 @@ template <class K, class V> class Node {
          * @param v CircularDynamicArray of values
          */
         Node(K k, CircularDynamicArray<V>& v) {
-            keys = new CircularDynamicArray<K>;
-            values = new CircularDynamicArray<V>[3];
-            children = new CircularDynamicArray<Node*>;
             keys.addEnd(k);
             values[0] = v;
             parent = nullptr;
             isLeaf = true;
             size = 1;
             subtreeSize = 0;
-            rank = 1;
         }
 
         /**
@@ -74,10 +46,6 @@ template <class K, class V> class Node {
          */
         // Note: This program logic currently assumes that the values are sorted
         Node(K k[], V v[], int size) { 
-            keys = new CircularDynamicArray<K>;
-            values = new CircularDynamicArray<V>[3];
-            children = new CircularDynamicArray<Node*>;
-
             for (int i = 0; i < size; i++) {
                 keys.addEnd(k[i]);
                 values[i].addEnd(v[i]);
@@ -87,7 +55,6 @@ template <class K, class V> class Node {
             isLeaf = true;
             this->size = size;
             subtreeSize = 0;
-            rank = size;
         }
 
         /**
@@ -98,10 +65,6 @@ template <class K, class V> class Node {
          * @param size Size of the arrays
          */
         Node(K k[], CircularDynamicArray<V> v[], int size) {
-            keys = new CircularDynamicArray<K>;
-            values = new CircularDynamicArray<V>[3];
-            children = new CircularDynamicArray<Node*>;
-
             for (int i = 0; i < size; i++) {
                 keys.addEnd(k[i]);
                 for (int j = 0; j < v[i].size; j++) {
@@ -113,7 +76,6 @@ template <class K, class V> class Node {
             isLeaf = true;
             this->size = size;
             subtreeSize = 0;
-            rank = size;
         }
 
         /**
@@ -124,55 +86,12 @@ template <class K, class V> class Node {
          * @param parent Parent node
          */
         Node(K k, V v, Node* parent) {
-            keys = new CircularDynamicArray<K>;
-            values = new CircularDynamicArray<V>[3];
-            children = new CircularDynamicArray<Node*>;
             keys.addEnd(k);
             values[0].addEnd(v);
             this->parent = parent;
             isLeaf = true;
             size = 1;
             subtreeSize = 0;
-            rank = parent->rank + 1;
-        }
-
-        /**
-         * @brief Creates a new node with multiple keys, values, and parent
-         * 
-         * @param k Array of keys
-         * @param v Array of values
-         * @param size Size of the arrays
-         * @param parent Parent node
-         */
-        // Note: This program logic currently assumes that the values are sorted
-        Node(K k[], V v[], int size, Node* parent) {
-            keys = new CircularDynamicArray<K>;
-            values = new CircularDynamicArray<V>[3];
-            children = new CircularDynamicArray<Node*>;
-
-            for (int i = 0; i < size; i++) {
-                keys.addEnd(k[i]);
-                values[i].addEnd(v[i]);
-            }
-
-            this->parent = parent;
-            isLeaf = true;
-            this->size = size;
-            subtreeSize = 0;
-            rank = parent->rank + size;
-        }
-
-        /**
-         * @brief Destroys the node
-         */
-        ~Node() {
-            delete keys;
-
-            for(int i = 0; i < 3; i++) {
-                delete values[i];
-            }
-
-            delete children;
         }
 
         /**
@@ -248,6 +167,22 @@ template <class K, class V> class Node {
             }
 
             this->isLeaf = false;
+        }
+
+        /**
+         * @brief Removes a child node from the node
+         * 
+         * @param child Child node to remove
+         */
+        void removeChildNode(Node* child) {
+            for (int i = 0; i < size; i++) {
+                if (child == children[i]) {
+                    children.removeAt(i);
+                    break;
+                }
+            }
+
+            if (children.size == 0) this->isLeaf = true;
         }
 
         /**
