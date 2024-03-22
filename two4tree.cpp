@@ -37,47 +37,48 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @param newVals Value(s) corresponding to the key
          */
         void split(Node<KeyType, ValueType>* nodeToSplit, KeyType newKey, CircularDynamicArray<ValueType>& newValue) {
+            // Get the middle key and value(s) and get ready to push them to the parent node
+            KeyType keyHold = nodeToSplit->keys[1];
+            CircularDynamicArray<ValueType> valueHold = nodeToSplit->values[1];
+
+            // Start creating the left and right children of the new root node
+            Node<KeyType, ValueType>* leftChild = new Node(nodeToSplit->keys[0], nodeToSplit->values[0]);
+            Node<KeyType, ValueType>* rightChild = new Node(nodeToSplit->keys[2], nodeToSplit->values[2]);
+                
+            // Insert the new key-value pair into the correct child node
+            if (newKey <= keyHold) leftChild->insertKeyValPair(newKey, newValue);
+            else rightChild->insertKeyValPair(newKey, newValue);
+
             if (nodeToSplit == rootNode) { // Splitting root node
-                // Get the middle key and value(s) and use them to create a new root node
-                KeyType keyHold = nodeToSplit->keys[1];
-                CircularDynamicArray<ValueType> valueHold = nodeToSplit->values[1];
+                // Create a new root node
                 Node<KeyType, ValueType>* newRootNode = new Node(keyHold, valueHold);
                 rootNode = newRootNode;
-
-                // Start creating the left and right children of the new root node
-                Node<KeyType, ValueType>* leftChild = new Node(nodeToSplit->keys[0], nodeToSplit->values[0]);
-                Node<KeyType, ValueType>* rightChild = new Node(nodeToSplit->keys[2], nodeToSplit->values[2]);
-                
-                // Insert the new key-value pair into the correct child node
-                if (newKey <= keyHold) leftChild->insertKeyValPair(newKey, newValue);
-                else rightChild->insertKeyValPair(newKey, newValue);
 
                 // Add the children to the new root node and delete the old root node
                 rootNode->addChildNode(leftChild);
                 rootNode->addChildNode(rightChild);
                 leftChild->setParentNode(rootNode);
                 rightChild->setParentNode(rootNode);
-                delete nodeToSplit;
-
-                return;
-            } else if (nodeToSplit->isLeaf == true) { // Splitting Leaf Node
-                // Get the middle key and value(s) and get ready to push them to the parent node
-                KeyType keyHold = nodeToSplit->keys[1];
-                CircularDynamicArray<ValueType> valueHold = nodeToSplit->values[1];
-
+            } else { // Splitting Leaf or Internal Node
                 // Recursively split parent nodes if they are overfull
                 if (nodeToSplit->parent->size == 3) split(nodeToSplit->parent, keyHold, valueHold);
                 else {
                     nodeToSplit->parent->insertKeyValPair(keyHold, valueHold);
                 }
 
-                // Start creating the left and right children of the new parent node
-                Node<KeyType, ValueType>* leftChild = new Node(nodeToSplit->keys[0], nodeToSplit->values[0]);
-                Node<KeyType, ValueType>* rightChild = new Node(nodeToSplit->keys[2], nodeToSplit->values[2]);
-
-                // Insert the new key-value pair into the correct child node
-                if (newKey <= keyHold) leftChild->insertKeyValPair(newKey, newValue);
-                else rightChild->insertKeyValPair(newKey, newValue);
+                // If the node to split is an internal node, distribute the children 
+                // to the new left and right children
+                if (nodeToSplit->isLeaf == false) { 
+                    for (int i = 0; i < nodeToSplit->size; i++) {
+                        if (i < 2) {
+                            leftChild->addChildNode(nodeToSplit->children[i]);
+                            nodeToSplit->children[i]->setParentNode(leftChild);
+                        } else {
+                            rightChild->addChildNode(nodeToSplit->children[i]);
+                            nodeToSplit->children[i]->setParentNode(rightChild);
+                        }
+                    }
+                }
 
                 // Delete old node from the parent node's children array, and add the new children
                 nodeToSplit->parent->removeChildNode(nodeToSplit);
@@ -85,12 +86,9 @@ template <typename KeyType, typename ValueType> class two4Tree {
                 nodeToSplit->parent->addChildNode(rightChild);
                 leftChild->setParentNode(nodeToSplit->parent);
                 rightChild->setParentNode(nodeToSplit->parent);
-                delete nodeToSplit;
-
-                return;
-            } else { // Splitting internal node
-                // IMPLEMENT THIS
             }
+            delete nodeToSplit;
+            return;
         }
 
         /**
