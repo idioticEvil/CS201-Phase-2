@@ -8,14 +8,18 @@ using namespace std;
 
 /*
 TODO:
-- Change way that duplicate keys are handled, one key to an array of values (Side note: Are you 
-  fucking serious?)
-    - Change arrays for keys, values, and children in nodes to be of static size
-    - Make the value arrays be an array of circular dynamic arrays for the values (which is fucking
-      stupid but I digress)
-    - Update necessary program logic
-- Implement Split function
-- Add subtree size values to node class, figure out how to update them for insertion & deletion
+- Figure out how to properly update the subtree size values when splitting a node
+- Implement the remove function
+    - Going to fucking suck to implement
+- Implement the rank function
+    - Shouldn't be hard once I figure out how to update the subtree size values
+- Implement the select function
+    - Shouldn't be hard once I figure out how to update the subtree size values
+- Implement the duplicates function
+- Implement the preorder function
+- Implement the inorder function
+- Implement the postorder function
+- Write a function that prints the tree in a readable format for debugging
 */
 
 /**
@@ -112,6 +116,14 @@ template <typename KeyType, typename ValueType> class two4Tree {
 
     public:
         /**
+         * @brief Construct a new 2-4 tree object
+         */
+        two4Tree() {
+            rootNode = nullptr;
+            treeSize = 0;
+        }
+
+        /**
          * @brief Construct a new 2-4 tree object from an array of keys and an array of values
          * 
          * @param keys The array of keys to insert into the tree
@@ -161,10 +173,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
                     refNode = refNode->traverseDirection(key);
                 }
 
-                /*
-                Insert the key-value pair into the leaf node
-                NOTE: This will not split the node if it has more than 3 keys... yet
-                */
+                // Insert the key-value pair into the leaf node
                 if (refNode->size < 3) {
                     for (int i = 0; i < refNode->size; i++) {
                         if (key <= refNode->keys[i]) {
@@ -182,7 +191,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
                     // Update the subtree size values of the node and its ancestors
                     updateLSubtreeSize(refNode, 1);
                 } else {
-                    // Split
+                    split(refNode, key, value);
                     // NOTE: Gotta figure out how to update the subtree size values here
                 }
             }

@@ -183,7 +183,7 @@ template <class K, class V> class Node {
          */
         Node* traverseDirection(K key) {
             for (int i = 0; i < size; i++) {
-                if (key <= keys[i]) return children[i]; // Should this be less than or equal to?
+                if (key <= keys[i]) return children[i];
                 else if (i == size - 1) return children[i + 1];
             }
         }
