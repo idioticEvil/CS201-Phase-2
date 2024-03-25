@@ -124,7 +124,13 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @param size The size of the arrays
          */
         two4Tree(KeyType keys[], ValueType values[], int size) {
-            // IMPLEMENT THIS
+            rootNode = nullptr;
+            treeSize = 0;
+
+            // Insert the keys and values into the tree
+            for (int i = 0; i < size; i++) {
+                insert(keys[i], values[i]);
+            }
         }
 
         /**
@@ -241,23 +247,86 @@ template <typename KeyType, typename ValueType> class two4Tree {
         }
 
         /**
-         * @brief Prints the pre-order traversal of the tree
+         * @brief Prints the pre-order traversal of the tree, more of a shell functino
          */
         void preorder() {
-            // IMPLEMENT THIS
+            preorderActual(rootNode);
+        }
+
+        /**
+         * @brief Prints the pre-order traversal of the tree, but actually does the traversal
+         * 
+         * @param refNode The node currently being traversed
+         */
+        void preorderActual(Node<KeyType, ValueType>* refNode) {
+            // Check if the node is null
+            if (refNode == nullptr) return;
+
+            // Print the keys of the node
+            refNode->printKeys();
+
+            // Recursively traverse the children of the node
+            if (!refNode->isLeaf) {
+                for (int i = 0; i < refNode->children.length(); i++) {
+                    preorderActual(refNode->children[i]);
+                }
+            }
         }
 
         /**
          * @brief Prints the in-order traversal of the tree
          */
         void inorder() {
-            // IMPLEMENT THIS
+            inorderActual(rootNode);
+            cout << endl;
+        }
+
+        /**
+         * @brief Actually traverses the tree in-order recursively
+         * 
+         * @param refNode The node currently being traversed
+         */
+        void inorderActual(Node<KeyType, ValueType>* refNode) {
+            // Check if the node is null
+            if (refNode == nullptr) return;
+
+            // Traverse the children of the node
+            for (int i = 0; i < refNode->size; i++) {
+                // Visit the child before the key
+                if (!refNode->isLeaf) inorderActual(refNode->children[i]);
+
+                // Print the key
+                cout << refNode->keys[i] << " ";
+            }
+
+            // Visit the last child after the last key, if the node is not a leaf
+            if (!refNode->isLeaf) inorderActual(refNode->children[refNode->size]);
         }
 
         /**
          * @brief Prints the post-order traversal of the tree
          */
         void postorder() {
-            // IMPLEMENT THIS
+            postorderActual(rootNode);
+        }
+
+        /**
+         * @brief Actually traverses the tree post-order recursively
+         * 
+         * @param refNode The node currently being traversed
+         */
+        void postorderActual(Node<KeyType, ValueType>* refNode) {
+            // Check if the node is null
+            if (refNode == nullptr) return;
+
+            // Recursively traverse the children of the node
+            if (!refNode->isLeaf) {
+                for (int i = 0; i < refNode->children.length(); i++) {
+                    postorderActual(refNode->children[i]);
+                }
+            }
+
+            // Print the keys of the node
+            refNode->printKeys();
         }
 };
