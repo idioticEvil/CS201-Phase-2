@@ -101,18 +101,42 @@ template <class K, class V> class Node {
          */
         void insertKeyValPair(K key, CircularDynamicArray<V>& value) {
             for (int i = 0; i < size; i++) {
-                if (key <= keys[i]) {
+                if (key < keys[i]) {
                     keys.addAt(key, i);
-                    values[i] = value;
+                    valuesArrayInsert(i, value);
                     size++;
+                    break;
+                } else if (key == keys[i]) {
+                    values[i].addEnd(value[0]);
                     break;
                 } else if (i == size - 1) {
                     keys.addEnd(key);
-                    values[i + 1] = value;
+                    valuesArrayInsert(size, value);
                     size++;
+                    break;
                 }
             }
-            // Do I need to do something for updating the rank? Also subtree size?
+        }
+
+        /**
+         * @brief Resorts the values array for insertion since it is a 2D array, I fucking hate this
+         * 
+         * @param index Index that the new value is going to be inserted at
+         * @param valueToInsert New value to insert
+         */
+        void valuesArrayInsert(int index, CircularDynamicArray<V>& valueToInsert) {
+            CircularDynamicArray<V> tempArray[size + 1];
+
+            tempArray[index] = valueToInsert;
+            for (int i = 0; i < index; i++) {
+                tempArray[i] = values[i];
+            }
+            for (int i = index; i < size; i++) {
+                tempArray[i + 1] = values[i];
+            }
+            for (int i = 0; i < size + 1; i++) {
+                values[i] = tempArray[i];
+            }
         }
 
         /**
@@ -200,8 +224,8 @@ template <class K, class V> class Node {
                 // Check if the node is not a leaf
                 if (!refNode->isLeaf) {
                     // Recalculate the left subtree size of the node
-                    for (int i = 0; i < refNode->children.length(); i++) {
-                        if (refNode->children[i]->keys[i] <= refNode->keys[i]) {
+                    for (int i = 0; i < refNode->keys.length(); i++) {
+                        if (refNode->children[i]->keys[0] <= refNode->keys[i]) {
                             refNode->leftSubtreeSize += (refNode->children[i]->leftSubtreeSize + 
                             refNode->children[i]->size);
                         } 
@@ -221,8 +245,8 @@ template <class K, class V> class Node {
             // Traverse the tree to find the correct child node to go to
             for (int i = 0; i < size; i++) {
                 if (key <= keys[i]) return children[i];
-                else if (i == size - 1) return children[i + 1];
             }
+            return children[size];
         }
 
         /**
@@ -234,5 +258,34 @@ template <class K, class V> class Node {
                 else cout << keys[i];
             }
             cout << endl;
+        }
+
+        /**
+         * @brief Prints the full attributes of the node
+         */
+        void printFullNode() {
+            cout << endl << "NODE STATUS:" << endl;
+            cout << "Size: " << size << endl;
+            cout << "Is Leaf: " << isLeaf << endl;
+            cout << "Left Subtree Size: " << leftSubtreeSize << endl;
+
+            cout << "Keys: ";
+            for (int i = 0; i < size; i++) {
+                if (i < size - 1) cout << keys[i] << ", ";
+                else cout << keys[i];
+            }
+            cout << endl;
+
+            cout << "Values: ";
+            for (int i = 0; i < size; i++) {
+                cout << "[";
+                for (int j = 0; j < values[i].length(); j++) {
+                    if (j < values[i].length() - 1) cout << values[i][j] << ", ";
+                    else cout << values[i][j];
+                }
+                cout << "]";
+                if (i < size - 1) cout << ", ";
+            }
+            cout << endl << endl;
         }
 };

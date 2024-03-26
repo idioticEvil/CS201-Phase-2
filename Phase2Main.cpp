@@ -3,8 +3,8 @@
 using namespace std;
 
 int main(){
-	string K[10] = {"A","B","C","D","E","F","G","H","I","K","L","M"};
-	float V[10] = {12,11,10,9,8,7,6,5,4,3,2,1};
+	string K[12] = {"A","B","C","D","E","F","G","H","I","K","L","M"};
+	float V[12] = {12,11,10,9,8,7,6,5,4,3,2,1};
 	
 	two4Tree<string, float> T1(K,V,12), T2;
 	

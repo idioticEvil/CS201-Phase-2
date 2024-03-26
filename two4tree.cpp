@@ -15,9 +15,7 @@ TODO:
 - Implement the select function
     - Shouldn't be hard once I figure out how to update the subtree size values
 - Implement the duplicates function
-- Implement the preorder function
-- Implement the inorder function
-- Implement the postorder function
+- Implement the search function
 - Implement the destructor
 - Write a function that prints the tree in a readable format for debugging
 */
@@ -42,15 +40,19 @@ template <typename KeyType, typename ValueType> class two4Tree {
          */
         void split(Node<KeyType, ValueType>* nodeToSplit, KeyType newKey, 
         CircularDynamicArray<ValueType>& newValue) {
+            nodeToSplit->printFullNode();
+
             // Get the middle key and value(s) and get ready to push them to the parent node
-            KeyType keyHold = nodeToSplit->keys[1];
-            CircularDynamicArray<ValueType> valueHold = nodeToSplit->values[1];
+            KeyType keyHold = nodeToSplit->keys[nodeToSplit->size / 2];
+            CircularDynamicArray<ValueType> valueHold = nodeToSplit->values[nodeToSplit->size / 2];
+            cout << "Key to push up: " << keyHold << endl;
+            cout << "Value to push up: " << valueHold[0] << endl;
 
             // Start creating the left and right children of the new root node
-            Node<KeyType, ValueType>* leftChild = new Node(nodeToSplit->keys[0], 
-            nodeToSplit->values[0]);
-            Node<KeyType, ValueType>* rightChild = new Node(nodeToSplit->keys[2], 
-            nodeToSplit->values[2]);
+            Node<KeyType, ValueType>* leftChild = new Node<KeyType, ValueType>
+            (nodeToSplit->keys[0], nodeToSplit->values[0]);
+            Node<KeyType, ValueType>* rightChild = new Node<KeyType, ValueType>
+            (nodeToSplit->keys[nodeToSplit->size - 1], nodeToSplit->values[nodeToSplit->size - 1]);
                 
             // Insert the new key-value pair into the correct child node
             if (newKey <= keyHold) leftChild->insertKeyValPair(newKey, newValue);
@@ -58,7 +60,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
 
             if (nodeToSplit == rootNode) { // Splitting root node
                 // Create a new root node
-                Node<KeyType, ValueType>* newRootNode = new Node(keyHold, valueHold);
+                Node<KeyType, ValueType>* newRootNode = new Node<KeyType, ValueType>(keyHold, valueHold);
                 rootNode = newRootNode;
 
                 // Add the children to the new root node, set children node's parents 
@@ -67,7 +69,6 @@ template <typename KeyType, typename ValueType> class two4Tree {
                 rootNode->addChildNode(rightChild);
                 leftChild->parent = rootNode;
                 rightChild->parent = rootNode;
-                
             } else { // Splitting Leaf or Internal Node
                 // If the node to split is an internal node, distribute the children 
                 // to the new left and right children
@@ -127,8 +128,11 @@ template <typename KeyType, typename ValueType> class two4Tree {
             rootNode = nullptr;
             treeSize = 0;
 
+            cout << "Started empty tree constructor" << endl;
+
             // Insert the keys and values into the tree
             for (int i = 0; i < size; i++) {
+                cout << "About to insert key: " << keys[i] << " and value: " << values[i] << endl;
                 insert(keys[i], values[i]);
             }
         }
@@ -157,11 +161,15 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @param value The value to insert
          */
         void insert(KeyType key, ValueType value) {
+            // Create a new value holder to store the value
+            CircularDynamicArray<ValueType> *valueHolder = new CircularDynamicArray<ValueType>();
+            valueHolder->addEnd(value);
+
             // Check if the tree is empty, if so, create a new root node
             if (rootNode == nullptr){
-                CircularDynamicArray<ValueType> *valueHolder = new CircularDynamicArray<ValueType>();
-                valueHolder->addEnd(value);
                 rootNode = new Node<KeyType, ValueType>(key, *valueHolder);
+
+                cout << "Inserted key: " << key << " and value: " << value << endl;
             } 
             // If the tree is not empty, find the correct leaf node to insert the key-value pair
             else { 
@@ -174,27 +182,19 @@ template <typename KeyType, typename ValueType> class two4Tree {
 
                 // Insert the key-value pair into the leaf node
                 if (refNode->size < 3) {
-                    for (int i = 0; i < refNode->size; i++) {
-                        if (key <= refNode->keys[i]) {
-                            refNode->keys.addAt(key, i);
-                            refNode->values[i].addEnd(value);
-                            refNode->size++;
-                            break;
-                        } else if (i == refNode->size - 1) {
-                            refNode->keys.addEnd(key);
-                            refNode->values[i].addEnd(value);
-                            refNode->size++;
-                        }
-                    }
+                    refNode->insertKeyValPair(key, *valueHolder);
+                    cout << "Inserted key: " << key << " and value: " << value << endl;
+                    refNode->printFullNode();
 
                     // Update the subtree size values of the node and its ancestors
                     refNode->calculateLeftSubtreeSize();
                 } else {
-                    split(refNode, key, value); // Something is wrong with the 
-                                                // way that values are being passed here
+                    cout << "It's overfull! Splittin time!" << endl;
+                    split(refNode, key, *valueHolder);
                 }
             }
             treeSize++;
+            delete valueHolder;
         }
 
         /**
@@ -214,7 +214,24 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @return int The rank of the key
          */
         int rank(KeyType key) {
-            // IMPLEMENT THIS
+            
+        }
+
+        /**
+         * @brief 
+         * 
+         * @param refNode 
+         * @param key 
+         * @return int 
+         */
+        int rankActual(Node<KeyType, ValueType>* refNode, KeyType key, int count) {
+            if (refNode == nullptr) return count;
+            int tempCount = 0;
+
+            for (int i = 0; i < refNode->size; i++) {
+                
+            }
+
         }
 
         /**
