@@ -58,10 +58,25 @@ template <typename KeyType, typename ValueType> class two4Tree {
             if (newKey <= keyHold) leftChild->insertKeyValPair(newKey, newValue);
             else rightChild->insertKeyValPair(newKey, newValue);
 
-            if (nodeToSplit == rootNode) { // Splitting root node
+            // If the node to split is an internal node, distribute the children 
+            // to the new left and right children
+            if (nodeToSplit->isLeaf == false) { 
+                for (int i = 0; i < nodeToSplit->children.length(); i++) {
+                    if (i < 2) {
+                        leftChild->addChildNode(nodeToSplit->children[i]);
+                        nodeToSplit->children[i]->parent = leftChild;
+                    } else {
+                        rightChild->addChildNode(nodeToSplit->children[i]);
+                        nodeToSplit->children[i]->parent = rightChild;
+                    }
+                }
+            }
+
+            if (nodeToSplit == rootNode) {
                 // Create a new root node
                 Node<KeyType, ValueType>* newRootNode = new Node<KeyType, ValueType>(keyHold, valueHold);
                 rootNode = newRootNode;
+                cout << "New root node created with key: " << keyHold << " and value: " << valueHold[0] << endl;
 
                 // Add the children to the new root node, set children node's parents 
                 // and delete the old root node
@@ -69,42 +84,36 @@ template <typename KeyType, typename ValueType> class two4Tree {
                 rootNode->addChildNode(rightChild);
                 leftChild->parent = rootNode;
                 rightChild->parent = rootNode;
-            } else { // Splitting Leaf or Internal Node
-                // If the node to split is an internal node, distribute the children 
-                // to the new left and right children
-                if (nodeToSplit->isLeaf == false) { 
-                    for (int i = 0; i < nodeToSplit->size; i++) {
-                        if (i < 2) {
-                            leftChild->addChildNode(nodeToSplit->children[i]);
-                            nodeToSplit->children[i]->parent = leftChild;
-                        } else {
-                            rightChild->addChildNode(nodeToSplit->children[i]);
-                            nodeToSplit->children[i]->parent = rightChild;
-                        }
-                    }
-                }
-                
+                cout << "Added left and right children to new root node" << endl;
+
+            } else { // Splitting Leaf or Internal Node    
                 // Set the parent node of the left and right children
                 leftChild->parent = nodeToSplit->parent;
                 rightChild->parent = nodeToSplit->parent;
 
-                // Recursively split parent nodes if they are overfull
-                if (nodeToSplit->parent->size == 3) split(nodeToSplit->parent, keyHold, valueHold);
-                else {
-                    nodeToSplit->parent->insertKeyValPair(keyHold, valueHold);
+                // Store the parent of nodeToSplit in a temporary variable, then remove nodeToSplit
+                // from the parent node's children array
+                Node<KeyType, ValueType>* parentNode = nodeToSplit->parent;
+                parentNode->removeChildNode(nodeToSplit);
+
+                // Recursively split the parent node if it is overfull
+                if (parentNode->size >= 3) {
+                    cout << "Parent node is overfull, splitting it" << endl;
+                    split(parentNode, keyHold, valueHold);
+                } else {
+                    cout << "Parent node is not overfull, inserting key-value pair" << endl;
+                    parentNode->insertKeyValPair(keyHold, valueHold);
                 }
 
-                // Delete old node from the parent node's children array, and add the new children
-                nodeToSplit->parent->removeChildNode(nodeToSplit);
-                nodeToSplit->parent->addChildNode(leftChild);
-                nodeToSplit->parent->addChildNode(rightChild);
+                // Add the left and right children to the parent node
+                parentNode->addChildNode(leftChild);
+                parentNode->addChildNode(rightChild);          
             }
 
             // Calculate the subtree sizes of the left and right children
             leftChild->calculateLeftSubtreeSize();
             rightChild->calculateLeftSubtreeSize();
 
-            delete nodeToSplit;
             return;
         }
 

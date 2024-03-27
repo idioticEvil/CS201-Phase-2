@@ -1,3 +1,8 @@
 .vscode/c_cpp_properties.json
 .DS_Store
 two4Test.out
+.vscode/launch.json
+.vscode/tasks.json
+two4treeTest.dSYM/Contents/Info.plist
+two4treeTest.dSYM/Contents/Resources/DWARF/two4treeTest
+two4treeTest.dSYM/Contents/Resources/Relocations/aarch64/two4treeTest.yml

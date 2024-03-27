@@ -225,9 +225,14 @@ template <class K, class V> class Node {
                 if (!refNode->isLeaf) {
                     // Recalculate the left subtree size of the node
                     for (int i = 0; i < refNode->keys.length(); i++) {
-                        if (refNode->children[i]->keys[0] <= refNode->keys[i]) {
-                            refNode->leftSubtreeSize += (refNode->children[i]->leftSubtreeSize + 
-                            refNode->children[i]->size);
+                        // Check if the child node has at least one key
+                        if (refNode->children[i]->keys.length() > 0 && 
+                            refNode->children[i]->keys[0] <= refNode->keys[i]) {
+                            // Check if there are at least i+1 children
+                            if (refNode->children.length() > i) {
+                                refNode->leftSubtreeSize += (refNode->children[i]->leftSubtreeSize + 
+                                refNode->children[i]->size);
+                            }
                         } 
                     }
                 }
