@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <stdexcept> 
 #include "CircularDynamicArray.h"
+#include "NodeElement.h"
 using namespace std;
 
 /**
@@ -13,13 +14,36 @@ using namespace std;
  */
 template <class K, class V> class Node {
     public:
-        CircularDynamicArray<K> keys;
-        CircularDynamicArray<V> values[3];
+        CircularDynamicArray<NodeElement<K, V>> elements;
         CircularDynamicArray<Node*> children;
         Node* parent;
         bool isLeaf;
         int size;
         int leftSubtreeSize;
+
+        /**
+         * @brief Default constructor for the node
+         */
+        Node() {
+            parent = nullptr;
+            isLeaf = true;
+            size = 0;
+            leftSubtreeSize = 0;
+        }
+
+        /**
+         * @brief Creates a new node with one key and value
+         * 
+         * @param k Key
+         * @param v Value
+         */
+        Node(K k, V v) {
+            elements.addEnd(NodeElement<K, V>(k, v));
+            parent = nullptr;
+            isLeaf = true;
+            size = 1;
+            leftSubtreeSize = 0;
+        }
 
         /**
          * @brief Creates a new node with one key and a CircularDynamicArray of values
@@ -28,8 +52,7 @@ template <class K, class V> class Node {
          * @param v CircularDynamicArray of values
          */
         Node(K k, CircularDynamicArray<V>& v) {
-            keys.addEnd(k);
-            values[0] = v;
+            elements.addEnd(NodeElement<K, V>(k, v));
             parent = nullptr;
             isLeaf = true;
             size = 1;
@@ -46,8 +69,7 @@ template <class K, class V> class Node {
         // Note: This program logic currently assumes that the values are sorted
         Node(K k[], V v[], int size) { 
             for (int i = 0; i < size; i++) {
-                keys.addEnd(k[i]);
-                values[i].addEnd(v[i]);
+                elements.addEnd(NodeElement<K, V>(k[i], v[i]));
             }
 
             parent = nullptr;
@@ -65,10 +87,7 @@ template <class K, class V> class Node {
          */
         Node(K k[], CircularDynamicArray<V> v[], int size) {
             for (int i = 0; i < size; i++) {
-                keys.addEnd(k[i]);
-                for (int j = 0; j < v[i].size; j++) {
-                    values[i].addEnd(v[i][j]);
-                }
+                elements.addEnd(NodeElement<K, V>(k[i], v[i]));
             }
 
             parent = nullptr;
@@ -85,8 +104,7 @@ template <class K, class V> class Node {
          * @param parent Parent node
          */
         Node(K k, V v, Node* parent) {
-            keys.addEnd(k);
-            values[0].addEnd(v);
+            elements.addEnd(NodeElement<K, V>(k, v));
             this->parent = parent;
             isLeaf = true;
             size = 1;
@@ -100,42 +118,28 @@ template <class K, class V> class Node {
          * @param value Value to insert
          */
         void insertKeyValPair(K key, CircularDynamicArray<V>& value) {
-            for (int i = 0; i < size; i++) {
-                if (key < keys[i]) {
-                    keys.addAt(key, i);
-                    valuesArrayInsert(i, value);
-                    size++;
-                    break;
-                } else if (key == keys[i]) {
-                    values[i].addEnd(value[0]);
-                    break;
-                } else if (i == size - 1) {
-                    keys.addEnd(key);
-                    valuesArrayInsert(size, value);
-                    size++;
-                    break;
+            // Check if the node is empty
+            if (size == 0) {
+                elements.addEnd(NodeElement<K, V>(key, value));
+                size++;
+            } else {
+                // Find the correct spot to insert the key-value pair
+                for (int i = 0; i < size; i++) {
+                    if (key < elements[i].getKey()) {
+                        elements.addAt(NodeElement<K, V>(key, value), i);
+                        size++;
+                        break;
+
+                    } else if (key == elements[i].getKey()) {
+                        elements[i].addValue(value);
+                        size++;
+                        break;
+                    } else if (i == size - 1) {
+                        elements.addEnd(NodeElement<K, V>(key, value));
+                        size++;
+                        break;
+                    }
                 }
-            }
-        }
-
-        /**
-         * @brief Resorts the values array for insertion since it is a 2D array, I fucking hate this
-         * 
-         * @param index Index that the new value is going to be inserted at
-         * @param valueToInsert New value to insert
-         */
-        void valuesArrayInsert(int index, CircularDynamicArray<V>& valueToInsert) {
-            CircularDynamicArray<V> tempArray[size + 1];
-
-            tempArray[index] = valueToInsert;
-            for (int i = 0; i < index; i++) {
-                tempArray[i] = values[i];
-            }
-            for (int i = index; i < size; i++) {
-                tempArray[i + 1] = values[i];
-            }
-            for (int i = 0; i < size + 1; i++) {
-                values[i] = tempArray[i];
             }
         }
 
@@ -146,10 +150,10 @@ template <class K, class V> class Node {
          * @param value Value to remove
          */
         void removeKeyValPair(K key, CircularDynamicArray<V>& value) {
+            // Find the key-value pair to remove
             for (int i = 0; i < size; i++) {
-                if (key == keys[i]) {
-                    keys.removeAt(i);
-                    values[i].removeAt(i);
+                if (key == elements[i].getKey() && value == elements[i].getValues()) {
+                    elements.removeAt(i);
                     size--;
                     break;
                 }
@@ -169,11 +173,11 @@ template <class K, class V> class Node {
                 children.addEnd(child);
             } else {
                 // Use the last key of the child node to compare
-                K comparisonKey = child->keys.getEndValue();
+                K childKey = child->elements.getEndValue().getKey();
 
                 // Find the correct spot to insert the child node
                 for (int i = 0; i < childSize; i++) {
-                    if (comparisonKey <= keys[i]) {
+                    if (childKey <= elements[i].getKey()) {
                         children.addAt(child, i);
                         break;
                     } else if (i == childSize - 1) {
@@ -224,10 +228,10 @@ template <class K, class V> class Node {
                 // Check if the node is not a leaf
                 if (!refNode->isLeaf) {
                     // Recalculate the left subtree size of the node
-                    for (int i = 0; i < refNode->keys.length(); i++) {
+                    for (int i = 0; i < refNode->elements.length(); i++) {
                         // Check if the child node has at least one key
-                        if (refNode->children[i]->keys.length() > 0 && 
-                            refNode->children[i]->keys[0] <= refNode->keys[i]) {
+                        if (refNode->children[i]->elements.length() > 0 && 
+                            refNode->children[i]->elements[0] <= refNode->keys[i]) {
                             // Check if there are at least i+1 children
                             if (refNode->children.length() > i) {
                                 refNode->leftSubtreeSize += (refNode->children[i]->leftSubtreeSize + 
@@ -249,7 +253,7 @@ template <class K, class V> class Node {
         Node* traverseDirection(K key) {
             // Traverse the tree to find the correct child node to go to
             for (int i = 0; i < size; i++) {
-                if (key <= keys[i]) return children[i];
+                if (key <= elements[i].getKey()) return children[i];
             }
             return children[size];
         }
@@ -259,8 +263,8 @@ template <class K, class V> class Node {
          */
         void printKeys() {
             for (int i = 0; i < size; i++) {
-                if (i < size - 1) cout << keys[i] << " ";
-                else cout << keys[i];
+                if (i < size - 1) cout << elements[i].getKey() << " ";
+                else cout << elements[i].getKey();
             }
             cout << endl;
         }
@@ -275,18 +279,14 @@ template <class K, class V> class Node {
             cout << "Left Subtree Size: " << leftSubtreeSize << endl;
 
             cout << "Keys: ";
-            for (int i = 0; i < size; i++) {
-                if (i < size - 1) cout << keys[i] << ", ";
-                else cout << keys[i];
-            }
-            cout << endl;
+            printKeys();
 
             cout << "Values: ";
             for (int i = 0; i < size; i++) {
                 cout << "[";
-                for (int j = 0; j < values[i].length(); j++) {
-                    if (j < values[i].length() - 1) cout << values[i][j] << ", ";
-                    else cout << values[i][j];
+                for (int j = 0; j < elements[i].getNumValues(); j++) {
+                    cout << elements[i].getValueAt(j);
+                    if (j < elements[i].getNumValues() - 1) cout << ", ";
                 }
                 cout << "]";
                 if (i < size - 1) cout << ", ";

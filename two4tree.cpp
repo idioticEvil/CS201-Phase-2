@@ -8,16 +8,14 @@ using namespace std;
 
 /*
 TODO:
-- Implement the remove function
-    - Going to fucking suck to implement
-- Implement the rank function
-    - Shouldn't be hard once I figure out how to update the subtree size values
-- Implement the select function
-    - Shouldn't be hard once I figure out how to update the subtree size values
-- Implement the duplicates function
-- Implement the search function
-- Implement the destructor
-- Write a function that prints the tree in a readable format for debugging
+- Fix / Rewrite split function to match textbook implementation
+- Implement search function
+- Implement remove function
+- Implement rank function
+- Implement select function
+- Implement duplicates function
+- Update tree traversal functions to print out duplicate keys
+- Update logic to treat duplicates as multiple keys
 */
 
 /**
@@ -30,6 +28,14 @@ template <typename KeyType, typename ValueType> class two4Tree {
     private:
         Node<KeyType, ValueType>* rootNode;
         int treeSize;
+
+        void splitNew(Node<KeyType, ValueType>* nodeToSplit, KeyType newKey, CircularDynamicArray<ValueType> &newValue) {
+            Node<KeyType, ValueType>* rightChild = new Node<KeyType, ValueType>;
+            Node<KeyType, ValueType>* leftChild = nodeToSplit;
+            Node<KeyType, ValueType>* parent = nodeToSplit->parent;
+
+            rightChild->isLeaf = leftChild->isLeaf;
+        }
 
         /**
          * @brief Splits a node when it is overfull
