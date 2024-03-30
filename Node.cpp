@@ -14,7 +14,7 @@ using namespace std;
  */
 template <class K, class V> class Node {
     public:
-        CircularDynamicArray<NodeElement<K, V>> elements;
+        CircularDynamicArray<NodeElement<K, V> > elements;
         CircularDynamicArray<Node*> children;
         Node* parent;
         bool isLeaf;
@@ -52,6 +52,7 @@ template <class K, class V> class Node {
          * @param v CircularDynamicArray of values
          */
         Node(K k, CircularDynamicArray<V>& v) {
+            
             elements.addEnd(NodeElement<K, V>(k, v));
             parent = nullptr;
             isLeaf = true;
@@ -112,30 +113,24 @@ template <class K, class V> class Node {
         }
 
         /**
-         * @brief Inserts a key-value pair into the node
+         * @brief Inserts a key-value pair into the node at the correct spot
          * 
-         * @param key Key to insert
-         * @param value Value to insert
+         * @param element Element to insert
          */
-        void insertKeyValPair(K key, CircularDynamicArray<V>& value) {
+        void insertKeyValPair(NodeElement<K, V> element) {
             // Check if the node is empty
             if (size == 0) {
-                elements.addEnd(NodeElement<K, V>(key, value));
+                elements.addEnd(element);
                 size++;
             } else {
                 // Find the correct spot to insert the key-value pair
                 for (int i = 0; i < size; i++) {
-                    if (key < elements[i].getKey()) {
-                        elements.addAt(NodeElement<K, V>(key, value), i);
-                        size++;
-                        break;
-
-                    } else if (key == elements[i].getKey()) {
-                        elements[i].addValue(value);
+                    if (element.getKey() <= elements[i].getKey()) {
+                        elements.addAt(element, i);
                         size++;
                         break;
                     } else if (i == size - 1) {
-                        elements.addEnd(NodeElement<K, V>(key, value));
+                        elements.addEnd(element);
                         size++;
                         break;
                     }
@@ -229,9 +224,10 @@ template <class K, class V> class Node {
                 if (!refNode->isLeaf) {
                     // Recalculate the left subtree size of the node
                     for (int i = 0; i < refNode->elements.length(); i++) {
-                        // Check if the child node has at least one key
+                        // Check if the child node is not a leaf and the first key of the child node is less than the key of the node
                         if (refNode->children[i]->elements.length() > 0 && 
-                            refNode->children[i]->elements[0] <= refNode->keys[i]) {
+                            refNode->children[i]->elements[0].getKey() <= 
+                            refNode->elements[i].getKey()) {
                             // Check if there are at least i+1 children
                             if (refNode->children.length() > i) {
                                 refNode->leftSubtreeSize += (refNode->children[i]->leftSubtreeSize + 

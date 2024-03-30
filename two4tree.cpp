@@ -29,14 +29,6 @@ template <typename KeyType, typename ValueType> class two4Tree {
         Node<KeyType, ValueType>* rootNode;
         int treeSize;
 
-        void splitNew(Node<KeyType, ValueType>* nodeToSplit, KeyType newKey, CircularDynamicArray<ValueType> &newValue) {
-            Node<KeyType, ValueType>* rightChild = new Node<KeyType, ValueType>;
-            Node<KeyType, ValueType>* leftChild = nodeToSplit;
-            Node<KeyType, ValueType>* parent = nodeToSplit->parent;
-
-            rightChild->isLeaf = leftChild->isLeaf;
-        }
-
         /**
          * @brief Splits a node when it is overfull
          * 
@@ -44,25 +36,25 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @param newKey Key that would make the node overfull
          * @param newVals Value(s) corresponding to the key
          */
-        void split(Node<KeyType, ValueType>* nodeToSplit, KeyType newKey, 
-        CircularDynamicArray<ValueType>& newValue) {
+        void split(Node<KeyType, ValueType>* nodeToSplit, 
+            NodeElement<KeyType, ValueType> newElement) {
             nodeToSplit->printFullNode();
 
             // Get the middle key and value(s) and get ready to push them to the parent node
-            KeyType keyHold = nodeToSplit->keys[nodeToSplit->size / 2];
-            CircularDynamicArray<ValueType> valueHold = nodeToSplit->values[nodeToSplit->size / 2];
-            cout << "Key to push up: " << keyHold << endl;
-            cout << "Value to push up: " << valueHold[0] << endl;
+            NodeElement<KeyType, ValueType> middleElement = nodeToSplit->elements[1];
+            cout << "Middle element key: " << middleElement.getKey() << endl;
+            cout << "Middle element value: " << middleElement.getValues()[0] << endl;
 
             // Start creating the left and right children of the new root node
             Node<KeyType, ValueType>* leftChild = new Node<KeyType, ValueType>
-            (nodeToSplit->keys[0], nodeToSplit->values[0]);
+            (nodeToSplit->elements[0].getKey(), nodeToSplit->elements[0].getValues());
             Node<KeyType, ValueType>* rightChild = new Node<KeyType, ValueType>
-            (nodeToSplit->keys[nodeToSplit->size - 1], nodeToSplit->values[nodeToSplit->size - 1]);
+            (nodeToSplit->elements[2].getKey(), nodeToSplit->elements[2].getValues());
                 
             // Insert the new key-value pair into the correct child node
-            if (newKey <= keyHold) leftChild->insertKeyValPair(newKey, newValue);
-            else rightChild->insertKeyValPair(newKey, newValue);
+            if (newElement.getKey() < middleElement.getKey()) 
+            leftChild->insertKeyValPair(newElement);
+            else rightChild->insertKeyValPair(newElement);
 
             // If the node to split is an internal node, distribute the children 
             // to the new left and right children
@@ -80,9 +72,9 @@ template <typename KeyType, typename ValueType> class two4Tree {
 
             if (nodeToSplit == rootNode) {
                 // Create a new root node
-                Node<KeyType, ValueType>* newRootNode = new Node<KeyType, ValueType>(keyHold, valueHold);
+                Node<KeyType, ValueType>* newRootNode = new Node<KeyType, ValueType>(middleElement.getKey(), middleElement.getValues());
                 rootNode = newRootNode;
-                cout << "New root node created with key: " << keyHold << " and value: " << valueHold[0] << endl;
+                cout << "Created new root node with middle element key: " << middleElement.getKey() << endl;
 
                 // Add the children to the new root node, set children node's parents 
                 // and delete the old root node
@@ -105,10 +97,10 @@ template <typename KeyType, typename ValueType> class two4Tree {
                 // Recursively split the parent node if it is overfull
                 if (parentNode->size >= 3) {
                     cout << "Parent node is overfull, splitting it" << endl;
-                    split(parentNode, keyHold, valueHold);
+                    split(parentNode, middleElement);
                 } else {
                     cout << "Parent node is not overfull, inserting key-value pair" << endl;
-                    parentNode->insertKeyValPair(keyHold, valueHold);
+                    parentNode->insertKeyValPair(middleElement);
                 }
 
                 // Add the left and right children to the parent node
@@ -176,14 +168,12 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @param value The value to insert
          */
         void insert(KeyType key, ValueType value) {
-            // Create a new value holder to store the value
-            CircularDynamicArray<ValueType> *valueHolder = new CircularDynamicArray<ValueType>();
-            valueHolder->addEnd(value);
+            // Create a new NodeElement object to store the key-value pair
+            NodeElement<KeyType, ValueType> newElement = NodeElement<KeyType, ValueType>(key, value);
 
             // Check if the tree is empty, if so, create a new root node
             if (rootNode == nullptr){
-                rootNode = new Node<KeyType, ValueType>(key, *valueHolder);
-
+                rootNode = new Node<KeyType, ValueType>(key, value);
                 cout << "Inserted key: " << key << " and value: " << value << endl;
             } 
             // If the tree is not empty, find the correct leaf node to insert the key-value pair
@@ -197,7 +187,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
 
                 // Insert the key-value pair into the leaf node
                 if (refNode->size < 3) {
-                    refNode->insertKeyValPair(key, *valueHolder);
+                    refNode->insertKeyValPair(newElement);
                     cout << "Inserted key: " << key << " and value: " << value << endl;
                     refNode->printFullNode();
 
@@ -205,11 +195,10 @@ template <typename KeyType, typename ValueType> class two4Tree {
                     refNode->calculateLeftSubtreeSize();
                 } else {
                     cout << "It's overfull! Splittin time!" << endl;
-                    split(refNode, key, *valueHolder);
+                    split(refNode, newElement);
                 }
             }
             treeSize++;
-            delete valueHolder;
         }
 
         /**
@@ -328,7 +317,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
                 if (!refNode->isLeaf) inorderActual(refNode->children[i]);
 
                 // Print the key
-                cout << refNode->keys[i] << " ";
+                cout << refNode->elements[i].getKey() << " ";
             }
 
             // Visit the last child after the last key, if the node is not a leaf

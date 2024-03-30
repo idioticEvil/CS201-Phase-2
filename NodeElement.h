@@ -20,6 +20,13 @@ template <class Key, class Value> class NodeElement {
         CircularDynamicArray<Value> values;
 
     public:
+        /**
+         * @brief Default constructor for the node element
+         */
+        NodeElement() {
+            key = Key();
+            values = CircularDynamicArray<Value>();
+        }
 
         /**
          * @brief Constructs a new NodeElement object with a single value
@@ -88,7 +95,7 @@ template <class Key, class Value> class NodeElement {
          * @return int Number of values stored in the node element
          */
         int getNumValues() {
-            return values.getSize();
+            return values.length();
         }
 };
 
