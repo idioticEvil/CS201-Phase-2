@@ -19,7 +19,6 @@ template <class K, class V> class Node {
         Node* parent;
         bool isLeaf;
         int size;
-        int leftSubtreeSize;
 
         /**
          * @brief Default constructor for the node
@@ -28,7 +27,6 @@ template <class K, class V> class Node {
             parent = nullptr;
             isLeaf = true;
             size = 0;
-            leftSubtreeSize = 0;
         }
 
         /**
@@ -42,7 +40,6 @@ template <class K, class V> class Node {
             parent = nullptr;
             isLeaf = true;
             size = 1;
-            leftSubtreeSize = 0;
         }
 
         /**
@@ -57,7 +54,6 @@ template <class K, class V> class Node {
             parent = nullptr;
             isLeaf = true;
             size = 1;
-            leftSubtreeSize = 0;
         }
 
         /**
@@ -76,7 +72,6 @@ template <class K, class V> class Node {
             parent = nullptr;
             isLeaf = true;
             this->size = size;
-            leftSubtreeSize = 0;
         }
 
         /**
@@ -94,7 +89,6 @@ template <class K, class V> class Node {
             parent = nullptr;
             isLeaf = true;
             this->size = size;
-            leftSubtreeSize = 0;
         }
 
         /**
@@ -109,7 +103,6 @@ template <class K, class V> class Node {
             this->parent = parent;
             isLeaf = true;
             size = 1;
-            leftSubtreeSize = 0;
         }
 
         /**
@@ -207,40 +200,6 @@ template <class K, class V> class Node {
         }
 
         /**
-         * @brief Recalculates the left subtree size of a node
-         * 
-         * @param checkNode The node to recalculate the subtree size of
-         */
-        void calculateLeftSubtreeSize() {
-            // Create a reference node to traverse up the tree
-            Node<K, V>* refNode = this;
-
-            // Traverse up the tree to recalculate the left subtree size of the node
-            while (refNode != nullptr) {
-                // Reset the subtree size of the node before recalculating
-                refNode->leftSubtreeSize = 0;
-
-                // Check if the node is not a leaf
-                if (!refNode->isLeaf) {
-                    // Recalculate the left subtree size of the node
-                    for (int i = 0; i < refNode->elements.length(); i++) {
-                        // Check if the child node is not a leaf and the first key of the child node is less than the key of the node
-                        if (refNode->children[i]->elements.length() > 0 && 
-                            refNode->children[i]->elements[0].getKey() <= 
-                            refNode->elements[i].getKey()) {
-                            // Check if there are at least i+1 children
-                            if (refNode->children.length() > i) {
-                                refNode->leftSubtreeSize += (refNode->children[i]->leftSubtreeSize + 
-                                refNode->children[i]->size);
-                            }
-                        } 
-                    }
-                }
-                refNode = refNode->parent;
-            }
-        }
-
-        /**
          * @brief Returns the child node that should be traversed to
          * 
          * @param key The key that is being checked
@@ -252,6 +211,41 @@ template <class K, class V> class Node {
                 if (key <= elements[i].getKey()) return children[i];
             }
             return children[size];
+        }
+
+        /**
+         * @brief Updates the left subtree sizes for each NodeElement in the node, and their parents
+         */
+        void updateLeftSubtreeSizes() {
+            if (isLeaf) {
+                for (int i = 0; i < size; i++) {
+                    elements[i].setSubtreeSize(1);
+                }
+            } else {
+                for (int i = 0; i < size; i++) {
+                    int subtreeSize = 1;
+
+                    if (i < children.length()) {
+                        subtreeSize += children[i]->getTotalSubtreeSize();
+                    }
+                    elements[i].setSubtreeSize(subtreeSize);
+                }
+            }
+            if (parent != nullptr) parent->updateLeftSubtreeSizes();
+        }
+
+        /**
+         * @brief Returns the total size of the left subtree for the node
+         * 
+         * @return int Total size of the left subtree
+         */
+        int getTotalSubtreeSize() {
+            int totalSize = 0;
+            for (int i = 0; i < size; i++) {
+                totalSize += elements[i].getSubtreeSize();
+            }
+
+            return totalSize;
         }
 
         /**
@@ -272,12 +266,17 @@ template <class K, class V> class Node {
             cout << endl << "NODE STATUS:" << endl;
             cout << "Size: " << size << endl;
             cout << "Is Leaf: " << isLeaf << endl;
-            cout << "Left Subtree Size: " << leftSubtreeSize << endl;
 
             cout << "Keys: ";
             printKeys();
 
-            cout << "Values: ";
+            cout << "Left Subtree Sizes: ";
+            for (int i = 0; i < size; i++) {
+                cout << elements[i].getSubtreeSize();
+                if (i < size - 1) cout << ", ";
+            }
+
+            cout << endl << "Values: ";
             for (int i = 0; i < size; i++) {
                 cout << "[";
                 for (int j = 0; j < elements[i].getNumValues(); j++) {

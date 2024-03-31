@@ -8,7 +8,6 @@ using namespace std;
 
 /*
 TODO:
-- Fix / Rewrite split function to match textbook implementation
 - Implement search function
 - Implement remove function
 - Implement rank function
@@ -112,8 +111,8 @@ template <typename KeyType, typename ValueType> class two4Tree {
             }
 
             // Calculate the subtree sizes of the left and right children
-            //leftChild->calculateLeftSubtreeSize();
-            //rightChild->calculateLeftSubtreeSize();
+            leftChild->updateLeftSubtreeSizes();
+            rightChild->updateLeftSubtreeSizes();
 
             if (returnNode != nullptr) return returnNode;
             else return parentNode;
@@ -162,7 +161,24 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @return ValueType* A pointer to the value associated with the key
          */
         ValueType *search(KeyType key) {
-            // IMPLEMENT THIS
+            while (rootNode != nullptr) {
+                // Traverse the tree to find the correct leaf node
+                for (int i = 0; i < rootNode->size; i++) {
+                    if (key == rootNode->elements[i].getKey()) { 
+                        // If the key is found, return the value
+                        return &(rootNode->elements[i].getValues()[0]);
+                    } else if (key < rootNode->elements[i].getKey()) { 
+                        // If the key is less than the current key, traverse left
+                        rootNode = rootNode->children[i];
+                        break;
+                    } else if (i == rootNode->size - 1) { 
+                        // If the key is greater than the last key, traverse right
+                        rootNode = rootNode->children[rootNode->size];
+                        break;
+                    }
+                }
+            }
+            return nullptr; // Return nullptr if the key is not found
         }
 
         /**
@@ -197,7 +213,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
                     refNode->printFullNode();
 
                     // Update the subtree size values of the node and its ancestors
-                    refNode->calculateLeftSubtreeSize();
+                    refNode->updateLeftSubtreeSizes();
                 } else {
                     cout << "It's overfull! Splittin time!" << endl;
                     Node<KeyType, ValueType>* newParentNode = split(refNode, newElement);
@@ -223,24 +239,33 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @return int The rank of the key
          */
         int rank(KeyType key) {
-            
+            return rankActual(rootNode, key);
         }
 
         /**
-         * @brief 
+         * @brief Returns the rank of a key in the tree, but actually does the traversal
          * 
-         * @param refNode 
-         * @param key 
-         * @return int 
+         * @param refNode The node currently being traversed
+         * @param key The key to find the rank of
+         * @return int The rank of the key
          */
-        int rankActual(Node<KeyType, ValueType>* refNode, KeyType key, int count) {
-            if (refNode == nullptr) return count;
-            int tempCount = 0;
+        int rankActual(Node<KeyType, ValueType>* refNode, KeyType key) {
+            if (refNode == nullptr) return 0; // Base case
 
+            int rank = 0;
             for (int i = 0; i < refNode->size; i++) {
-                
+                if (i == 0 && key < refNode->elements[0].getKey()) {
+                    return rank + rankActual(refNode->children[0], key);
+                } else if (key > refNode->elements[i].getKey()) {
+                    rank += refNode->elements[i].getSubtreeSize();
+                } else if (key < refNode->elements[i].getKey()) {
+                    return rank + rankActual(refNode->children[i], key);
+                } else if (key == refNode->elements[i].getKey()){
+                    return rank + refNode->elements[i].getSubtreeSize();
+                }
             }
 
+            return rank + rankActual(refNode->children[refNode->size], key);
         }
 
         /**
@@ -299,6 +324,11 @@ template <typename KeyType, typename ValueType> class two4Tree {
             }
         }
 
+        /**
+         * @brief Prints the pre-order traversal of the tree, but prints the attributes of the nodes
+         * 
+         * @param refNode The node currently being traversed
+         */
         void preorderPrintAttributes(Node<KeyType, ValueType>* refNode) {
             // Check if the node is null
             if (refNode == nullptr) return;
@@ -314,6 +344,11 @@ template <typename KeyType, typename ValueType> class two4Tree {
             }
         }
 
+        /**
+         * @brief Returns the root node of the tree
+         * 
+         * @return Node<KeyType, ValueType>* The root node of the tree
+         */
         Node<KeyType, ValueType>* getRootNode() {
             return rootNode;
         }

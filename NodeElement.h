@@ -9,7 +9,7 @@
 using namespace std;
 
 /**
- * @brief NodeElement class that can be used to store keys and values together in 2-4 tree nodes
+ * @brief NodeElement class that can be used to store keys, values, and subtree size together in 2-4 tree nodes
  * 
  * @tparam Key Key type
  * @tparam Value Value type
@@ -18,6 +18,7 @@ template <class Key, class Value> class NodeElement {
     private:
         Key key;
         CircularDynamicArray<Value> values;
+        int subtreeSize;
 
     public:
         /**
@@ -26,6 +27,7 @@ template <class Key, class Value> class NodeElement {
         NodeElement() {
             key = Key();
             values = CircularDynamicArray<Value>();
+            subtreeSize = 0;
         }
 
         /**
@@ -34,6 +36,7 @@ template <class Key, class Value> class NodeElement {
         NodeElement(Key k, Value v) {
             key = k;
             values.addEnd(v);
+            subtreeSize = 0;
         }
 
         /**
@@ -42,6 +45,7 @@ template <class Key, class Value> class NodeElement {
         NodeElement(Key k, CircularDynamicArray<Value>& v) {
             key = k;
             values = v;
+            subtreeSize = 0;
         }
 
         /**
@@ -96,6 +100,31 @@ template <class Key, class Value> class NodeElement {
          */
         int getNumValues() {
             return values.length();
+        }
+
+        /**
+         * @brief Returns the subtree size stored in the node element
+         * 
+         * @return int Subtree size stored in the node element
+         */
+        int getSubtreeSize() {
+            return subtreeSize;
+        }
+
+        /**
+         * @brief Sets the subtree size stored in the node element
+         * 
+         * @param size Subtree size to set
+         */
+        void setSubtreeSize(int size) {
+            subtreeSize = size;
+        }
+
+        /**
+         * @brief Increments the subtree size stored in the node element
+         */
+        void incrementSubtreeSize() {
+            subtreeSize++;
         }
 };
 
