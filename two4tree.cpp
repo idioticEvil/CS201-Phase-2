@@ -8,10 +8,7 @@ using namespace std;
 
 /*
 TODO:
-- Implement search function
 - Implement remove function
-- Implement rank function
-- Implement select function
 - Implement duplicates function
 - Update tree traversal functions to print out duplicate keys
 - Update logic to treat duplicates as multiple keys
@@ -37,12 +34,12 @@ template <typename KeyType, typename ValueType> class two4Tree {
          */
         Node<KeyType, ValueType>* split(Node<KeyType, ValueType>* nodeToSplit, 
             NodeElement<KeyType, ValueType> newElement) {
-            nodeToSplit->printFullNode();
+            //nodeToSplit->printFullNode();
 
             // Get the middle key and value(s) and get ready to push them to the parent node
             NodeElement<KeyType, ValueType> middleElement = nodeToSplit->elements[1];
-            cout << "Middle element key: " << middleElement.getKey() << endl;
-            cout << "Middle element value: " << middleElement.getValues()[0] << endl;
+            //cout << "Middle element key: " << middleElement.getKey() << endl;
+            //cout << "Middle element value: " << middleElement.getValues()[0] << endl;
 
             // Start creating the left and right children of the new root node
             Node<KeyType, ValueType>* leftChild = new Node<KeyType, ValueType>
@@ -80,7 +77,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
             if (parentNode == nullptr) { // Splitting Root Node
                 parentNode = new Node<KeyType, ValueType>(middleElement.getKey(), middleElement.getValues());
                 rootNode = parentNode;
-                cout << "Created new root node with middle element key: " << middleElement.getKey() << endl;
+                //cout << "Created new root node with middle element key: " << middleElement.getKey() << endl;
                 
                 // Add the left and right children to the parent node
                 parentNode->addChildNode(leftChild);
@@ -90,30 +87,31 @@ template <typename KeyType, typename ValueType> class two4Tree {
             } else { // Splitting internal or root node
                 // If the parent node is overfull, split it, otherwise insert the middle element
                 if (parentNode->size >= 3) {
-                    cout << "Parent node with key: " << parentNode->elements[0].getKey() << " is overfull, splitting" << endl;
+                    //cout << "Parent node with key: " << parentNode->elements[0].getKey() << " is overfull, splitting" << endl;
                     parentNode = split(parentNode, middleElement);
                 } else {
-                    cout << "Parent node is not overfull, inserting key-value pair" << endl;
+                    //cout << "Parent node is not overfull, inserting key-value pair" << endl;
                     parentNode->insertKeyValPair(middleElement);
                 }
 
                 // Remove the node to split from the parent node's children array
                 parentNode->removeChildNode(nodeToSplit);
                 // Add the left and right children to the parent node
-                cout << "Adding left and right children to parent node with key: " << parentNode->elements[0].getKey() << endl;
-                cout << "Left child key: " << leftChild->elements[0].getKey() << " Right child key: " << rightChild->elements[0].getKey() << endl;
+                //cout << "Adding left and right children to parent node with key: " << parentNode->elements[0].getKey() << endl;
+                //cout << "Left child key: " << leftChild->elements[0].getKey() << " Right child key: " << rightChild->elements[0].getKey() << endl;
                 leftChild->parent = parentNode;
                 rightChild->parent = parentNode;
                 parentNode->addChildNode(leftChild);
-                cout << "Added left child with key: " << leftChild->elements[0].getKey() << " to parent node with key: " << parentNode->elements[0].getKey() << endl;
+                //cout << "Added left child with key: " << leftChild->elements[0].getKey() << " to parent node with key: " << parentNode->elements[0].getKey() << endl;
                 parentNode->addChildNode(rightChild);
-                cout << "Added right child with key: " << rightChild->elements[0].getKey() << " to parent node with key: " << parentNode->elements[0].getKey() << endl;
+                //cout << "Added right child with key: " << rightChild->elements[0].getKey() << " to parent node with key: " << parentNode->elements[0].getKey() << endl;
             }
 
             // Calculate the subtree sizes of the left and right children
-            leftChild->updateLeftSubtreeSizes();
-            rightChild->updateLeftSubtreeSizes();
+            leftChild->updateSubtreeSizes();
+            rightChild->updateSubtreeSizes();
 
+            // Return the correct node to assign the parent child relationship
             if (returnNode != nullptr) return returnNode;
             else return parentNode;
         }
@@ -138,11 +136,11 @@ template <typename KeyType, typename ValueType> class two4Tree {
             rootNode = nullptr;
             treeSize = 0;
 
-            cout << "Started empty tree constructor" << endl;
+            //cout << "Started empty tree constructor" << endl;
 
             // Insert the keys and values into the tree
             for (int i = 0; i < size; i++) {
-                cout << "About to insert key: " << keys[i] << " and value: " << values[i] << endl;
+                //cout << "About to insert key: " << keys[i] << " and value: " << values[i] << endl;
                 insert(keys[i], values[i]);
             }
         }
@@ -161,19 +159,20 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @return ValueType* A pointer to the value associated with the key
          */
         ValueType *search(KeyType key) {
-            while (rootNode != nullptr) {
+            Node<KeyType, ValueType>* currentNode = rootNode; // Use a temporary variable to traverse the tree
+            while (currentNode != nullptr) {
                 // Traverse the tree to find the correct leaf node
-                for (int i = 0; i < rootNode->size; i++) {
-                    if (key == rootNode->elements[i].getKey()) { 
+                for (int i = 0; i < currentNode->size; i++) {
+                    if (key == currentNode->elements[i].getKey()) { 
                         // If the key is found, return the value
-                        return &(rootNode->elements[i].getValues()[0]);
-                    } else if (key < rootNode->elements[i].getKey()) { 
+                        return &(currentNode->elements[i].getValues()[0]);
+                    } else if (key < currentNode->elements[i].getKey()) { 
                         // If the key is less than the current key, traverse left
-                        rootNode = rootNode->children[i];
+                        currentNode = currentNode->children[i];
                         break;
-                    } else if (i == rootNode->size - 1) { 
+                    } else if (i == currentNode->size - 1) { 
                         // If the key is greater than the last key, traverse right
-                        rootNode = rootNode->children[rootNode->size];
+                        currentNode = currentNode->children[currentNode->size];
                         break;
                     }
                 }
@@ -190,12 +189,12 @@ template <typename KeyType, typename ValueType> class two4Tree {
         void insert(KeyType key, ValueType value) {
             // Create a new NodeElement object to store the key-value pair
             NodeElement<KeyType, ValueType> newElement = NodeElement<KeyType, ValueType>(key, value);
-            cout << "Created new element with key: " << key << " and value: " << value << endl;
+            //cout << "Created new element with key: " << key << " and value: " << value << endl;
 
             // Check if the tree is empty, if so, create a new root node
             if (rootNode == nullptr){
                 rootNode = new Node<KeyType, ValueType>(key, value);
-                cout << "Inserted key: " << key << " and value: " << value << endl;
+                //cout << "Inserted key: " << key << " and value: " << value << endl;
             } 
             // If the tree is not empty, find the correct leaf node to insert the key-value pair
             else { 
@@ -209,13 +208,13 @@ template <typename KeyType, typename ValueType> class two4Tree {
                 // Insert the key-value pair into the leaf node
                 if (refNode->size < 3) {
                     refNode->insertKeyValPair(newElement);
-                    cout << "Inserted key: " << key << " and value: " << value << endl;
-                    refNode->printFullNode();
+                    //cout << "Inserted key: " << key << " and value: " << value << endl;
+                    //refNode->printFullNode();
 
                     // Update the subtree size values of the node and its ancestors
-                    refNode->updateLeftSubtreeSizes();
+                    refNode->updateSubtreeSizes();
                 } else {
-                    cout << "It's overfull! Splittin time!" << endl;
+                    //cout << "It's overfull! Splittin time!" << endl;
                     Node<KeyType, ValueType>* newParentNode = split(refNode, newElement);
                 }
             }
@@ -275,7 +274,36 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @return KeyType The key at the given position
          */
         KeyType select(int pos) {
-            // IMPLEMENT THIS
+            if (pos < 1 || pos > treeSize) {
+                throw std::out_of_range("Index out of range");
+            }
+            return selectActual(rootNode, pos);
+        }
+        
+        /**
+         * @brief Returns the key at a given position in the tree, but actually does the traversal
+         * 
+         * @param refNode The node currently being traversed
+         * @param pos The position of the key to find
+         * @return KeyType The key at the given position
+         */
+        KeyType selectActual(Node<KeyType, ValueType>* refNode, int pos) {
+            if (refNode == nullptr) return 0; // Base case
+
+            int rank = 0;
+            for (int i = 0; i < refNode->size; i++) {
+                if (rank + refNode->elements[i].getSubtreeSize() >= pos) {
+                    if (refNode->isLeaf || rank + refNode->elements[i].getSubtreeSize() == pos) {
+                        return refNode->elements[i].getKey();
+                    } else {
+                        return selectActual(refNode->children[i], pos - rank);
+                    }
+                } else {
+                    rank += refNode->elements[i].getSubtreeSize();
+                }
+            }
+
+            return selectActual(refNode->children[refNode->size], pos - rank);
         }
 
         /**
@@ -334,7 +362,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
             if (refNode == nullptr) return;
 
             // Print the keys of the node
-            refNode->printFullNode();
+            refNode->printKeys();
 
             // Recursively traverse the children of the node
             if (!refNode->isLeaf) {

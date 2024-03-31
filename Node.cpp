@@ -49,7 +49,6 @@ template <class K, class V> class Node {
          * @param v CircularDynamicArray of values
          */
         Node(K k, CircularDynamicArray<V>& v) {
-            
             elements.addEnd(NodeElement<K, V>(k, v));
             parent = nullptr;
             isLeaf = true;
@@ -214,9 +213,9 @@ template <class K, class V> class Node {
         }
 
         /**
-         * @brief Updates the left subtree sizes for each NodeElement in the node, and their parents
+         * @brief Updates the subtree sizes for each NodeElement in the node, and their parents
          */
-        void updateLeftSubtreeSizes() {
+        void updateSubtreeSizes() {
             if (isLeaf) {
                 for (int i = 0; i < size; i++) {
                     elements[i].setSubtreeSize(1);
@@ -231,7 +230,13 @@ template <class K, class V> class Node {
                     elements[i].setSubtreeSize(subtreeSize);
                 }
             }
-            if (parent != nullptr) parent->updateLeftSubtreeSizes();
+
+            /*// Update the rightmost element's subtree size if there are more children
+            if (children.length() > size) {
+                elements[size - 1].setSubtreeSize(elements[size - 1].getSubtreeSize() + children[size]->getTotalSubtreeSize());
+            }*/
+
+            if (parent != nullptr) parent->updateSubtreeSizes();
         }
 
         /**
@@ -243,6 +248,11 @@ template <class K, class V> class Node {
             int totalSize = 0;
             for (int i = 0; i < size; i++) {
                 totalSize += elements[i].getSubtreeSize();
+            }
+
+            // Include the rightmost child's total subtree size if this is not a leaf
+            if (!isLeaf && children.length() > size) {
+                totalSize += children[size]->getTotalSubtreeSize();
             }
 
             return totalSize;

@@ -24,7 +24,6 @@ int main() {
 
     cout << "Preorder Traversal Test 2:" << endl;
     test2.preorder();
-    test2.preorderPrintAttributes(test2.getRootNode());
     cout << "Inorder Traversal Test 2:" << endl;
     test2.inorder();
     cout << "Postorder Traversal Test 2:" << endl;
@@ -40,4 +39,13 @@ int main() {
     cout << "Rank I: " << test2.rank("I") << endl;
     cout << "Rank J: " << test2.rank("J") << endl;
     cout << "Search A: " << *(test2.search("A")) << endl;
+
+    two4Tree<int,int> X;
+	for (int i=1;i<1001000;i++) X.insert(i,i);
+    for (int i=1;i<1001000;i++) {
+		if(X.rank(i) != i) cout << "Rank error" << endl;
+		if(X.select(i) != i) cout << "Select error" << endl;
+		if(*(X.search(i)) != i) cout << "Search error" << endl;
+	} 
+    cout << "Done" << endl;
 }
