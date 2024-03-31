@@ -23,7 +23,7 @@ int main() {
     test1.postorder();*/
 
     cout << "Preorder Traversal Test 2:" << endl;
-    test2.preorder();
+    test2.preorderPrintAttributes(test2.getRootNode());
     cout << "Inorder Traversal Test 2:" << endl;
     test2.inorder();
     cout << "Postorder Traversal Test 2:" << endl;

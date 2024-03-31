@@ -171,11 +171,11 @@ template <class K, class V> class Node {
                 K childKey = child->elements.getEndValue().getKey();
 
                 // Find the correct spot to insert the child node
-                for (int i = 0; i < childSize; i++) {
+                for (int i = 0; i < this->size; i++) {
                     if (childKey <= elements[i].getKey()) {
                         children.addAt(child, i);
                         break;
-                    } else if (i == childSize - 1) {
+                    } else if (i == this->size - 1) {
                         children.addEnd(child);
                         break;
                     }
@@ -287,6 +287,16 @@ template <class K, class V> class Node {
                 cout << "]";
                 if (i < size - 1) cout << ", ";
             }
-            cout << endl << endl;
+
+            cout << endl << "Children: ";
+            for (int i = 0; i < children.length(); i++) {
+                cout << children[i]->elements[0].getKey();
+                if (i < children.length() - 1) cout << ", ";
+            }
+
+            cout << endl << "Parent: ";
+            if (parent != nullptr) cout << parent->elements[0].getKey();
+            else cout << "None";
+            cout << endl;
         }
 };

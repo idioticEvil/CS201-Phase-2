@@ -306,6 +306,9 @@ template <typename T> class CircularDynamicArray {
          * @return T The value at the end of the array
          */
         T& getEndValue() {
+            if (size == 0) {
+                throw std::out_of_range("Cannot get end value of an empty array");
+            }
             return data[(front + size - 1) % cap];
         }
 

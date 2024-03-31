@@ -30,89 +30,154 @@ template <typename KeyType, typename ValueType> class two4Tree {
         int treeSize;
 
         /**
-         * @brief Splits a node when it is overfull
+         * @brief Splits a node in the tree
          * 
-         * @param nodeToSplit Node to be split
-         * @param newKey Key that would make the node overfull
-         * @param newVals Value(s) corresponding to the key
+         * @param nodeToSplit The node to split
+         * @param newElement The new element to insert into the tree
+         * @return Node<KeyType, ValueType>* Pointer to the parent node of the split nodes
          */
-        void split(Node<KeyType, ValueType>* nodeToSplit, 
-            NodeElement<KeyType, ValueType> newElement) {
+        Node<KeyType, ValueType>* split(Node<KeyType, ValueType>* nodeToSplit, NodeElement<KeyType, ValueType> newElement) {
             nodeToSplit->printFullNode();
 
-            // Get the middle key and value(s) and get ready to push them to the parent node
+            // Create a new node element to store the middle value
             NodeElement<KeyType, ValueType> middleElement = nodeToSplit->elements[1];
             cout << "Middle element key: " << middleElement.getKey() << endl;
             cout << "Middle element value: " << middleElement.getValues()[0] << endl;
 
-            // Start creating the left and right children of the new root node
-            Node<KeyType, ValueType>* leftChild = new Node<KeyType, ValueType>
-            (nodeToSplit->elements[0].getKey(), nodeToSplit->elements[0].getValues());
-            Node<KeyType, ValueType>* rightChild = new Node<KeyType, ValueType>
-            (nodeToSplit->elements[2].getKey(), nodeToSplit->elements[2].getValues());
-                
-            // Insert the new key-value pair into the correct child node
+            // Create new child nodes for the split
+            Node<KeyType, ValueType>* leftChild = createChildNode(nodeToSplit->elements[0]);
+            Node<KeyType, ValueType>* rightChild = createChildNode(nodeToSplit->elements[2]);
+
+            // Insert the new element into the correct child node
+            insertElementToChild(newElement, middleElement, leftChild, rightChild);
+
+            // Distribute the children of the node to split to the new child nodes
+            if (!nodeToSplit->isLeaf) distributeChildren(nodeToSplit, leftChild, rightChild);
+
+            // Handle the parent node of the split nodes
+            Node<KeyType, ValueType>* parentNode = handleParentNode(nodeToSplit, middleElement, leftChild, rightChild);
+
+            return parentNode;
+        }
+
+        /**
+         * @brief Creates a new child node for a split operation
+         * 
+         * @param element The element to create the child node from
+         * @return Node<KeyType, ValueType>* The new child node
+         */
+        Node<KeyType, ValueType>* createChildNode(NodeElement<KeyType, ValueType> element) {
+            return new Node<KeyType, ValueType>(element.getKey(), element.getValues());
+        }
+
+        /**
+         * @brief Inserts a new element into the correct child node
+         * 
+         * @param newElement The new element to insert
+         * @param middleElement The middle element of the node to split
+         * @param leftChild The left child node
+         * @param rightChild The right child node
+         */
+        void insertElementToChild(NodeElement<KeyType, ValueType> newElement, NodeElement<KeyType, ValueType> middleElement, Node<KeyType, ValueType>* leftChild, Node<KeyType, ValueType>* rightChild) {
             if (newElement.getKey() < middleElement.getKey()) 
-            leftChild->insertKeyValPair(newElement);
-            else rightChild->insertKeyValPair(newElement);
+                leftChild->insertKeyValPair(newElement);
+            else 
+                rightChild->insertKeyValPair(newElement);
+        }
 
-            // If the node to split is an internal node, distribute the children 
-            // to the new left and right children
-            if (nodeToSplit->isLeaf == false) { 
-                for (int i = 0; i < nodeToSplit->children.length(); i++) {
-                    if (i < 2) {
-                        leftChild->addChildNode(nodeToSplit->children[i]);
-                        nodeToSplit->children[i]->parent = leftChild;
-                    } else {
-                        rightChild->addChildNode(nodeToSplit->children[i]);
-                        nodeToSplit->children[i]->parent = rightChild;
-                    }
+        /**
+         * @brief Distributes the children of a node to the new child nodes
+         * 
+         * @param nodeToSplit The node to split
+         * @param leftChild The left child node
+         * @param rightChild The right child node
+         */
+        void distributeChildren(Node<KeyType, ValueType>* nodeToSplit, Node<KeyType, ValueType>* leftChild, Node<KeyType, ValueType>* rightChild) {
+            for (int i = 0; i < nodeToSplit->children.length(); i++) {
+                if (i < 2) { // Add the first two children to the left child
+                    leftChild->addChildNode(nodeToSplit->children[i]);
+                    nodeToSplit->children[i]->parent = leftChild;
+                } else { // Add the last two children to the right child
+                    rightChild->addChildNode(nodeToSplit->children[i]);
+                    nodeToSplit->children[i]->parent = rightChild;
                 }
             }
+        }
 
-            if (nodeToSplit == rootNode) {
-                // Create a new root node
-                Node<KeyType, ValueType>* newRootNode = new Node<KeyType, ValueType>(middleElement.getKey(), middleElement.getValues());
-                rootNode = newRootNode;
-                cout << "Created new root node with middle element key: " << middleElement.getKey() << endl;
+        /**
+         * @brief Handles the parent node of the split nodes
+         * 
+         * @param nodeToSplit The node to split
+         * @param middleElement The middle element of the node to split
+         * @param leftChild The left child node
+         * @param rightChild The right child node
+         * @return Node<KeyType, ValueType>* The parent node of the split nodes
+         */
+        Node<KeyType, ValueType>* handleParentNode(Node<KeyType, ValueType>* nodeToSplit, NodeElement<KeyType, ValueType> middleElement, Node<KeyType, ValueType>* leftChild, Node<KeyType, ValueType>* rightChild) {
+            Node<KeyType, ValueType>* parentNode = nodeToSplit->parent;
 
-                // Add the children to the new root node, set children node's parents 
-                // and delete the old root node
-                rootNode->addChildNode(leftChild);
-                rootNode->addChildNode(rightChild);
-                leftChild->parent = rootNode;
-                rightChild->parent = rootNode;
-                cout << "Added left and right children to new root node" << endl;
-
-            } else { // Splitting Leaf or Internal Node    
-                // Set the parent node of the left and right children
-                leftChild->parent = nodeToSplit->parent;
-                rightChild->parent = nodeToSplit->parent;
-
-                // Store the parent of nodeToSplit in a temporary variable, then remove nodeToSplit
-                // from the parent node's children array
-                Node<KeyType, ValueType>* parentNode = nodeToSplit->parent;
-                parentNode->removeChildNode(nodeToSplit);
-
-                // Recursively split the parent node if it is overfull
-                if (parentNode->size >= 3) {
-                    cout << "Parent node is overfull, splitting it" << endl;
-                    split(parentNode, middleElement);
-                } else {
-                    cout << "Parent node is not overfull, inserting key-value pair" << endl;
-                    parentNode->insertKeyValPair(middleElement);
-                }
-
-                // Add the left and right children to the parent node
-                parentNode->addChildNode(leftChild);
-                parentNode->addChildNode(rightChild);          
+            if (parentNode == nullptr) { // Splitting Root Node
+                parentNode = createNewRootNode(middleElement, leftChild, rightChild);
+            } else { // Splitting internal or root node
+                parentNode = handleInternalNode(nodeToSplit, middleElement, parentNode, leftChild, rightChild);
             }
 
-            // Calculate the subtree sizes of the left and right children
-            leftChild->calculateLeftSubtreeSize();
-            rightChild->calculateLeftSubtreeSize();
+            return parentNode;
+        }
 
-            return;
+        /**
+         * @brief Creates a new root node for a split operation
+         * 
+         * @param middleElement The middle element of the node to split
+         * @param leftChild The left child node
+         * @param rightChild The right child node
+         * @return Node<KeyType, ValueType>* The new root node
+         */
+        Node<KeyType, ValueType>* createNewRootNode(NodeElement<KeyType, ValueType> middleElement, Node<KeyType, ValueType>* leftChild, Node<KeyType, ValueType>* rightChild) {
+            Node<KeyType, ValueType>* parentNode = new Node<KeyType, ValueType>(middleElement.getKey(), middleElement.getValues());
+            rootNode = parentNode;
+            cout << "Created new root node with middle element key: " << middleElement.getKey() << endl;
+            addChildrenToParent(parentNode, leftChild, rightChild);
+            return parentNode;
+        }
+
+        /**
+         * @brief Adds the children to the parent node
+         * 
+         * @param parentNode The parent node
+         * @param leftChild The left child node
+         * @param rightChild The right child node
+         */
+        void addChildrenToParent(Node<KeyType, ValueType>* parentNode, Node<KeyType, ValueType>* leftChild, Node<KeyType, ValueType>* rightChild) {
+            parentNode->addChildNode(leftChild);
+            parentNode->addChildNode(rightChild);
+            leftChild->parent = parentNode;
+            rightChild->parent = parentNode;
+        }
+
+        /**
+         * @brief Handles an internal node during a split operation
+         * 
+         * @param nodeToSplit The node to split
+         * @param middleElement The middle element of the node to split
+         * @param parentNode The parent node of the node to split
+         * @param leftChild The left child node
+         * @param rightChild The right child node
+         * @return Node<KeyType, ValueType>* The parent node of the split nodes
+         */
+        Node<KeyType, ValueType>* handleInternalNode(Node<KeyType, ValueType>* nodeToSplit, NodeElement<KeyType, ValueType> middleElement, Node<KeyType, ValueType>* parentNode, Node<KeyType, ValueType>* leftChild, Node<KeyType, ValueType>* rightChild) {
+            parentNode->removeChildNode(nodeToSplit);
+
+            if (parentNode->size >= 3) { // Parent node is overfull
+                cout << "Parent node with key: " << parentNode->elements[0].getKey() << " is overfull, splitting" << endl;
+                parentNode = split(parentNode, middleElement);
+            } else { // Parent node is not overfull
+                cout << "Parent node is not overfull, inserting key-value pair" << endl;
+                parentNode->insertKeyValPair(middleElement);
+            }
+
+            addChildrenToParent(parentNode, leftChild, rightChild);
+            return parentNode;
         }
 
     public:
@@ -170,6 +235,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
         void insert(KeyType key, ValueType value) {
             // Create a new NodeElement object to store the key-value pair
             NodeElement<KeyType, ValueType> newElement = NodeElement<KeyType, ValueType>(key, value);
+            cout << "Created new element with key: " << key << " and value: " << value << endl;
 
             // Check if the tree is empty, if so, create a new root node
             if (rootNode == nullptr){
@@ -195,7 +261,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
                     refNode->calculateLeftSubtreeSize();
                 } else {
                     cout << "It's overfull! Splittin time!" << endl;
-                    split(refNode, newElement);
+                    Node<KeyType, ValueType>* newParentNode = split(refNode, newElement);
                 }
             }
             treeSize++;
@@ -292,6 +358,25 @@ template <typename KeyType, typename ValueType> class two4Tree {
                     preorderActual(refNode->children[i]);
                 }
             }
+        }
+
+        void preorderPrintAttributes(Node<KeyType, ValueType>* refNode) {
+            // Check if the node is null
+            if (refNode == nullptr) return;
+
+            // Print the keys of the node
+            refNode->printFullNode();
+
+            // Recursively traverse the children of the node
+            if (!refNode->isLeaf) {
+                for (int i = 0; i < refNode->children.length(); i++) {
+                    preorderPrintAttributes(refNode->children[i]);
+                }
+            }
+        }
+
+        Node<KeyType, ValueType>* getRootNode() {
+            return rootNode;
         }
 
         /**
