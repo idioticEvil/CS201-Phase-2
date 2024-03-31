@@ -290,7 +290,12 @@ template <class K, class V> class Node {
 
             cout << endl << "Children: ";
             for (int i = 0; i < children.length(); i++) {
-                cout << children[i]->elements[0].getKey();
+                cout << "[";
+                for (int j = 0; j < children[i]->size; j++) {
+                    cout << children[i]->elements[j].getKey();
+                    if (j < children[i]->size - 1) cout << ", ";
+                }
+                cout << "]";
                 if (i < children.length() - 1) cout << ", ";
             }
 
