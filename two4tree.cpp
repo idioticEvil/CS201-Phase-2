@@ -34,12 +34,9 @@ template <typename KeyType, typename ValueType> class two4Tree {
          */
         Node<KeyType, ValueType>* split(Node<KeyType, ValueType>* nodeToSplit, 
             NodeElement<KeyType, ValueType> newElement) {
-            //nodeToSplit->printFullNode();
 
             // Get the middle key and value(s) and get ready to push them to the parent node
             NodeElement<KeyType, ValueType> middleElement = nodeToSplit->elements[1];
-            //cout << "Middle element key: " << middleElement.getKey() << endl;
-            //cout << "Middle element value: " << middleElement.getValues()[0] << endl;
 
             // Start creating the left and right children of the new root node
             Node<KeyType, ValueType>* leftChild = new Node<KeyType, ValueType>
@@ -77,7 +74,6 @@ template <typename KeyType, typename ValueType> class two4Tree {
             if (parentNode == nullptr) { // Splitting Root Node
                 parentNode = new Node<KeyType, ValueType>(middleElement.getKey(), middleElement.getValues());
                 rootNode = parentNode;
-                //cout << "Created new root node with middle element key: " << middleElement.getKey() << endl;
                 
                 // Add the left and right children to the parent node
                 parentNode->addChildNode(leftChild);
@@ -97,14 +93,10 @@ template <typename KeyType, typename ValueType> class two4Tree {
                 // Remove the node to split from the parent node's children array
                 parentNode->removeChildNode(nodeToSplit);
                 // Add the left and right children to the parent node
-                //cout << "Adding left and right children to parent node with key: " << parentNode->elements[0].getKey() << endl;
-                //cout << "Left child key: " << leftChild->elements[0].getKey() << " Right child key: " << rightChild->elements[0].getKey() << endl;
                 leftChild->parent = parentNode;
                 rightChild->parent = parentNode;
                 parentNode->addChildNode(leftChild);
-                //cout << "Added left child with key: " << leftChild->elements[0].getKey() << " to parent node with key: " << parentNode->elements[0].getKey() << endl;
                 parentNode->addChildNode(rightChild);
-                //cout << "Added right child with key: " << rightChild->elements[0].getKey() << " to parent node with key: " << parentNode->elements[0].getKey() << endl;
             }
 
             // Calculate the subtree sizes of the left and right children
@@ -136,11 +128,8 @@ template <typename KeyType, typename ValueType> class two4Tree {
             rootNode = nullptr;
             treeSize = 0;
 
-            //cout << "Started empty tree constructor" << endl;
-
             // Insert the keys and values into the tree
             for (int i = 0; i < size; i++) {
-                //cout << "About to insert key: " << keys[i] << " and value: " << values[i] << endl;
                 insert(keys[i], values[i]);
             }
         }
@@ -189,32 +178,24 @@ template <typename KeyType, typename ValueType> class two4Tree {
         void insert(KeyType key, ValueType value) {
             // Create a new NodeElement object to store the key-value pair
             NodeElement<KeyType, ValueType> newElement = NodeElement<KeyType, ValueType>(key, value);
-            //cout << "Created new element with key: " << key << " and value: " << value << endl;
 
             // Check if the tree is empty, if so, create a new root node
-            if (rootNode == nullptr){
-                rootNode = new Node<KeyType, ValueType>(key, value);
-                //cout << "Inserted key: " << key << " and value: " << value << endl;
-            } 
+            if (rootNode == nullptr) rootNode = new Node<KeyType, ValueType>(key, value); 
             // If the tree is not empty, find the correct leaf node to insert the key-value pair
             else { 
                 Node<KeyType, ValueType>* refNode = rootNode;
 
                 // Traverse the tree to find the correct leaf node
-                while (!refNode->isLeaf) {
-                    refNode = refNode->traverseDirection(key);
-                }
+                while (!refNode->isLeaf) refNode = refNode->traverseDirection(key);
 
                 // Insert the key-value pair into the leaf node
                 if (refNode->size < 3) {
                     refNode->insertKeyValPair(newElement);
-                    //cout << "Inserted key: " << key << " and value: " << value << endl;
                     //refNode->printFullNode();
 
                     // Update the subtree size values of the node and its ancestors
                     refNode->updateSubtreeSizes();
                 } else {
-                    //cout << "It's overfull! Splittin time!" << endl;
                     Node<KeyType, ValueType>* newParentNode = split(refNode, newElement);
                 }
             }
@@ -252,18 +233,22 @@ template <typename KeyType, typename ValueType> class two4Tree {
             if (refNode == nullptr) return 0; // Base case
 
             int rank = 0;
+            // Traverse the tree to find the correct rank of the key
             for (int i = 0; i < refNode->size; i++) {
-                if (i == 0 && key < refNode->elements[0].getKey()) {
+                if (i == 0 && key < refNode->elements[0].getKey()) { 
+                    // If the key is less than the first key
                     return rank + rankActual(refNode->children[0], key);
-                } else if (key > refNode->elements[i].getKey()) {
+                } else if (key > refNode->elements[i].getKey()) { 
+                    // If the key is greater than the current key
                     rank += refNode->elements[i].getSubtreeSize();
-                } else if (key < refNode->elements[i].getKey()) {
+                } else if (key < refNode->elements[i].getKey()) { 
+                    // If the key is less than the current key
                     return rank + rankActual(refNode->children[i], key);
-                } else if (key == refNode->elements[i].getKey()){
+                } else if (key == refNode->elements[i].getKey()){ 
+                    // If the key is equal to the current key
                     return rank + refNode->elements[i].getSubtreeSize();
                 }
             }
-
             return rank + rankActual(refNode->children[refNode->size], key);
         }
 

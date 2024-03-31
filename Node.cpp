@@ -64,9 +64,7 @@ template <class K, class V> class Node {
          */
         // Note: This program logic currently assumes that the values are sorted
         Node(K k[], V v[], int size) { 
-            for (int i = 0; i < size; i++) {
-                elements.addEnd(NodeElement<K, V>(k[i], v[i]));
-            }
+            for (int i = 0; i < size; i++) elements.addEnd(NodeElement<K, V>(k[i], v[i]));
 
             parent = nullptr;
             isLeaf = true;
@@ -81,9 +79,7 @@ template <class K, class V> class Node {
          * @param size Size of the arrays
          */
         Node(K k[], CircularDynamicArray<V> v[], int size) {
-            for (int i = 0; i < size; i++) {
-                elements.addEnd(NodeElement<K, V>(k[i], v[i]));
-            }
+            for (int i = 0; i < size; i++) elements.addEnd(NodeElement<K, V>(k[i], v[i]));
 
             parent = nullptr;
             isLeaf = true;
@@ -156,9 +152,8 @@ template <class K, class V> class Node {
             int childSize = children.length();
 
             // Check first if the node doesn't have any children
-            if (childSize == 0) {
-                children.addEnd(child);
-            } else {
+            if (childSize == 0) children.addEnd(child);
+            else {
                 // Use the last key of the child node to compare
                 K childKey = child->elements.getEndValue().getKey();
 
@@ -217,24 +212,15 @@ template <class K, class V> class Node {
          */
         void updateSubtreeSizes() {
             if (isLeaf) {
-                for (int i = 0; i < size; i++) {
-                    elements[i].setSubtreeSize(1);
-                }
+                for (int i = 0; i < size; i++) elements[i].setSubtreeSize(1);
             } else {
                 for (int i = 0; i < size; i++) {
                     int subtreeSize = 1;
 
-                    if (i < children.length()) {
-                        subtreeSize += children[i]->getTotalSubtreeSize();
-                    }
+                    if (i < children.length()) subtreeSize += children[i]->getTotalSubtreeSize();
                     elements[i].setSubtreeSize(subtreeSize);
                 }
             }
-
-            /*// Update the rightmost element's subtree size if there are more children
-            if (children.length() > size) {
-                elements[size - 1].setSubtreeSize(elements[size - 1].getSubtreeSize() + children[size]->getTotalSubtreeSize());
-            }*/
 
             if (parent != nullptr) parent->updateSubtreeSizes();
         }
@@ -246,9 +232,7 @@ template <class K, class V> class Node {
          */
         int getTotalSubtreeSize() {
             int totalSize = 0;
-            for (int i = 0; i < size; i++) {
-                totalSize += elements[i].getSubtreeSize();
-            }
+            for (int i = 0; i < size; i++) totalSize += elements[i].getSubtreeSize();
 
             // Include the rightmost child's total subtree size if this is not a leaf
             if (!isLeaf && children.length() > size) {
