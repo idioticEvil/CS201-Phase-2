@@ -254,6 +254,57 @@ template <typename KeyType, typename ValueType> class two4Tree {
             refNode->printKeys();
         }
 
+        /**
+         * @brief Swaps a key with its inorder successor or predecessor, used in the remove function
+         * 
+         * @param refNode Node that contains the key to swap
+         * @param key The key to swap
+         */
+        void inorderRemovalSwap(Node<KeyType, ValueType>* refNode, KeyType key) {
+            // Check if the node is null
+            if (refNode == nullptr) return;
+
+            // Find the key in the node
+            int index = refNode->findKeyIndex(key);
+
+            // Check if the key is found in the node
+            if (index != -1) {
+                // Check if the node has a left child
+                if (!refNode->isLeaf && index > 0) {
+                    // Find the inorder predecessor
+                    Node<KeyType, ValueType>* predecessor = refNode->children[index - 1];
+                    while (!predecessor->isLeaf) {
+                        predecessor = predecessor->children[predecessor->size];
+                    }
+
+                    // Swap the key with the predecessor
+                    NodeElement<KeyType, ValueType> predecessorElement = predecessor->elements[predecessor->size - 1];
+                    refNode->elements[index].setKey(predecessorElement.getKey());
+                    refNode->elements[index].setValues(predecessorElement.getValues());
+                    key = predecessorElement.getKey();
+                    refNode = predecessor;
+                }
+                // Check if the node has a right child
+                else if (!refNode->isLeaf && index < refNode->size) {
+                    // Find the inorder successor
+                    Node<KeyType, ValueType>* successor = refNode->children[index + 1];
+                    while (!successor->isLeaf) {
+                        successor = successor->children[0];
+                    }
+
+                    // Swap the key with the successor
+                    NodeElement<KeyType, ValueType> successorElement = successor->elements[0];
+                    refNode->elements[index].setKey(successorElement.getKey());
+                    refNode->elements[index].setValues(successorElement.getValues());
+                    key = successorElement.getKey();
+                    refNode = successor;
+                }
+            }
+
+            // Delete the key from the appropriate child node
+            refNode->removeKey(key);
+        }
+
     public:
         /**
          * @brief Construct a new 2-4 tree object
@@ -381,7 +432,9 @@ template <typename KeyType, typename ValueType> class two4Tree {
             // If the key is not found, return 0
             if (currentNode == nullptr) return 0;
             else if (!currentNode->isLeaf) { // Node is an internal node
-                // swap with the next inorder key
+                // Swap the key with its inorder successor or predecessor
+                inorderRemovalSwap(currentNode, key);
+                return 1;
             } else { // Node is a leaf node
                 // remove key from node, restructure if necessary
                 switch (currentNode->removeKey(key)) {

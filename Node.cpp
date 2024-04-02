@@ -257,6 +257,19 @@ template <class K, class V> class Node {
         }
 
         /**
+         * @brief Returns the index of the key in the node, or -1 if not found
+         * 
+         * @param key Key to find
+         * @return int Index of the key in the node
+         */
+        int findKeyIndex(K key) {
+            for (int i = 0; i < size; i++) {
+                if (elements[i].getKey() == key) return i;
+            }
+            return -1;
+        }
+
+        /**
          * @brief Remove a key from the node
          * 
          * @param key The key to remove

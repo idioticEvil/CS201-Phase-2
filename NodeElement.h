@@ -126,6 +126,24 @@ template <class Key, class Value> class NodeElement {
         void incrementSubtreeSize() {
             subtreeSize++;
         }
+
+        /**
+         * @brief Set the Key object
+         * 
+         * @param k Key object to set
+         */
+        void setKey(Key k) {
+            key = k;
+        }
+
+        /**
+         * @brief Set the Values object
+         * 
+         * @param v Values object to set
+         */
+        void setValues(CircularDynamicArray<Value>& v) {
+            values = v;
+        }
 };
 
 #endif
