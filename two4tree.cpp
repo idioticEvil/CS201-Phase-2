@@ -9,8 +9,6 @@ using namespace std;
 /*
 TODO:
 - Implement remove function
-- Implement duplicates function
-- Update inorder, rank, and select functions to deal with duplicates
 */
 
 /**
@@ -105,6 +103,155 @@ template <typename KeyType, typename ValueType> class two4Tree {
             // Return the correct node to assign the parent child relationship
             if (returnNode != nullptr) return returnNode;
             else return parentNode;
+        }
+
+        /**
+         * @brief Returns the rank of a key in the tree, but actually does the traversal
+         * 
+         * @param refNode The node currently being traversed
+         * @param key The key to find the rank of
+         * @return int The rank of the key
+         */
+        int rankActual(Node<KeyType, ValueType>* refNode, KeyType key) {
+            if (refNode == nullptr) return 0; // Base case
+
+            int rank = 0;
+            // Traverse the tree to find the correct rank of the key
+            for (int i = 0; i < refNode->size; i++) {
+                if (i == 0 && key < refNode->elements[0].getKey()) { 
+                    // If the key is less than the first key
+                    return rank + rankActual(refNode->children[0], key);
+                } else if (key > refNode->elements[i].getKey()) { 
+                    // If the key is greater than the current key
+                    rank += refNode->elements[i].getSubtreeSize();
+                } else if (key < refNode->elements[i].getKey()) { 
+                    // If the key is less than the current key
+                    return rank + rankActual(refNode->children[i], key);
+                } else if (key == refNode->elements[i].getKey()){ 
+                    // If the key is equal to the current key
+                    return rank + refNode->elements[i].getSubtreeSize();
+                }
+            }
+            return rank + rankActual(refNode->children[refNode->size], key);
+        }
+
+        /**
+         * @brief Returns the key at a given position in the tree, but actually does the traversal
+         * 
+         * @param refNode The node currently being traversed
+         * @param pos The position of the key to find
+         * @return KeyType The key at the given position
+         */
+        KeyType selectActual(Node<KeyType, ValueType>* refNode, int pos) {
+            if (refNode == nullptr) return 0; // Base case
+
+            int rank = 0;
+            for (int i = 0; i < refNode->size; i++) {
+                if (rank + refNode->elements[i].getSubtreeSize() >= pos) {
+                    if (refNode->isLeaf || rank + refNode->elements[i].getSubtreeSize() == pos) {
+                        return refNode->elements[i].getKey();
+                    } else {
+                        return selectActual(refNode->children[i], pos - rank);
+                    }
+                } else {
+                    rank += refNode->elements[i].getSubtreeSize();
+                }
+            }
+
+            return selectActual(refNode->children[refNode->size], pos - rank);
+        }
+
+        /**
+         * @brief Returns the number of duplicates of a specific key in the tree, but actually does the traversal
+         * 
+         * @param refNode The node currently being traversed
+         * @param key The key to find the number of duplicates of
+         * @return int The number of duplicates of the key
+         */
+        int duplicatesActual(Node<KeyType, ValueType>* refNode, KeyType key, int& count) {
+            if (refNode == nullptr) return count; // Base case
+
+            // Traverse the children of the node
+            for (int i = 0; i < refNode->size; i++) {
+                // Visit the child before the key
+                if (!refNode->isLeaf) duplicatesActual(refNode->children[i], key, count);
+
+                // Check if the key is a duplicate
+                if (key == refNode->elements[i].getKey() && refNode->elements[i].getNumValues() > 0) {
+                    for (int j = 0; j < refNode->elements[i].getNumValues(); j++) {
+                        count++;
+                    }
+                }
+            }
+
+            // Visit the last child after the last key, if the node is not a leaf
+            if (!refNode->isLeaf) duplicatesActual(refNode->children[refNode->size], key, count);
+
+            return count;
+        }
+
+        /**
+         * @brief Prints the pre-order traversal of the tree, but actually does the traversal
+         * 
+         * @param refNode The node currently being traversed
+         */
+        void preorderActual(Node<KeyType, ValueType>* refNode) {
+            // Check if the node is null
+            if (refNode == nullptr) return;
+
+            // Print the keys of the node
+            refNode->printKeys();
+
+            // Recursively traverse the children of the node
+            if (!refNode->isLeaf) {
+                for (int i = 0; i < refNode->children.length(); i++) {
+                    preorderActual(refNode->children[i]);
+                }
+            }
+        }
+
+        /**
+         * @brief Actually traverses the tree in-order recursively
+         * 
+         * @param refNode The node currently being traversed
+         */
+        void inorderActual(Node<KeyType, ValueType>* refNode) {
+            // Check if the node is null
+            if (refNode == nullptr) return;
+
+            // Traverse the children of the node
+            for (int i = 0; i < refNode->size; i++) {
+                // Visit the child before the key
+                if (!refNode->isLeaf) inorderActual(refNode->children[i]);
+
+                // Print all the duplicates of the key
+                for (int j = 0; j < refNode->elements[i].getNumValues(); j++) {
+                    cout << refNode->elements[i].getKey() << " ";
+                }
+            }
+
+            // Visit the last child after the last key, if the node is not a leaf
+            if (!refNode->isLeaf) inorderActual(refNode->children[refNode->size]);
+        }
+
+        /**
+         * @brief Actually traverses the tree post-order recursively
+         * 
+         * @param refNode The node currently being traversed
+         */
+        void postorderActual(Node<KeyType, ValueType>* refNode) {
+            // Check if the node is null
+            if (refNode == nullptr) return;
+
+            // Recursively traverse the children of the node
+            if (!refNode->isLeaf) {
+                for (int i = 0; i < refNode->children.length(); i++) {
+                    postorderActual(refNode->children[i]);
+                }
+            }
+
+            // Print the keys of the node
+            refNode->printKeys();
         }
 
     public:
@@ -259,36 +406,6 @@ template <typename KeyType, typename ValueType> class two4Tree {
         }
 
         /**
-         * @brief Returns the rank of a key in the tree, but actually does the traversal
-         * 
-         * @param refNode The node currently being traversed
-         * @param key The key to find the rank of
-         * @return int The rank of the key
-         */
-        int rankActual(Node<KeyType, ValueType>* refNode, KeyType key) {
-            if (refNode == nullptr) return 0; // Base case
-
-            int rank = 0;
-            // Traverse the tree to find the correct rank of the key
-            for (int i = 0; i < refNode->size; i++) {
-                if (i == 0 && key < refNode->elements[0].getKey()) { 
-                    // If the key is less than the first key
-                    return rank + rankActual(refNode->children[0], key);
-                } else if (key > refNode->elements[i].getKey()) { 
-                    // If the key is greater than the current key
-                    rank += refNode->elements[i].getSubtreeSize();
-                } else if (key < refNode->elements[i].getKey()) { 
-                    // If the key is less than the current key
-                    return rank + rankActual(refNode->children[i], key);
-                } else if (key == refNode->elements[i].getKey()){ 
-                    // If the key is equal to the current key
-                    return rank + refNode->elements[i].getSubtreeSize();
-                }
-            }
-            return rank + rankActual(refNode->children[refNode->size], key);
-        }
-
-        /**
          * @brief Returns the key at a given position in the tree
          * 
          * @param pos The position of the key to find
@@ -300,32 +417,6 @@ template <typename KeyType, typename ValueType> class two4Tree {
             }
             return selectActual(rootNode, pos);
         }
-        
-        /**
-         * @brief Returns the key at a given position in the tree, but actually does the traversal
-         * 
-         * @param refNode The node currently being traversed
-         * @param pos The position of the key to find
-         * @return KeyType The key at the given position
-         */
-        KeyType selectActual(Node<KeyType, ValueType>* refNode, int pos) {
-            if (refNode == nullptr) return 0; // Base case
-
-            int rank = 0;
-            for (int i = 0; i < refNode->size; i++) {
-                if (rank + refNode->elements[i].getSubtreeSize() >= pos) {
-                    if (refNode->isLeaf || rank + refNode->elements[i].getSubtreeSize() == pos) {
-                        return refNode->elements[i].getKey();
-                    } else {
-                        return selectActual(refNode->children[i], pos - rank);
-                    }
-                } else {
-                    rank += refNode->elements[i].getSubtreeSize();
-                }
-            }
-
-            return selectActual(refNode->children[refNode->size], pos - rank);
-        }
 
         /**
          * @brief Returns the number of duplicates of a specific key in the tree
@@ -336,35 +427,6 @@ template <typename KeyType, typename ValueType> class two4Tree {
         int duplicates(KeyType key) {
             int count = 0;
             return duplicatesActual(rootNode, key, count);
-        }
-
-        /**
-         * @brief Returns the number of duplicates of a specific key in the tree, but actually does the traversal
-         * 
-         * @param refNode The node currently being traversed
-         * @param key The key to find the number of duplicates of
-         * @return int The number of duplicates of the key
-         */
-        int duplicatesActual(Node<KeyType, ValueType>* refNode, KeyType key, int& count) {
-            if (refNode == nullptr) return count; // Base case
-
-            // Traverse the children of the node
-            for (int i = 0; i < refNode->size; i++) {
-                // Visit the child before the key
-                if (!refNode->isLeaf) duplicatesActual(refNode->children[i], key, count);
-
-                // Check if the key is a duplicate
-                if (key == refNode->elements[i].getKey() && refNode->elements[i].getNumValues() > 0) {
-                    for (int j = 0; j < refNode->elements[i].getNumValues(); j++) {
-                        count++;
-                    }
-                }
-            }
-
-            // Visit the last child after the last key, if the node is not a leaf
-            if (!refNode->isLeaf) duplicatesActual(refNode->children[refNode->size], key, count);
-
-            return count;
         }
 
         /**
@@ -381,26 +443,6 @@ template <typename KeyType, typename ValueType> class two4Tree {
          */
         void preorder() {
             preorderActual(rootNode);
-        }
-
-        /**
-         * @brief Prints the pre-order traversal of the tree, but actually does the traversal
-         * 
-         * @param refNode The node currently being traversed
-         */
-        void preorderActual(Node<KeyType, ValueType>* refNode) {
-            // Check if the node is null
-            if (refNode == nullptr) return;
-
-            // Print the keys of the node
-            refNode->printKeys();
-
-            // Recursively traverse the children of the node
-            if (!refNode->isLeaf) {
-                for (int i = 0; i < refNode->children.length(); i++) {
-                    preorderActual(refNode->children[i]);
-                }
-            }
         }
 
         /**
@@ -441,53 +483,9 @@ template <typename KeyType, typename ValueType> class two4Tree {
         }
 
         /**
-         * @brief Actually traverses the tree in-order recursively
-         * 
-         * @param refNode The node currently being traversed
-         */
-        void inorderActual(Node<KeyType, ValueType>* refNode) {
-            // Check if the node is null
-            if (refNode == nullptr) return;
-
-            // Traverse the children of the node
-            for (int i = 0; i < refNode->size; i++) {
-                // Visit the child before the key
-                if (!refNode->isLeaf) inorderActual(refNode->children[i]);
-
-                // Print all the duplicates of the key
-                for (int j = 0; j < refNode->elements[i].getNumValues(); j++) {
-                    cout << refNode->elements[i].getKey() << " ";
-                }
-            }
-
-            // Visit the last child after the last key, if the node is not a leaf
-            if (!refNode->isLeaf) inorderActual(refNode->children[refNode->size]);
-        }
-
-        /**
          * @brief Prints the post-order traversal of the tree
          */
         void postorder() {
             postorderActual(rootNode);
-        }
-
-        /**
-         * @brief Actually traverses the tree post-order recursively
-         * 
-         * @param refNode The node currently being traversed
-         */
-        void postorderActual(Node<KeyType, ValueType>* refNode) {
-            // Check if the node is null
-            if (refNode == nullptr) return;
-
-            // Recursively traverse the children of the node
-            if (!refNode->isLeaf) {
-                for (int i = 0; i < refNode->children.length(); i++) {
-                    postorderActual(refNode->children[i]);
-                }
-            }
-
-            // Print the keys of the node
-            refNode->printKeys();
         }
 };
