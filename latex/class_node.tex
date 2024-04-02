@@ -1,0 +1,300 @@
+\doxysection{Node\texorpdfstring{$<$}{<} K, V \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{class_node}{}\label{class_node}\index{Node$<$ K, V $>$@{Node$<$ K, V $>$}}
+
+
+\doxylink{class_node}{Node} class that can be used to store any type of data in a 2-\/4 tree.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_node_ac9d1866717f5dcc684e65ad2fc232d6f}\label{class_node_ac9d1866717f5dcc684e65ad2fc232d6f} 
+{\bfseries Node} ()
+\begin{DoxyCompactList}\small\item\em Default constructor for the node. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node_aed96f010707d488c6c74fdca94f4539a}{Node}} (K k, V v)
+\begin{DoxyCompactList}\small\item\em Creates a new node with one key and value. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node_aab71ac1a4c4d4bc7b4d97ee76192e0ac}{Node}} (K k, \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ V $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Creates a new node with one key and a \doxylink{class_circular_dynamic_array}{Circular\+Dynamic\+Array} of values. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node_ac64a8cc6fcce39bc3afdc21e6d7eff26}{Node}} (K k\mbox{[}$\,$\mbox{]}, V v\mbox{[}$\,$\mbox{]}, int size)
+\begin{DoxyCompactList}\small\item\em Creates a new node with multiple keys and values from an array. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node_a82afa2231818db360c4c81b2019a57c5}{Node}} (K k\mbox{[}$\,$\mbox{]}, \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ V $>$ v\mbox{[}$\,$\mbox{]}, int size)
+\begin{DoxyCompactList}\small\item\em Creates a new node with multiple keys and values from a \doxylink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node_a2e0ebfb182306d7750b499b868104e9d}{Node}} (K k, V v, \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*}parent)
+\begin{DoxyCompactList}\small\item\em Creates a new node with one key, value, and parent. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_node_a54e4980187ace89449394a3e89c4e7b9}{insert\+Key\+Val\+Pair}} (\mbox{\hyperlink{class_node_element}{Node\+Element}}$<$ K, V $>$ element)
+\begin{DoxyCompactList}\small\item\em Inserts a key-\/value pair into the node at the correct spot. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_node_a4417ceb47ff291c9d40f865ece1a8beb}{remove\+Key\+Val\+Pair}} (K key, \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ V $>$ \&value)
+\begin{DoxyCompactList}\small\item\em Removes a key-\/value pair from the node. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_node_a959b818404d24ce667946d3780011cc3}{add\+Child\+Node}} (\mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*}child)
+\begin{DoxyCompactList}\small\item\em Inserts a child node into the node at the correct spot. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_node_a0b55d2b102d5ab5dbe2ac5e2bf45b2b4}{remove\+Child\+Node}} (\mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*}child)
+\begin{DoxyCompactList}\small\item\em Removes a child node from the node. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_node_a1a7db98c14e811dad1bcaad7daf14efc}{traverse\+Direction}} (K key)
+\begin{DoxyCompactList}\small\item\em Returns the child node that should be traversed to. \end{DoxyCompactList}\item 
+\Hypertarget{class_node_a4d66f1d47966b6ede7d6ad42d14e1a2d}\label{class_node_a4d66f1d47966b6ede7d6ad42d14e1a2d} 
+void {\bfseries update\+Subtree\+Sizes} ()
+\begin{DoxyCompactList}\small\item\em Updates the subtree sizes for each \doxylink{class_node_element}{Node\+Element} in the node, and their parents. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_node_a372c27944758f815bbaa51f95207d361}{get\+Total\+Subtree\+Size}} ()
+\begin{DoxyCompactList}\small\item\em Returns the total size of the left subtree for the node. \end{DoxyCompactList}\item 
+\Hypertarget{class_node_a100fed8563e68a0b113206d3e893fa94}\label{class_node_a100fed8563e68a0b113206d3e893fa94} 
+void {\bfseries print\+Keys} ()
+\begin{DoxyCompactList}\small\item\em Prints the keys of the node. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_node_a9bfb39d7acfd510d157e1f6a302007e0}{remove\+Key}} (K key)
+\begin{DoxyCompactList}\small\item\em Remove a key from the node. \end{DoxyCompactList}\item 
+\Hypertarget{class_node_a84859ffc6319ba75f09289b75d88c10d}\label{class_node_a84859ffc6319ba75f09289b75d88c10d} 
+void {\bfseries print\+Full\+Node} ()
+\begin{DoxyCompactList}\small\item\em Prints the full attributes of the node. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_node_a287dccf90a69f0ca10d61f2848fa31ef}\label{class_node_a287dccf90a69f0ca10d61f2848fa31ef} 
+\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ \mbox{\hyperlink{class_node_element}{Node\+Element}}$<$ K, V $>$ $>$ {\bfseries elements}
+\item 
+\Hypertarget{class_node_aec7a61b55bf9772fe5875f76dfa406ff}\label{class_node_aec7a61b55bf9772fe5875f76dfa406ff} 
+\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ \mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} $>$ {\bfseries children}
+\item 
+\Hypertarget{class_node_a94bbbeff7d5cfdff64f01a8516c44762}\label{class_node_a94bbbeff7d5cfdff64f01a8516c44762} 
+\mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} {\bfseries parent}
+\item 
+\Hypertarget{class_node_a4310fe35bfd14cc43b6c6bc38833db7a}\label{class_node_a4310fe35bfd14cc43b6c6bc38833db7a} 
+bool {\bfseries is\+Leaf}
+\item 
+\Hypertarget{class_node_a681685fe9668f05a34770c59772d71c2}\label{class_node_a681685fe9668f05a34770c59772d71c2} 
+int {\bfseries size}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class K, class V$>$\newline
+class Node$<$ K, V $>$}
+\doxylink{class_node}{Node} class that can be used to store any type of data in a 2-\/4 tree. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em K} & Key type \\
+\hline
+{\em V} & Value type \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_node_aed96f010707d488c6c74fdca94f4539a}\label{class_node_aed96f010707d488c6c74fdca94f4539a} 
+\index{Node$<$ K, V $>$@{Node$<$ K, V $>$}!Node@{Node}}
+\index{Node@{Node}!Node$<$ K, V $>$@{Node$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily template$<$class K , class V $>$ \\
+\mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$\mbox{\hyperlink{class_node}{\+::\+Node}} (\begin{DoxyParamCaption}\item[{K}]{k,  }\item[{V}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates a new node with one key and value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & Key \\
+\hline
+{\em v} & Value \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_node_aab71ac1a4c4d4bc7b4d97ee76192e0ac}\label{class_node_aab71ac1a4c4d4bc7b4d97ee76192e0ac} 
+\index{Node$<$ K, V $>$@{Node$<$ K, V $>$}!Node@{Node}}
+\index{Node@{Node}!Node$<$ K, V $>$@{Node$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily template$<$class K , class V $>$ \\
+\mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$\mbox{\hyperlink{class_node}{\+::\+Node}} (\begin{DoxyParamCaption}\item[{K}]{k,  }\item[{\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ V $>$ \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates a new node with one key and a \doxylink{class_circular_dynamic_array}{Circular\+Dynamic\+Array} of values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & Key \\
+\hline
+{\em v} & \doxylink{class_circular_dynamic_array}{Circular\+Dynamic\+Array} of values \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_node_ac64a8cc6fcce39bc3afdc21e6d7eff26}\label{class_node_ac64a8cc6fcce39bc3afdc21e6d7eff26} 
+\index{Node$<$ K, V $>$@{Node$<$ K, V $>$}!Node@{Node}}
+\index{Node@{Node}!Node$<$ K, V $>$@{Node$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily template$<$class K , class V $>$ \\
+\mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$\mbox{\hyperlink{class_node}{\+::\+Node}} (\begin{DoxyParamCaption}\item[{K}]{k\mbox{[}$\,$\mbox{]},  }\item[{V}]{v\mbox{[}$\,$\mbox{]},  }\item[{int}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates a new node with multiple keys and values from an array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & Array of keys \\
+\hline
+{\em v} & Array of values \\
+\hline
+{\em size} & Size of the arrays \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_node_a82afa2231818db360c4c81b2019a57c5}\label{class_node_a82afa2231818db360c4c81b2019a57c5} 
+\index{Node$<$ K, V $>$@{Node$<$ K, V $>$}!Node@{Node}}
+\index{Node@{Node}!Node$<$ K, V $>$@{Node$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily template$<$class K , class V $>$ \\
+\mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$\mbox{\hyperlink{class_node}{\+::\+Node}} (\begin{DoxyParamCaption}\item[{K}]{k\mbox{[}$\,$\mbox{]},  }\item[{\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ V $>$}]{v\mbox{[}$\,$\mbox{]},  }\item[{int}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates a new node with multiple keys and values from a \doxylink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & Array of keys \\
+\hline
+{\em v} & Array of values \\
+\hline
+{\em size} & Size of the arrays \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_node_a2e0ebfb182306d7750b499b868104e9d}\label{class_node_a2e0ebfb182306d7750b499b868104e9d} 
+\index{Node$<$ K, V $>$@{Node$<$ K, V $>$}!Node@{Node}}
+\index{Node@{Node}!Node$<$ K, V $>$@{Node$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily template$<$class K , class V $>$ \\
+\mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$\mbox{\hyperlink{class_node}{\+::\+Node}} (\begin{DoxyParamCaption}\item[{K}]{k,  }\item[{V}]{v,  }\item[{\mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$ \texorpdfstring{$\ast$}{*}}]{parent }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates a new node with one key, value, and parent. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & Key \\
+\hline
+{\em v} & Value \\
+\hline
+{\em parent} & Parent node \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_node_a959b818404d24ce667946d3780011cc3}\label{class_node_a959b818404d24ce667946d3780011cc3} 
+\index{Node$<$ K, V $>$@{Node$<$ K, V $>$}!addChildNode@{addChildNode}}
+\index{addChildNode@{addChildNode}!Node$<$ K, V $>$@{Node$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{addChildNode()}{addChildNode()}}
+{\footnotesize\ttfamily template$<$class K , class V $>$ \\
+void \mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$\+::add\+Child\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$ \texorpdfstring{$\ast$}{*}}]{child }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Inserts a child node into the node at the correct spot. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em child} & Child node to insert \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_node_a372c27944758f815bbaa51f95207d361}\label{class_node_a372c27944758f815bbaa51f95207d361} 
+\index{Node$<$ K, V $>$@{Node$<$ K, V $>$}!getTotalSubtreeSize@{getTotalSubtreeSize}}
+\index{getTotalSubtreeSize@{getTotalSubtreeSize}!Node$<$ K, V $>$@{Node$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{getTotalSubtreeSize()}{getTotalSubtreeSize()}}
+{\footnotesize\ttfamily template$<$class K , class V $>$ \\
+int \mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$\+::get\+Total\+Subtree\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the total size of the left subtree for the node. 
+
+\begin{DoxyReturn}{Returns}
+int Total size of the left subtree 
+\end{DoxyReturn}
+\Hypertarget{class_node_a54e4980187ace89449394a3e89c4e7b9}\label{class_node_a54e4980187ace89449394a3e89c4e7b9} 
+\index{Node$<$ K, V $>$@{Node$<$ K, V $>$}!insertKeyValPair@{insertKeyValPair}}
+\index{insertKeyValPair@{insertKeyValPair}!Node$<$ K, V $>$@{Node$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{insertKeyValPair()}{insertKeyValPair()}}
+{\footnotesize\ttfamily template$<$class K , class V $>$ \\
+void \mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$\+::insert\+Key\+Val\+Pair (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node_element}{Node\+Element}}$<$ K, V $>$}]{element }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Inserts a key-\/value pair into the node at the correct spot. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em element} & Element to insert \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_node_a0b55d2b102d5ab5dbe2ac5e2bf45b2b4}\label{class_node_a0b55d2b102d5ab5dbe2ac5e2bf45b2b4} 
+\index{Node$<$ K, V $>$@{Node$<$ K, V $>$}!removeChildNode@{removeChildNode}}
+\index{removeChildNode@{removeChildNode}!Node$<$ K, V $>$@{Node$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{removeChildNode()}{removeChildNode()}}
+{\footnotesize\ttfamily template$<$class K , class V $>$ \\
+void \mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$\+::remove\+Child\+Node (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$ \texorpdfstring{$\ast$}{*}}]{child }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Removes a child node from the node. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em child} & Child node to remove \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_node_a9bfb39d7acfd510d157e1f6a302007e0}\label{class_node_a9bfb39d7acfd510d157e1f6a302007e0} 
+\index{Node$<$ K, V $>$@{Node$<$ K, V $>$}!removeKey@{removeKey}}
+\index{removeKey@{removeKey}!Node$<$ K, V $>$@{Node$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{removeKey()}{removeKey()}}
+{\footnotesize\ttfamily template$<$class K , class V $>$ \\
+int \mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$\+::remove\+Key (\begin{DoxyParamCaption}\item[{K}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Remove a key from the node. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The key to remove \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_node_a4417ceb47ff291c9d40f865ece1a8beb}\label{class_node_a4417ceb47ff291c9d40f865ece1a8beb} 
+\index{Node$<$ K, V $>$@{Node$<$ K, V $>$}!removeKeyValPair@{removeKeyValPair}}
+\index{removeKeyValPair@{removeKeyValPair}!Node$<$ K, V $>$@{Node$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{removeKeyValPair()}{removeKeyValPair()}}
+{\footnotesize\ttfamily template$<$class K , class V $>$ \\
+void \mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$\+::remove\+Key\+Val\+Pair (\begin{DoxyParamCaption}\item[{K}]{key,  }\item[{\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ V $>$ \&}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Removes a key-\/value pair from the node. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & Key to remove \\
+\hline
+{\em value} & Value to remove \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_node_a1a7db98c14e811dad1bcaad7daf14efc}\label{class_node_a1a7db98c14e811dad1bcaad7daf14efc} 
+\index{Node$<$ K, V $>$@{Node$<$ K, V $>$}!traverseDirection@{traverseDirection}}
+\index{traverseDirection@{traverseDirection}!Node$<$ K, V $>$@{Node$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{traverseDirection()}{traverseDirection()}}
+{\footnotesize\ttfamily template$<$class K , class V $>$ \\
+\mbox{\hyperlink{class_node}{Node}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$\+::traverse\+Direction (\begin{DoxyParamCaption}\item[{K}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the child node that should be traversed to. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The key that is being checked \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Node\texorpdfstring{$\ast$}{*} The child node that should be traversed to 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Node.\+cpp\end{DoxyCompactItemize}

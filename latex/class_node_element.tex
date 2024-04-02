@@ -1,0 +1,182 @@
+\doxysection{Node\+Element\texorpdfstring{$<$}{<} Key, Value \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{class_node_element}{}\label{class_node_element}\index{NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}}
+
+
+\doxylink{class_node_element}{Node\+Element} class that can be used to store keys, values, and subtree size together in 2-\/4 tree nodes.  
+
+
+
+
+{\ttfamily \#include $<$Node\+Element.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_node_element_a19c9edf42e553285691f73815c2974f7}\label{class_node_element_a19c9edf42e553285691f73815c2974f7} 
+{\bfseries Node\+Element} ()
+\begin{DoxyCompactList}\small\item\em Default constructor for the node element. \end{DoxyCompactList}\item 
+\Hypertarget{class_node_element_a0e233246d38e14863be2a238ead8f638}\label{class_node_element_a0e233246d38e14863be2a238ead8f638} 
+{\bfseries Node\+Element} (Key k, Value v)
+\begin{DoxyCompactList}\small\item\em Constructs a new \doxylink{class_node_element}{Node\+Element} object with a single value. \end{DoxyCompactList}\item 
+\Hypertarget{class_node_element_ad37991130276f5e124f8b4321b5b2d03}\label{class_node_element_ad37991130276f5e124f8b4321b5b2d03} 
+{\bfseries Node\+Element} (Key k, \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ Value $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Constructs a new \doxylink{class_node_element}{Node\+Element} object with multiple values. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_node_element_a7b8841273eb4ebf1cec38cd3339cface}{add\+Value}} (Value v)
+\begin{DoxyCompactList}\small\item\em Adds a value to the node element. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_node_element_a025e52f7b81b52c05aa288792fcb8b40}{remove\+Value}} (Value v)
+\begin{DoxyCompactList}\small\item\em Removes a value from the node element. \end{DoxyCompactList}\item 
+Key \mbox{\hyperlink{class_node_element_a8b5344e4c6f3d3bba2f894001418408a}{get\+Key}} ()
+\begin{DoxyCompactList}\small\item\em Returns the key stored in the node element. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ Value $>$ \& \mbox{\hyperlink{class_node_element_a766d2aa9669c5e82325abb15ae7a0463}{get\+Values}} ()
+\begin{DoxyCompactList}\small\item\em Returns the values stored in the node element. \end{DoxyCompactList}\item 
+Value \mbox{\hyperlink{class_node_element_a371df174a907488742686cb4d1ed645c}{get\+Value\+At}} (int index)
+\begin{DoxyCompactList}\small\item\em Returns the number of values stored in the node element. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_node_element_a19514a1a585dad2c24c00d038a344aea}{get\+Num\+Values}} ()
+\begin{DoxyCompactList}\small\item\em Returns the number of values stored in the node element. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_node_element_a9aa18749d6d202e5ad181822f24bb478}{get\+Subtree\+Size}} ()
+\begin{DoxyCompactList}\small\item\em Returns the subtree size stored in the node element. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_node_element_a180d183e7ad0ae8e20485729f19be0a2}{set\+Subtree\+Size}} (int size)
+\begin{DoxyCompactList}\small\item\em Sets the subtree size stored in the node element. \end{DoxyCompactList}\item 
+\Hypertarget{class_node_element_ade3ddb4176e874311c08d3a131085f92}\label{class_node_element_ade3ddb4176e874311c08d3a131085f92} 
+void {\bfseries increment\+Subtree\+Size} ()
+\begin{DoxyCompactList}\small\item\em Increments the subtree size stored in the node element. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class Key, class Value$>$\newline
+class Node\+Element$<$ Key, Value $>$}
+\doxylink{class_node_element}{Node\+Element} class that can be used to store keys, values, and subtree size together in 2-\/4 tree nodes. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Key} & Key type \\
+\hline
+{\em Value} & Value type \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_node_element_a7b8841273eb4ebf1cec38cd3339cface}\label{class_node_element_a7b8841273eb4ebf1cec38cd3339cface} 
+\index{NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}!addValue@{addValue}}
+\index{addValue@{addValue}!NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}}
+\doxysubsubsection{\texorpdfstring{addValue()}{addValue()}}
+{\footnotesize\ttfamily template$<$class Key , class Value $>$ \\
+void \mbox{\hyperlink{class_node_element}{Node\+Element}}$<$ Key, Value $>$\+::add\+Value (\begin{DoxyParamCaption}\item[{Value}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Adds a value to the node element. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & Value to add \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_node_element_a8b5344e4c6f3d3bba2f894001418408a}\label{class_node_element_a8b5344e4c6f3d3bba2f894001418408a} 
+\index{NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}!getKey@{getKey}}
+\index{getKey@{getKey}!NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}}
+\doxysubsubsection{\texorpdfstring{getKey()}{getKey()}}
+{\footnotesize\ttfamily template$<$class Key , class Value $>$ \\
+Key \mbox{\hyperlink{class_node_element}{Node\+Element}}$<$ Key, Value $>$\+::get\+Key (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the key stored in the node element. 
+
+\begin{DoxyReturn}{Returns}
+Key Key stored in the node element 
+\end{DoxyReturn}
+\Hypertarget{class_node_element_a19514a1a585dad2c24c00d038a344aea}\label{class_node_element_a19514a1a585dad2c24c00d038a344aea} 
+\index{NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}!getNumValues@{getNumValues}}
+\index{getNumValues@{getNumValues}!NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}}
+\doxysubsubsection{\texorpdfstring{getNumValues()}{getNumValues()}}
+{\footnotesize\ttfamily template$<$class Key , class Value $>$ \\
+int \mbox{\hyperlink{class_node_element}{Node\+Element}}$<$ Key, Value $>$\+::get\+Num\+Values (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the number of values stored in the node element. 
+
+\begin{DoxyReturn}{Returns}
+int Number of values stored in the node element 
+\end{DoxyReturn}
+\Hypertarget{class_node_element_a9aa18749d6d202e5ad181822f24bb478}\label{class_node_element_a9aa18749d6d202e5ad181822f24bb478} 
+\index{NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}!getSubtreeSize@{getSubtreeSize}}
+\index{getSubtreeSize@{getSubtreeSize}!NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}}
+\doxysubsubsection{\texorpdfstring{getSubtreeSize()}{getSubtreeSize()}}
+{\footnotesize\ttfamily template$<$class Key , class Value $>$ \\
+int \mbox{\hyperlink{class_node_element}{Node\+Element}}$<$ Key, Value $>$\+::get\+Subtree\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the subtree size stored in the node element. 
+
+\begin{DoxyReturn}{Returns}
+int Subtree size stored in the node element 
+\end{DoxyReturn}
+\Hypertarget{class_node_element_a371df174a907488742686cb4d1ed645c}\label{class_node_element_a371df174a907488742686cb4d1ed645c} 
+\index{NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}!getValueAt@{getValueAt}}
+\index{getValueAt@{getValueAt}!NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}}
+\doxysubsubsection{\texorpdfstring{getValueAt()}{getValueAt()}}
+{\footnotesize\ttfamily template$<$class Key , class Value $>$ \\
+Value \mbox{\hyperlink{class_node_element}{Node\+Element}}$<$ Key, Value $>$\+::get\+Value\+At (\begin{DoxyParamCaption}\item[{int}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the number of values stored in the node element. 
+
+\begin{DoxyReturn}{Returns}
+int Number of values stored in the node element 
+\end{DoxyReturn}
+\Hypertarget{class_node_element_a766d2aa9669c5e82325abb15ae7a0463}\label{class_node_element_a766d2aa9669c5e82325abb15ae7a0463} 
+\index{NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}!getValues@{getValues}}
+\index{getValues@{getValues}!NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}}
+\doxysubsubsection{\texorpdfstring{getValues()}{getValues()}}
+{\footnotesize\ttfamily template$<$class Key , class Value $>$ \\
+\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ Value $>$ \& \mbox{\hyperlink{class_node_element}{Node\+Element}}$<$ Key, Value $>$\+::get\+Values (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the values stored in the node element. 
+
+\begin{DoxyReturn}{Returns}
+\doxylink{class_circular_dynamic_array}{Circular\+Dynamic\+Array$<$\+Value$>$}\& Values stored in the node element 
+\end{DoxyReturn}
+\Hypertarget{class_node_element_a025e52f7b81b52c05aa288792fcb8b40}\label{class_node_element_a025e52f7b81b52c05aa288792fcb8b40} 
+\index{NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}!removeValue@{removeValue}}
+\index{removeValue@{removeValue}!NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}}
+\doxysubsubsection{\texorpdfstring{removeValue()}{removeValue()}}
+{\footnotesize\ttfamily template$<$class Key , class Value $>$ \\
+void \mbox{\hyperlink{class_node_element}{Node\+Element}}$<$ Key, Value $>$\+::remove\+Value (\begin{DoxyParamCaption}\item[{Value}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Removes a value from the node element. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & Value to remove \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_node_element_a180d183e7ad0ae8e20485729f19be0a2}\label{class_node_element_a180d183e7ad0ae8e20485729f19be0a2} 
+\index{NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}!setSubtreeSize@{setSubtreeSize}}
+\index{setSubtreeSize@{setSubtreeSize}!NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}}
+\doxysubsubsection{\texorpdfstring{setSubtreeSize()}{setSubtreeSize()}}
+{\footnotesize\ttfamily template$<$class Key , class Value $>$ \\
+void \mbox{\hyperlink{class_node_element}{Node\+Element}}$<$ Key, Value $>$\+::set\+Subtree\+Size (\begin{DoxyParamCaption}\item[{int}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Sets the subtree size stored in the node element. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & Subtree size to set \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Node\+Element.\+h\end{DoxyCompactItemize}

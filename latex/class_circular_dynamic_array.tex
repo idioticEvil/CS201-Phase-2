@@ -1,0 +1,433 @@
+\doxysection{Circular\+Dynamic\+Array\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{class_circular_dynamic_array}{}\label{class_circular_dynamic_array}\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+
+
+A circular dynamic array that can store any type of data.  
+
+
+
+
+{\ttfamily \#include $<$Circular\+Dynamic\+Array.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_circular_dynamic_array_a8ab3958c10d25114cfab69ae74fa6e5b}\label{class_circular_dynamic_array_a8ab3958c10d25114cfab69ae74fa6e5b} 
+{\bfseries Circular\+Dynamic\+Array} ()
+\begin{DoxyCompactList}\small\item\em Creates an empty Circular Array of size 2. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_circular_dynamic_array_a93297de998bd314dad85ed43f92d24cb}{Circular\+Dynamic\+Array}} (int s)
+\begin{DoxyCompactList}\small\item\em Creates an empty Circular Array of size s. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_circular_dynamic_array_a49a7100f8aa9a9c154eecc52e986009e}{Circular\+Dynamic\+Array}} (const \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}} \&src)
+\begin{DoxyCompactList}\small\item\em Uses deep copy to create a new array. \end{DoxyCompactList}\item 
+\Hypertarget{class_circular_dynamic_array_ae144ec12fa465dd50568d3a6cffc8f85}\label{class_circular_dynamic_array_ae144ec12fa465dd50568d3a6cffc8f85} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Circular\+Dynamic\+Array} ()
+\begin{DoxyCompactList}\small\item\em Deletes the array. \end{DoxyCompactList}\item 
+\Hypertarget{class_circular_dynamic_array_ab8ec464d2064aa1c9b4b75f9b7ba9cef}\label{class_circular_dynamic_array_ab8ec464d2064aa1c9b4b75f9b7ba9cef} 
+void {\bfseries increase\+Size} ()
+\begin{DoxyCompactList}\small\item\em Increases size of array when needed by doubling capacity. \end{DoxyCompactList}\item 
+\Hypertarget{class_circular_dynamic_array_adb910dedb643f07ae3f59e7ecad374d0}\label{class_circular_dynamic_array_adb910dedb643f07ae3f59e7ecad374d0} 
+void {\bfseries decrease\+Size} ()
+\begin{DoxyCompactList}\small\item\em Decreases size of array when needed by halving capacity. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}} \& \mbox{\hyperlink{class_circular_dynamic_array_a0d48a987aba9830bb436c3075bc3a7f4}{operator=}} (const \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}} \&src)
+\begin{DoxyCompactList}\small\item\em Uses deep copy to assign one array to another. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_circular_dynamic_array_a3569a2365ff94ae413b7c54ed70596c0}{operator==}} (const \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}} \&src)
+\begin{DoxyCompactList}\small\item\em Compares two arrays to see if they are equal. \end{DoxyCompactList}\item 
+T \& \mbox{\hyperlink{class_circular_dynamic_array_ab7837825f7d17e2a978dba8ba785a78f}{operator\mbox{[}$\,$\mbox{]}}} (int i)
+\begin{DoxyCompactList}\small\item\em Returns the value at index i. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_circular_dynamic_array_ac30e9aef0f786041ce05eefce7a6c521}{add\+Front}} (T v)
+\begin{DoxyCompactList}\small\item\em Stores value at the front of the array, and increases size by one. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_circular_dynamic_array_a763ad3aed85e2a260e61e815bfdf19c8}{add\+End}} (T v)
+\begin{DoxyCompactList}\small\item\em Stores value at the end of the array, and increases size by one. \end{DoxyCompactList}\item 
+\Hypertarget{class_circular_dynamic_array_a0088a2518cd580f54f68e275a5ee710a}\label{class_circular_dynamic_array_a0088a2518cd580f54f68e275a5ee710a} 
+void {\bfseries del\+Front} ()
+\begin{DoxyCompactList}\small\item\em Decreases size by one and removes the value at the front of the array. \end{DoxyCompactList}\item 
+\Hypertarget{class_circular_dynamic_array_ab5a187e71e299ff4bb045d383dec0031}\label{class_circular_dynamic_array_ab5a187e71e299ff4bb045d383dec0031} 
+void {\bfseries del\+End} ()
+\begin{DoxyCompactList}\small\item\em Decreases size by one and removes the value at the end of the array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_circular_dynamic_array_a8e388a751a0a372474189828df81e637}{add\+At}} (T v, int i)
+\begin{DoxyCompactList}\small\item\em Stores value at index i, and increases size by one. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_circular_dynamic_array_a0005da80e7017da292cd58a7b7d901be}{remove\+At}} (int i)
+\begin{DoxyCompactList}\small\item\em Decreases size by one and removes the value at index i. \end{DoxyCompactList}\item 
+\Hypertarget{class_circular_dynamic_array_ad0cbe44025f0a9de4abd2790976f355f}\label{class_circular_dynamic_array_ad0cbe44025f0a9de4abd2790976f355f} 
+void {\bfseries clear} ()
+\begin{DoxyCompactList}\small\item\em Deletes all data in the array, starts fresh with size 2. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_circular_dynamic_array_ad85b368c47b489bd2ab61e5b93718042}{length}} ()
+\begin{DoxyCompactList}\small\item\em Returns the length of the array. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_circular_dynamic_array_a107d0dd2a6615b1a1a31150376366760}{capacity}} ()
+\begin{DoxyCompactList}\small\item\em Returns the capacity of the array. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_circular_dynamic_array_ad78de586475a984c8f63fefa674cbaf7}{get\+Front}} ()
+\begin{DoxyCompactList}\small\item\em Returns the value at the front of the array. \end{DoxyCompactList}\item 
+T \& \mbox{\hyperlink{class_circular_dynamic_array_ac6f5bc5d4f1589bec8b1d4dcc6206ada}{get\+Front\+Value}} ()
+\begin{DoxyCompactList}\small\item\em Returns the value at the end of the array. \end{DoxyCompactList}\item 
+T \& \mbox{\hyperlink{class_circular_dynamic_array_a483ba68f42c8b2965a5d8f90f1cf2427}{get\+End\+Value}} ()
+\begin{DoxyCompactList}\small\item\em Returns the value at the end of the array. \end{DoxyCompactList}\item 
+\Hypertarget{class_circular_dynamic_array_a184c2c0e9d925e46a3d5fec5b79a1e9d}\label{class_circular_dynamic_array_a184c2c0e9d925e46a3d5fec5b79a1e9d} 
+void {\bfseries print\+Array} ()
+\begin{DoxyCompactList}\small\item\em Prints the array. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_circular_dynamic_array_adff942eaead18612129c9901307bee72}{linear\+Search}} (T e)
+\begin{DoxyCompactList}\small\item\em Linear search\+: Searches for value e in the array, returns index if found, -\/1 if not. \end{DoxyCompactList}\item 
+\Hypertarget{class_circular_dynamic_array_a31923a85456cc955ed05a9d229c83a5e}\label{class_circular_dynamic_array_a31923a85456cc955ed05a9d229c83a5e} 
+void {\bfseries insertion\+Sort} ()
+\begin{DoxyCompactList}\small\item\em Insertion Sort\+: Sorts the array using insertion sort. \end{DoxyCompactList}\item 
+\Hypertarget{class_circular_dynamic_array_a5874b53bf22abde3994d73bac3b6db29}\label{class_circular_dynamic_array_a5874b53bf22abde3994d73bac3b6db29} 
+void {\bfseries mergesort} (int start, int end)
+\begin{DoxyCompactList}\small\item\em Sorts the array using merge sort. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_circular_dynamic_array_a42ba328429ce9937f222c0952abee580}{merge}} (int start, int mid, int end)
+\begin{DoxyCompactList}\small\item\em Merges the array after it has been split. \end{DoxyCompactList}\item 
+\Hypertarget{class_circular_dynamic_array_a45e99eebbaf7b5ddd3c9a993f2c10b81}\label{class_circular_dynamic_array_a45e99eebbaf7b5ddd3c9a993f2c10b81} 
+void {\bfseries Sort} ()
+\begin{DoxyCompactList}\small\item\em Sorts the array. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_circular_dynamic_array_a07c080edd01f6aaad51bcfc412b75ddc}{bin\+Search}} (T e)
+\begin{DoxyCompactList}\small\item\em Searches for value e in the array, returns index if found, -\/1 if not. \end{DoxyCompactList}\item 
+T \mbox{\hyperlink{class_circular_dynamic_array_a88c2468bc0113e0a6560132afd75c1d6}{QSelect}} (int k)
+\begin{DoxyCompactList}\small\item\em Returns the value at index i, shell function for quick\+Select. \end{DoxyCompactList}\item 
+T \mbox{\hyperlink{class_circular_dynamic_array_a6e4e2d3f314b19279312e63acfe4b5de}{quick\+Select}} (\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$ \&arr, int k)
+\begin{DoxyCompactList}\small\item\em Returns the value at index i. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Circular\+Dynamic\+Array$<$ T $>$}
+A circular dynamic array that can store any type of data. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The type of data to store \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_circular_dynamic_array_a93297de998bd314dad85ed43f92d24cb}\label{class_circular_dynamic_array_a93297de998bd314dad85ed43f92d24cb} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!CircularDynamicArray@{CircularDynamicArray}}
+\index{CircularDynamicArray@{CircularDynamicArray}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{CircularDynamicArray()}{CircularDynamicArray()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\mbox{\hyperlink{class_circular_dynamic_array}{\+::\+Circular\+Dynamic\+Array}} (\begin{DoxyParamCaption}\item[{int}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Creates an empty Circular Array of size s. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & The size of the array \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_circular_dynamic_array_a49a7100f8aa9a9c154eecc52e986009e}\label{class_circular_dynamic_array_a49a7100f8aa9a9c154eecc52e986009e} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!CircularDynamicArray@{CircularDynamicArray}}
+\index{CircularDynamicArray@{CircularDynamicArray}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{CircularDynamicArray()}{CircularDynamicArray()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\mbox{\hyperlink{class_circular_dynamic_array}{\+::\+Circular\+Dynamic\+Array}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$ \&}]{src }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Uses deep copy to create a new array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & The array to copy \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_circular_dynamic_array_a8e388a751a0a372474189828df81e637}\label{class_circular_dynamic_array_a8e388a751a0a372474189828df81e637} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!addAt@{addAt}}
+\index{addAt@{addAt}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{addAt()}{addAt()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::add\+At (\begin{DoxyParamCaption}\item[{T}]{v,  }\item[{int}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Stores value at index i, and increases size by one. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & The value to store \\
+\hline
+{\em i} & The index to store the value at \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_circular_dynamic_array_a763ad3aed85e2a260e61e815bfdf19c8}\label{class_circular_dynamic_array_a763ad3aed85e2a260e61e815bfdf19c8} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!addEnd@{addEnd}}
+\index{addEnd@{addEnd}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{addEnd()}{addEnd()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::add\+End (\begin{DoxyParamCaption}\item[{T}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Stores value at the end of the array, and increases size by one. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & The value to store \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_circular_dynamic_array_ac30e9aef0f786041ce05eefce7a6c521}\label{class_circular_dynamic_array_ac30e9aef0f786041ce05eefce7a6c521} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!addFront@{addFront}}
+\index{addFront@{addFront}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{addFront()}{addFront()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::add\+Front (\begin{DoxyParamCaption}\item[{T}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Stores value at the front of the array, and increases size by one. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & The value to store \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_circular_dynamic_array_a07c080edd01f6aaad51bcfc412b75ddc}\label{class_circular_dynamic_array_a07c080edd01f6aaad51bcfc412b75ddc} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!binSearch@{binSearch}}
+\index{binSearch@{binSearch}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{binSearch()}{binSearch()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::bin\+Search (\begin{DoxyParamCaption}\item[{T}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Searches for value e in the array, returns index if found, -\/1 if not. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & The value to search for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int The index of the value 
+\end{DoxyReturn}
+\Hypertarget{class_circular_dynamic_array_a107d0dd2a6615b1a1a31150376366760}\label{class_circular_dynamic_array_a107d0dd2a6615b1a1a31150376366760} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!capacity@{capacity}}
+\index{capacity@{capacity}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{capacity()}{capacity()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::capacity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the capacity of the array. 
+
+\begin{DoxyReturn}{Returns}
+int The capacity of the array 
+\end{DoxyReturn}
+\Hypertarget{class_circular_dynamic_array_a483ba68f42c8b2965a5d8f90f1cf2427}\label{class_circular_dynamic_array_a483ba68f42c8b2965a5d8f90f1cf2427} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!getEndValue@{getEndValue}}
+\index{getEndValue@{getEndValue}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getEndValue()}{getEndValue()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \& \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::get\+End\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the value at the end of the array. 
+
+\begin{DoxyReturn}{Returns}
+T The value at the end of the array 
+\end{DoxyReturn}
+\Hypertarget{class_circular_dynamic_array_ad78de586475a984c8f63fefa674cbaf7}\label{class_circular_dynamic_array_ad78de586475a984c8f63fefa674cbaf7} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!getFront@{getFront}}
+\index{getFront@{getFront}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getFront()}{getFront()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::get\+Front (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the value at the front of the array. 
+
+\begin{DoxyReturn}{Returns}
+T The value at the front of the array 
+\end{DoxyReturn}
+\Hypertarget{class_circular_dynamic_array_ac6f5bc5d4f1589bec8b1d4dcc6206ada}\label{class_circular_dynamic_array_ac6f5bc5d4f1589bec8b1d4dcc6206ada} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!getFrontValue@{getFrontValue}}
+\index{getFrontValue@{getFrontValue}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getFrontValue()}{getFrontValue()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \& \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::get\+Front\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the value at the end of the array. 
+
+\begin{DoxyReturn}{Returns}
+T The value at the end of the array 
+\end{DoxyReturn}
+\Hypertarget{class_circular_dynamic_array_ad85b368c47b489bd2ab61e5b93718042}\label{class_circular_dynamic_array_ad85b368c47b489bd2ab61e5b93718042} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!length@{length}}
+\index{length@{length}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{length()}{length()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the length of the array. 
+
+\begin{DoxyReturn}{Returns}
+int The length of the array 
+\end{DoxyReturn}
+\Hypertarget{class_circular_dynamic_array_adff942eaead18612129c9901307bee72}\label{class_circular_dynamic_array_adff942eaead18612129c9901307bee72} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!linearSearch@{linearSearch}}
+\index{linearSearch@{linearSearch}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{linearSearch()}{linearSearch()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::linear\+Search (\begin{DoxyParamCaption}\item[{T}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Linear search\+: Searches for value e in the array, returns index if found, -\/1 if not. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & The value to search for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int The index of the value 
+\end{DoxyReturn}
+\Hypertarget{class_circular_dynamic_array_a42ba328429ce9937f222c0952abee580}\label{class_circular_dynamic_array_a42ba328429ce9937f222c0952abee580} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!merge@{merge}}
+\index{merge@{merge}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{merge()}{merge()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::merge (\begin{DoxyParamCaption}\item[{int}]{start,  }\item[{int}]{mid,  }\item[{int}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Merges the array after it has been split. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start} & The start of the array \\
+\hline
+{\em mid} & The middle of the array \\
+\hline
+{\em end} & The end of the array \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_circular_dynamic_array_a0d48a987aba9830bb436c3075bc3a7f4}\label{class_circular_dynamic_array_a0d48a987aba9830bb436c3075bc3a7f4} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}} \& \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$ \&}]{src }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Uses deep copy to assign one array to another. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & The array to copy \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\doxylink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}\& The new array 
+\end{DoxyReturn}
+\Hypertarget{class_circular_dynamic_array_a3569a2365ff94ae413b7c54ed70596c0}\label{class_circular_dynamic_array_a3569a2365ff94ae413b7c54ed70596c0} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!operator==@{operator==}}
+\index{operator==@{operator==}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$ \&}]{src }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Compares two arrays to see if they are equal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & The array to compare to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Array is equal 
+
+false Array is not equal 
+\end{DoxyReturn}
+\Hypertarget{class_circular_dynamic_array_ab7837825f7d17e2a978dba8ba785a78f}\label{class_circular_dynamic_array_ab7837825f7d17e2a978dba8ba785a78f} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \& \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the value at index i. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Index of the value to return \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T\& The value at index i 
+\end{DoxyReturn}
+\Hypertarget{class_circular_dynamic_array_a88c2468bc0113e0a6560132afd75c1d6}\label{class_circular_dynamic_array_a88c2468bc0113e0a6560132afd75c1d6} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!QSelect@{QSelect}}
+\index{QSelect@{QSelect}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{QSelect()}{QSelect()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::\+QSelect (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the value at index i, shell function for quick\+Select. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & The index of the value to return \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T The value at index i 
+\end{DoxyReturn}
+\Hypertarget{class_circular_dynamic_array_a6e4e2d3f314b19279312e63acfe4b5de}\label{class_circular_dynamic_array_a6e4e2d3f314b19279312e63acfe4b5de} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!quickSelect@{quickSelect}}
+\index{quickSelect@{quickSelect}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{quickSelect()}{quickSelect()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::quick\+Select (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$ \&}]{arr,  }\item[{int}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the value at index i. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arr} & The array to search \\
+\hline
+{\em k} & The index of the value to return \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T The value at index i 
+\end{DoxyReturn}
+\Hypertarget{class_circular_dynamic_array_a0005da80e7017da292cd58a7b7d901be}\label{class_circular_dynamic_array_a0005da80e7017da292cd58a7b7d901be} 
+\index{CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}!removeAt@{removeAt}}
+\index{removeAt@{removeAt}!CircularDynamicArray$<$ T $>$@{CircularDynamicArray$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{removeAt()}{removeAt()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ T $>$\+::remove\+At (\begin{DoxyParamCaption}\item[{int}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Decreases size by one and removes the value at index i. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & The index to remove the value from \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Circular\+Dynamic\+Array.\+h\end{DoxyCompactItemize}

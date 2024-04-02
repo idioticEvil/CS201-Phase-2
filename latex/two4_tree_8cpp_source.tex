@@ -1,0 +1,376 @@
+\doxysection{two4\+Tree.\+cpp}
+\hypertarget{two4_tree_8cpp_source}{}\label{two4_tree_8cpp_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <ctime>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <cstdlib>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <stdexcept>}\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}Node.cpp"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}CircularDynamicArray.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{keyword}{using\ namespace\ }std;}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00010\ \textcolor{comment}{TODO:}}
+\DoxyCodeLine{00011\ \textcolor{comment}{-\/\ Implement\ remove\ function}}
+\DoxyCodeLine{00012\ \textcolor{comment}{-\/\ Implement\ duplicates\ function}}
+\DoxyCodeLine{00013\ \textcolor{comment}{-\/\ Update\ inorder,\ rank,\ and\ select\ functions\ to\ deal\ with\ duplicates}}
+\DoxyCodeLine{00014\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ KeyType,\ \textcolor{keyword}{typename}\ ValueType>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtwo4_tree}{two4Tree}}\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ rootNode;}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ treeSize;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ split(\mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ nodeToSplit,\ }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_node_element}{NodeElement<KeyType,\ ValueType>}}\ newElement)\ \{}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Get\ the\ middle\ key\ and\ value(s)\ and\ get\ ready\ to\ push\ them\ to\ the\ parent\ node}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_node_element}{NodeElement<KeyType,\ ValueType>}}\ middleElement\ =\ nodeToSplit-\/>elements[1];}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Start\ creating\ the\ left\ and\ right\ children\ of\ the\ new\ root\ node}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ leftChild\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ (nodeToSplit-\/>elements[0].getKey(),\ nodeToSplit-\/>elements[0].getValues());}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ rightChild\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ (nodeToSplit-\/>elements[2].getKey(),\ nodeToSplit-\/>elements[2].getValues());}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Pointer\ to\ hold\ what\ node\ to\ return\ for\ proper\ parent\ child\ relationship\ assignment}}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ returnNode\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Insert\ the\ new\ key-\/value\ pair\ into\ the\ correct\ child\ node}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (newElement.\mbox{\hyperlink{class_node_element_a8b5344e4c6f3d3bba2f894001418408a}{getKey}}()\ <\ middleElement.\mbox{\hyperlink{class_node_element_a8b5344e4c6f3d3bba2f894001418408a}{getKey}}())\ }
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ leftChild-\/>\mbox{\hyperlink{class_node_a54e4980187ace89449394a3e89c4e7b9}{insertKeyValPair}}(newElement);}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ rightChild-\/>\mbox{\hyperlink{class_node_a54e4980187ace89449394a3e89c4e7b9}{insertKeyValPair}}(newElement);}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ node\ to\ split\ is\ an\ internal\ node,\ distribute\ the\ children\ }}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ to\ the\ new\ left\ and\ right\ children}}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (nodeToSplit-\/>isLeaf\ ==\ \textcolor{keyword}{false})\ \{\ }
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ nodeToSplit-\/>children.\mbox{\hyperlink{class_circular_dynamic_array_ad85b368c47b489bd2ab61e5b93718042}{length}}();\ i++)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ <\ 2)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ leftChild-\/>\mbox{\hyperlink{class_node_a959b818404d24ce667946d3780011cc3}{addChildNode}}(nodeToSplit-\/>children[i]);}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nodeToSplit-\/>children[i]-\/>parent\ =\ leftChild;}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ returnNode\ =\ leftChild;}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rightChild-\/>\mbox{\hyperlink{class_node_a959b818404d24ce667946d3780011cc3}{addChildNode}}(nodeToSplit-\/>children[i]);}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nodeToSplit-\/>children[i]-\/>parent\ =\ rightChild;}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ returnNode\ =\ rightChild;}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Get\ the\ parent\ node\ of\ the\ node\ to\ split}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ parentNode\ =\ nodeToSplit-\/>parent;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parentNode\ ==\ \textcolor{keyword}{nullptr})\ \{\ \textcolor{comment}{//\ Splitting\ Root\ Node}}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parentNode\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}(middleElement.\mbox{\hyperlink{class_node_element_a8b5344e4c6f3d3bba2f894001418408a}{getKey}}(),\ middleElement.\mbox{\hyperlink{class_node_element_a766d2aa9669c5e82325abb15ae7a0463}{getValues}}());}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rootNode\ =\ parentNode;}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Add\ the\ left\ and\ right\ children\ to\ the\ parent\ node}}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parentNode-\/>\mbox{\hyperlink{class_node_a959b818404d24ce667946d3780011cc3}{addChildNode}}(leftChild);}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parentNode-\/>\mbox{\hyperlink{class_node_a959b818404d24ce667946d3780011cc3}{addChildNode}}(rightChild);}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ leftChild-\/>parent\ =\ parentNode;}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rightChild-\/>parent\ =\ parentNode;}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{\ \textcolor{comment}{//\ Splitting\ internal\ or\ root\ node}}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ parent\ node\ is\ overfull,\ split\ it,\ otherwise\ insert\ the\ middle\ element}}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (parentNode-\/>size\ >=\ 3)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//cout\ <<\ "{}Parent\ node\ with\ key:\ "{}\ <<\ parentNode-\/>elements[0].getKey()\ <<\ "{}\ is\ overfull,\ splitting"{}\ <<\ endl;}}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parentNode\ =\ split(parentNode,\ middleElement);}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//cout\ <<\ "{}Parent\ node\ is\ not\ overfull,\ inserting\ key-\/value\ pair"{}\ <<\ endl;}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parentNode-\/>\mbox{\hyperlink{class_node_a54e4980187ace89449394a3e89c4e7b9}{insertKeyValPair}}(middleElement);}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Remove\ the\ node\ to\ split\ from\ the\ parent\ node's\ children\ array}}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parentNode-\/>\mbox{\hyperlink{class_node_a0b55d2b102d5ab5dbe2ac5e2bf45b2b4}{removeChildNode}}(nodeToSplit);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Add\ the\ left\ and\ right\ children\ to\ the\ parent\ node}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ leftChild-\/>parent\ =\ parentNode;}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rightChild-\/>parent\ =\ parentNode;}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parentNode-\/>\mbox{\hyperlink{class_node_a959b818404d24ce667946d3780011cc3}{addChildNode}}(leftChild);}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parentNode-\/>\mbox{\hyperlink{class_node_a959b818404d24ce667946d3780011cc3}{addChildNode}}(rightChild);}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Calculate\ the\ subtree\ sizes\ of\ the\ left\ and\ right\ children}}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ leftChild-\/>\mbox{\hyperlink{class_node_a4d66f1d47966b6ede7d6ad42d14e1a2d}{updateSubtreeSizes}}();}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ rightChild-\/>\mbox{\hyperlink{class_node_a4d66f1d47966b6ede7d6ad42d14e1a2d}{updateSubtreeSizes}}();}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Return\ the\ correct\ node\ to\ assign\ the\ parent\ child\ relationship}}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (returnNode\ !=\ \textcolor{keyword}{nullptr})\ \textcolor{keywordflow}{return}\ returnNode;}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{return}\ parentNode;}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtwo4_tree_a9eb0599331b60a8925e5345189515c68}{two4Tree}}()\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ rootNode\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ treeSize\ =\ 0;}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtwo4_tree_ab3ea1ef88bf1dd60686b00789c3c0dcd}{two4Tree}}(KeyType\ keys[],\ ValueType\ values[],\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classtwo4_tree_ab9ead1f245edd10f36be937e8636154b}{size}})\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ rootNode\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ treeSize\ =\ 0;}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Insert\ the\ keys\ and\ values\ into\ the\ tree}}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{classtwo4_tree_ab9ead1f245edd10f36be937e8636154b}{size}};\ i++)\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtwo4_tree_adf1d0083d2b252dcef518ad4b3ea6d98}{insert}}(keys[i],\ values[i]);}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtwo4_tree_abd1a425dab8eb5cef278b692ea29d492}{\string~two4Tree}}()\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ IMPLEMENT\ THIS}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ ValueType\ *\mbox{\hyperlink{classtwo4_tree_a1f66b34a86b3656d4f0bda8578af8a87}{search}}(KeyType\ key)\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Use\ a\ pointer\ to\ reference\ the\ current\ node\ being\ traversed}}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ currentNode\ =\ rootNode;}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Traverse\ the\ tree\ to\ find\ the\ correct\ leaf\ node}}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (currentNode\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ currentNode-\/>size;\ i++)\ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (key\ ==\ currentNode-\/>elements[i].getKey())\ \{\ }
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ key\ is\ found,\ return\ the\ value}}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&(currentNode-\/>elements[i].getValues()[0]);}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (key\ <\ currentNode-\/>elements[i].getKey())\ \{\ }
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ key\ is\ less\ than\ the\ current\ key,\ traverse\ left}}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ currentNode\ =\ currentNode-\/>children[i];}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (i\ ==\ currentNode-\/>size\ -\/\ 1)\ \{\ }
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ key\ is\ greater\ than\ the\ last\ key,\ traverse\ right}}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ currentNode\ =\ currentNode-\/>children[currentNode-\/>size];}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Return\ nullptr\ if\ the\ key\ is\ not\ found}}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};\ }
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtwo4_tree_adf1d0083d2b252dcef518ad4b3ea6d98}{insert}}(KeyType\ key,\ ValueType\ value)\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ a\ new\ NodeElement\ object\ to\ store\ the\ key-\/value\ pair}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_node_element}{NodeElement<KeyType,\ ValueType>}}\ newElement\ =\ \mbox{\hyperlink{class_node_element}{NodeElement<KeyType,\ ValueType>}}(key,\ value);}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ if\ the\ tree\ is\ empty,\ if\ so,\ create\ a\ new\ root\ node}}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rootNode\ ==\ \textcolor{keyword}{nullptr})\ rootNode\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}(key,\ value);\ }
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ tree\ is\ not\ empty,\ find\ the\ correct\ leaf\ node\ to\ insert\ the\ key-\/value\ pair}}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{\ }
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ refNode\ =\ rootNode;}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Traverse\ the\ tree\ to\ find\ the\ correct\ leaf\ node}}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!refNode-\/>isLeaf)\ refNode\ =\ refNode-\/>\mbox{\hyperlink{class_node_a1a7db98c14e811dad1bcaad7daf14efc}{traverseDirection}}(key);}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Insert\ the\ key-\/value\ pair\ into\ the\ leaf\ node}}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (refNode-\/>size\ <\ 3)\ \{}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ refNode-\/>\mbox{\hyperlink{class_node_a54e4980187ace89449394a3e89c4e7b9}{insertKeyValPair}}(newElement);}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//refNode-\/>printFullNode();}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Update\ the\ subtree\ size\ values\ of\ the\ node\ and\ its\ ancestors}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ refNode-\/>\mbox{\hyperlink{class_node_a4d66f1d47966b6ede7d6ad42d14e1a2d}{updateSubtreeSizes}}();}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ newParentNode\ =\ split(refNode,\ newElement);}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ treeSize++;}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classtwo4_tree_a872bf03d5e9ed15f2bda3ee269e41540}{remove}}(KeyType\ key)\ \{}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Use\ a\ pointer\ to\ reference\ the\ current\ node\ being\ traversed}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ currentNode\ =\ rootNode;}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Traverse\ the\ tree\ to\ find\ the\ correct\ leaf\ node}}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (currentNode\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ currentNode-\/>size;\ i++)\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (key\ ==\ currentNode-\/>elements[i].getKey())\ \{\ }
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};\ }
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (key\ <\ currentNode-\/>elements[i].getKey())\ \{\ }
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ key\ is\ less\ than\ the\ current\ key,\ traverse\ left}}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ currentNode\ =\ currentNode-\/>children[i];}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (i\ ==\ currentNode-\/>size\ -\/\ 1)\ \{\ }
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ key\ is\ greater\ than\ the\ last\ key,\ traverse\ right}}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ currentNode\ =\ currentNode-\/>children[currentNode-\/>size];}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00233\ }
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ key\ is\ not\ found,\ return\ 0}}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (currentNode\ ==\ \textcolor{keyword}{nullptr})\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (!currentNode-\/>isLeaf)\ \{\ \textcolor{comment}{//\ Node\ is\ an\ internal\ node}}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ swap\ with\ the\ next\ inorder\ key}}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{\ \textcolor{comment}{//\ Node\ is\ a\ leaf\ node}}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ remove\ key\ from\ node,\ restructure\ if\ necessary}}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (currentNode-\/>\mbox{\hyperlink{class_node_a9bfb39d7acfd510d157e1f6a302007e0}{removeKey}}(key))\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 0:\ \textcolor{comment}{//\ Key\ not\ found}}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 1:\ \textcolor{comment}{//\ Key\ removed,\ restructuring\ needed}}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 2:\ \textcolor{comment}{//\ Key\ removed,\ restructuring\ not\ needed}}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classtwo4_tree_a00869283dee323acdd3b3caad8570384}{rank}}(KeyType\ key)\ \{}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtwo4_tree_a58c539d5841b0e36a6cf25a1c9ec1559}{rankActual}}(rootNode,\ key);}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classtwo4_tree_a58c539d5841b0e36a6cf25a1c9ec1559}{rankActual}}(\mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ refNode,\ KeyType\ key)\ \{}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (refNode\ ==\ \textcolor{keyword}{nullptr})\ \textcolor{keywordflow}{return}\ 0;\ \textcolor{comment}{//\ Base\ case}}
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classtwo4_tree_a00869283dee323acdd3b3caad8570384}{rank}}\ =\ 0;}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Traverse\ the\ tree\ to\ find\ the\ correct\ rank\ of\ the\ key}}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ refNode-\/>size;\ i++)\ \{}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (i\ ==\ 0\ \&\&\ key\ <\ refNode-\/>elements[0].getKey())\ \{\ }
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ key\ is\ less\ than\ the\ first\ key}}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtwo4_tree_a00869283dee323acdd3b3caad8570384}{rank}}\ +\ \mbox{\hyperlink{classtwo4_tree_a58c539d5841b0e36a6cf25a1c9ec1559}{rankActual}}(refNode-\/>children[0],\ key);}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (key\ >\ refNode-\/>elements[i].getKey())\ \{\ }
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ key\ is\ greater\ than\ the\ current\ key}}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtwo4_tree_a00869283dee323acdd3b3caad8570384}{rank}}\ +=\ refNode-\/>elements[i].getSubtreeSize();}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (key\ <\ refNode-\/>elements[i].getKey())\ \{\ }
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ key\ is\ less\ than\ the\ current\ key}}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtwo4_tree_a00869283dee323acdd3b3caad8570384}{rank}}\ +\ \mbox{\hyperlink{classtwo4_tree_a58c539d5841b0e36a6cf25a1c9ec1559}{rankActual}}(refNode-\/>children[i],\ key);}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (key\ ==\ refNode-\/>elements[i].getKey())\{\ }
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ the\ key\ is\ equal\ to\ the\ current\ key}}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtwo4_tree_a00869283dee323acdd3b3caad8570384}{rank}}\ +\ refNode-\/>elements[i].getSubtreeSize();}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtwo4_tree_a00869283dee323acdd3b3caad8570384}{rank}}\ +\ \mbox{\hyperlink{classtwo4_tree_a58c539d5841b0e36a6cf25a1c9ec1559}{rankActual}}(refNode-\/>children[refNode-\/>size],\ key);}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00290\ }
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ KeyType\ \mbox{\hyperlink{classtwo4_tree_a99fbcc1ca4f020d9184b6d1b0cedc3d4}{select}}(\textcolor{keywordtype}{int}\ pos)\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pos\ <\ 1\ ||\ pos\ >\ treeSize)\ \{}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::out\_of\_range(\textcolor{stringliteral}{"{}Index\ out\ of\ range"{}});}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtwo4_tree_acf7835cb0a4be037a9d0d3f119d973ac}{selectActual}}(rootNode,\ pos);}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ KeyType\ \mbox{\hyperlink{classtwo4_tree_acf7835cb0a4be037a9d0d3f119d973ac}{selectActual}}(\mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ refNode,\ \textcolor{keywordtype}{int}\ pos)\ \{}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (refNode\ ==\ \textcolor{keyword}{nullptr})\ \textcolor{keywordflow}{return}\ 0;\ \textcolor{comment}{//\ Base\ case}}
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classtwo4_tree_a00869283dee323acdd3b3caad8570384}{rank}}\ =\ 0;}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ refNode-\/>size;\ i++)\ \{}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classtwo4_tree_a00869283dee323acdd3b3caad8570384}{rank}}\ +\ refNode-\/>elements[i].getSubtreeSize()\ >=\ pos)\ \{}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (refNode-\/>isLeaf\ ||\ \mbox{\hyperlink{classtwo4_tree_a00869283dee323acdd3b3caad8570384}{rank}}\ +\ refNode-\/>elements[i].getSubtreeSize()\ ==\ pos)\ \{}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ refNode-\/>elements[i].getKey();}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtwo4_tree_acf7835cb0a4be037a9d0d3f119d973ac}{selectActual}}(refNode-\/>children[i],\ pos\ -\/\ \mbox{\hyperlink{classtwo4_tree_a00869283dee323acdd3b3caad8570384}{rank}});}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtwo4_tree_a00869283dee323acdd3b3caad8570384}{rank}}\ +=\ refNode-\/>elements[i].getSubtreeSize();}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00326\ }
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtwo4_tree_acf7835cb0a4be037a9d0d3f119d973ac}{selectActual}}(refNode-\/>children[refNode-\/>size],\ pos\ -\/\ \mbox{\hyperlink{classtwo4_tree_a00869283dee323acdd3b3caad8570384}{rank}});}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classtwo4_tree_a04478544d20a50826911da59a573515f}{duplicates}}(KeyType\ key)\ \{}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ count\ =\ 0;}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtwo4_tree_a7c434a507d3ef146592b88ac9008568d}{duplicatesActual}}(rootNode,\ key,\ count);}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00340\ }
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classtwo4_tree_a7c434a507d3ef146592b88ac9008568d}{duplicatesActual}}(\mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ refNode,\ KeyType\ key,\ \textcolor{keywordtype}{int}\&\ count)\ \{}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (refNode\ ==\ \textcolor{keyword}{nullptr})\ \textcolor{keywordflow}{return}\ count;\ \textcolor{comment}{//\ Base\ case}}
+\DoxyCodeLine{00350\ }
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Traverse\ the\ children\ of\ the\ node}}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ refNode-\/>size;\ i++)\ \{}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Visit\ the\ child\ before\ the\ key}}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!refNode-\/>isLeaf)\ \mbox{\hyperlink{classtwo4_tree_a7c434a507d3ef146592b88ac9008568d}{duplicatesActual}}(refNode-\/>children[i],\ key,\ count);}
+\DoxyCodeLine{00355\ }
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ if\ the\ key\ is\ a\ duplicate}}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (key\ ==\ refNode-\/>elements[i].getKey()\ \&\&\ refNode-\/>elements[i].getNumValues()\ >\ 0)\ \{}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ refNode-\/>elements[i].getNumValues();\ j++)\ \{}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ count++;}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00363\ }
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Visit\ the\ last\ child\ after\ the\ last\ key,\ if\ the\ node\ is\ not\ a\ leaf}}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!refNode-\/>isLeaf)\ \mbox{\hyperlink{classtwo4_tree_a7c434a507d3ef146592b88ac9008568d}{duplicatesActual}}(refNode-\/>children[refNode-\/>size],\ key,\ count);}
+\DoxyCodeLine{00366\ }
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ count;}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00369\ }
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classtwo4_tree_ab9ead1f245edd10f36be937e8636154b}{size}}()\ \{}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ treeSize;}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtwo4_tree_ab3f88d24c704c4585bb8606fe50cee52}{preorder}}()\ \{}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtwo4_tree_ad78e671045e12c261133138bfaaa0866}{preorderActual}}(rootNode);}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtwo4_tree_ad78e671045e12c261133138bfaaa0866}{preorderActual}}(\mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ refNode)\ \{}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ if\ the\ node\ is\ null}}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (refNode\ ==\ \textcolor{keyword}{nullptr})\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00394\ }
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Print\ the\ keys\ of\ the\ node}}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \ \ \ \ refNode-\/>\mbox{\hyperlink{class_node_a100fed8563e68a0b113206d3e893fa94}{printKeys}}();}
+\DoxyCodeLine{00397\ }
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Recursively\ traverse\ the\ children\ of\ the\ node}}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!refNode-\/>isLeaf)\ \{}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ refNode-\/>children.\mbox{\hyperlink{class_circular_dynamic_array_ad85b368c47b489bd2ab61e5b93718042}{length}}();\ i++)\ \{}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtwo4_tree_ad78e671045e12c261133138bfaaa0866}{preorderActual}}(refNode-\/>children[i]);}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00405\ }
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtwo4_tree_a83c09657b67ff69060429ab71801acc1}{preorderPrintAttributes}}(\mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ refNode)\ \{}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ if\ the\ node\ is\ null}}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (refNode\ ==\ \textcolor{keyword}{nullptr})\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00414\ }
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Print\ the\ keys\ of\ the\ node}}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ \ \ \ \ refNode-\/>\mbox{\hyperlink{class_node_a100fed8563e68a0b113206d3e893fa94}{printKeys}}();}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Recursively\ traverse\ the\ children\ of\ the\ node}}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!refNode-\/>isLeaf)\ \{}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ refNode-\/>children.\mbox{\hyperlink{class_circular_dynamic_array_ad85b368c47b489bd2ab61e5b93718042}{length}}();\ i++)\ \{}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtwo4_tree_a83c09657b67ff69060429ab71801acc1}{preorderPrintAttributes}}(refNode-\/>children[i]);}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00425\ }
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ \mbox{\hyperlink{classtwo4_tree_a5a7a6b23a04bc7d4341853de46f854d3}{getRootNode}}()\ \{}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ rootNode;}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00434\ }
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtwo4_tree_a7aa319e3efd3500c57daef44f495586d}{inorder}}()\ \{}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtwo4_tree_aa98bb46934a357f58612043d657b6756}{inorderActual}}(rootNode);}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \ \ \ \ \ \ cout\ <<\ endl;}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00442\ }
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtwo4_tree_aa98bb46934a357f58612043d657b6756}{inorderActual}}(\mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ refNode)\ \{}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ if\ the\ node\ is\ null}}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (refNode\ ==\ \textcolor{keyword}{nullptr})\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00451\ }
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Traverse\ the\ children\ of\ the\ node}}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ refNode-\/>size;\ i++)\ \{}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Visit\ the\ child\ before\ the\ key}}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!refNode-\/>isLeaf)\ \mbox{\hyperlink{classtwo4_tree_aa98bb46934a357f58612043d657b6756}{inorderActual}}(refNode-\/>children[i]);}
+\DoxyCodeLine{00456\ }
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Print\ all\ the\ duplicates\ of\ the\ key}}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ refNode-\/>elements[i].getNumValues();\ j++)\ \{}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cout\ <<\ refNode-\/>elements[i].getKey()\ <<\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00462\ }
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Visit\ the\ last\ child\ after\ the\ last\ key,\ if\ the\ node\ is\ not\ a\ leaf}}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!refNode-\/>isLeaf)\ \mbox{\hyperlink{classtwo4_tree_aa98bb46934a357f58612043d657b6756}{inorderActual}}(refNode-\/>children[refNode-\/>size]);}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00466\ }
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtwo4_tree_ab587968fc29009886e68e8486fa2aa24}{postorder}}()\ \{}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtwo4_tree_a41388534338e4b03c65bf06930d5b75e}{postorderActual}}(rootNode);}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00473\ }
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classtwo4_tree_a41388534338e4b03c65bf06930d5b75e}{postorderActual}}(\mbox{\hyperlink{class_node}{Node<KeyType,\ ValueType>}}*\ refNode)\ \{}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ if\ the\ node\ is\ null}}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (refNode\ ==\ \textcolor{keyword}{nullptr})\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Recursively\ traverse\ the\ children\ of\ the\ node}}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!refNode-\/>isLeaf)\ \{}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ refNode-\/>children.\mbox{\hyperlink{class_circular_dynamic_array_ad85b368c47b489bd2ab61e5b93718042}{length}}();\ i++)\ \{}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtwo4_tree_a41388534338e4b03c65bf06930d5b75e}{postorderActual}}(refNode-\/>children[i]);}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00489\ }
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Print\ the\ keys\ of\ the\ node}}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \ \ \ \ \ \ refNode-\/>\mbox{\hyperlink{class_node_a100fed8563e68a0b113206d3e893fa94}{printKeys}}();}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00493\ \};}
+
+\end{DoxyCode}

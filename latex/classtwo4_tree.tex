@@ -1,0 +1,370 @@
+\doxysection{two4\+Tree\texorpdfstring{$<$}{<} Key\+Type, Value\+Type \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classtwo4_tree}{}\label{classtwo4_tree}\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+
+
+A 2-\/4 tree that can store any type of data.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classtwo4_tree_a9eb0599331b60a8925e5345189515c68}\label{classtwo4_tree_a9eb0599331b60a8925e5345189515c68} 
+{\bfseries two4\+Tree} ()
+\begin{DoxyCompactList}\small\item\em Construct a new 2-\/4 tree object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classtwo4_tree_ab3ea1ef88bf1dd60686b00789c3c0dcd}{two4\+Tree}} (Key\+Type keys\mbox{[}$\,$\mbox{]}, Value\+Type values\mbox{[}$\,$\mbox{]}, int \mbox{\hyperlink{classtwo4_tree_ab9ead1f245edd10f36be937e8636154b}{size}})
+\begin{DoxyCompactList}\small\item\em Construct a new 2-\/4 tree object from an array of keys and an array of values. \end{DoxyCompactList}\item 
+\Hypertarget{classtwo4_tree_abd1a425dab8eb5cef278b692ea29d492}\label{classtwo4_tree_abd1a425dab8eb5cef278b692ea29d492} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}two4\+Tree} ()
+\begin{DoxyCompactList}\small\item\em Destroy the 2-\/4 tree object. \end{DoxyCompactList}\item 
+Value\+Type \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classtwo4_tree_a1f66b34a86b3656d4f0bda8578af8a87}{search}} (Key\+Type key)
+\begin{DoxyCompactList}\small\item\em Returns the value associated with a key in the tree. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classtwo4_tree_adf1d0083d2b252dcef518ad4b3ea6d98}{insert}} (Key\+Type key, Value\+Type value)
+\begin{DoxyCompactList}\small\item\em Inserts a key-\/value pair into the tree. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classtwo4_tree_a872bf03d5e9ed15f2bda3ee269e41540}{remove}} (Key\+Type key)
+\begin{DoxyCompactList}\small\item\em Removes a key from the tree. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classtwo4_tree_a00869283dee323acdd3b3caad8570384}{rank}} (Key\+Type key)
+\begin{DoxyCompactList}\small\item\em Returns the rank of a key in the tree. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classtwo4_tree_a58c539d5841b0e36a6cf25a1c9ec1559}{rank\+Actual}} (\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*}ref\+Node, Key\+Type key)
+\begin{DoxyCompactList}\small\item\em Returns the rank of a key in the tree, but actually does the traversal. \end{DoxyCompactList}\item 
+Key\+Type \mbox{\hyperlink{classtwo4_tree_a99fbcc1ca4f020d9184b6d1b0cedc3d4}{select}} (int pos)
+\begin{DoxyCompactList}\small\item\em Returns the key at a given position in the tree. \end{DoxyCompactList}\item 
+Key\+Type \mbox{\hyperlink{classtwo4_tree_acf7835cb0a4be037a9d0d3f119d973ac}{select\+Actual}} (\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*}ref\+Node, int pos)
+\begin{DoxyCompactList}\small\item\em Returns the key at a given position in the tree, but actually does the traversal. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classtwo4_tree_a04478544d20a50826911da59a573515f}{duplicates}} (Key\+Type key)
+\begin{DoxyCompactList}\small\item\em Returns the number of duplicates of a specific key in the tree. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classtwo4_tree_a7c434a507d3ef146592b88ac9008568d}{duplicates\+Actual}} (\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*}ref\+Node, Key\+Type key, int \&count)
+\begin{DoxyCompactList}\small\item\em Returns the number of duplicates of a specific key in the tree, but actually does the traversal. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classtwo4_tree_ab9ead1f245edd10f36be937e8636154b}{size}} ()
+\begin{DoxyCompactList}\small\item\em Returns the number of keys in the tree. \end{DoxyCompactList}\item 
+\Hypertarget{classtwo4_tree_ab3f88d24c704c4585bb8606fe50cee52}\label{classtwo4_tree_ab3f88d24c704c4585bb8606fe50cee52} 
+void {\bfseries preorder} ()
+\begin{DoxyCompactList}\small\item\em Prints the pre-\/order traversal of the tree, more of a shell functino. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classtwo4_tree_ad78e671045e12c261133138bfaaa0866}{preorder\+Actual}} (\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*}ref\+Node)
+\begin{DoxyCompactList}\small\item\em Prints the pre-\/order traversal of the tree, but actually does the traversal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classtwo4_tree_a83c09657b67ff69060429ab71801acc1}{preorder\+Print\+Attributes}} (\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*}ref\+Node)
+\begin{DoxyCompactList}\small\item\em Prints the pre-\/order traversal of the tree, but prints the attributes of the nodes. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classtwo4_tree_a5a7a6b23a04bc7d4341853de46f854d3}{get\+Root\+Node}} ()
+\begin{DoxyCompactList}\small\item\em Returns the root node of the tree. \end{DoxyCompactList}\item 
+\Hypertarget{classtwo4_tree_a7aa319e3efd3500c57daef44f495586d}\label{classtwo4_tree_a7aa319e3efd3500c57daef44f495586d} 
+void {\bfseries inorder} ()
+\begin{DoxyCompactList}\small\item\em Prints the in-\/order traversal of the tree. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classtwo4_tree_aa98bb46934a357f58612043d657b6756}{inorder\+Actual}} (\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*}ref\+Node)
+\begin{DoxyCompactList}\small\item\em Actually traverses the tree in-\/order recursively. \end{DoxyCompactList}\item 
+\Hypertarget{classtwo4_tree_ab587968fc29009886e68e8486fa2aa24}\label{classtwo4_tree_ab587968fc29009886e68e8486fa2aa24} 
+void {\bfseries postorder} ()
+\begin{DoxyCompactList}\small\item\em Prints the post-\/order traversal of the tree. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classtwo4_tree_a41388534338e4b03c65bf06930d5b75e}{postorder\+Actual}} (\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*}ref\+Node)
+\begin{DoxyCompactList}\small\item\em Actually traverses the tree post-\/order recursively. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Key\+Type, typename Value\+Type$>$\newline
+class two4\+Tree$<$ Key\+Type, Value\+Type $>$}
+A 2-\/4 tree that can store any type of data. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Key\+Type} & The type of the keys in the tree \\
+\hline
+{\em Value\+Type} & The type of the values in the tree \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classtwo4_tree_ab3ea1ef88bf1dd60686b00789c3c0dcd}\label{classtwo4_tree_ab3ea1ef88bf1dd60686b00789c3c0dcd} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!two4Tree@{two4Tree}}
+\index{two4Tree@{two4Tree}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{two4Tree()}{two4Tree()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+\mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\mbox{\hyperlink{classtwo4_tree}{\+::two4\+Tree}} (\begin{DoxyParamCaption}\item[{Key\+Type}]{keys\mbox{[}$\,$\mbox{]},  }\item[{Value\+Type}]{values\mbox{[}$\,$\mbox{]},  }\item[{int}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Construct a new 2-\/4 tree object from an array of keys and an array of values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em keys} & The array of keys to insert into the tree \\
+\hline
+{\em values} & The array of values to insert into the tree \\
+\hline
+{\em size} & The size of the arrays \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classtwo4_tree_a04478544d20a50826911da59a573515f}\label{classtwo4_tree_a04478544d20a50826911da59a573515f} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!duplicates@{duplicates}}
+\index{duplicates@{duplicates}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{duplicates()}{duplicates()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+int \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::duplicates (\begin{DoxyParamCaption}\item[{Key\+Type}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the number of duplicates of a specific key in the tree. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The key to find the number of duplicates of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int The number of duplicates of the key 
+\end{DoxyReturn}
+\Hypertarget{classtwo4_tree_a7c434a507d3ef146592b88ac9008568d}\label{classtwo4_tree_a7c434a507d3ef146592b88ac9008568d} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!duplicatesActual@{duplicatesActual}}
+\index{duplicatesActual@{duplicatesActual}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{duplicatesActual()}{duplicatesActual()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+int \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::duplicates\+Actual (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*}}]{ref\+Node,  }\item[{Key\+Type}]{key,  }\item[{int \&}]{count }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the number of duplicates of a specific key in the tree, but actually does the traversal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ref\+Node} & The node currently being traversed \\
+\hline
+{\em key} & The key to find the number of duplicates of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int The number of duplicates of the key 
+\end{DoxyReturn}
+\Hypertarget{classtwo4_tree_a5a7a6b23a04bc7d4341853de46f854d3}\label{classtwo4_tree_a5a7a6b23a04bc7d4341853de46f854d3} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!getRootNode@{getRootNode}}
+\index{getRootNode@{getRootNode}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{getRootNode()}{getRootNode()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::get\+Root\+Node (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the root node of the tree. 
+
+\begin{DoxyReturn}{Returns}
+\doxylink{class_node}{Node$<$\+Key\+Type, Value\+Type$>$}\texorpdfstring{$\ast$}{*} The root node of the tree 
+\end{DoxyReturn}
+\Hypertarget{classtwo4_tree_aa98bb46934a357f58612043d657b6756}\label{classtwo4_tree_aa98bb46934a357f58612043d657b6756} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!inorderActual@{inorderActual}}
+\index{inorderActual@{inorderActual}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{inorderActual()}{inorderActual()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+void \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::inorder\+Actual (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*}}]{ref\+Node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Actually traverses the tree in-\/order recursively. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ref\+Node} & The node currently being traversed \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classtwo4_tree_adf1d0083d2b252dcef518ad4b3ea6d98}\label{classtwo4_tree_adf1d0083d2b252dcef518ad4b3ea6d98} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!insert@{insert}}
+\index{insert@{insert}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{insert()}{insert()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+void \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::insert (\begin{DoxyParamCaption}\item[{Key\+Type}]{key,  }\item[{Value\+Type}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Inserts a key-\/value pair into the tree. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The key to insert \\
+\hline
+{\em value} & The value to insert \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classtwo4_tree_a41388534338e4b03c65bf06930d5b75e}\label{classtwo4_tree_a41388534338e4b03c65bf06930d5b75e} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!postorderActual@{postorderActual}}
+\index{postorderActual@{postorderActual}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{postorderActual()}{postorderActual()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+void \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::postorder\+Actual (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*}}]{ref\+Node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Actually traverses the tree post-\/order recursively. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ref\+Node} & The node currently being traversed \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classtwo4_tree_ad78e671045e12c261133138bfaaa0866}\label{classtwo4_tree_ad78e671045e12c261133138bfaaa0866} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!preorderActual@{preorderActual}}
+\index{preorderActual@{preorderActual}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{preorderActual()}{preorderActual()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+void \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::preorder\+Actual (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*}}]{ref\+Node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Prints the pre-\/order traversal of the tree, but actually does the traversal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ref\+Node} & The node currently being traversed \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classtwo4_tree_a83c09657b67ff69060429ab71801acc1}\label{classtwo4_tree_a83c09657b67ff69060429ab71801acc1} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!preorderPrintAttributes@{preorderPrintAttributes}}
+\index{preorderPrintAttributes@{preorderPrintAttributes}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{preorderPrintAttributes()}{preorderPrintAttributes()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+void \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::preorder\+Print\+Attributes (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*}}]{ref\+Node }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Prints the pre-\/order traversal of the tree, but prints the attributes of the nodes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ref\+Node} & The node currently being traversed \\
+\hline
+\end{DoxyParams}
+\Hypertarget{classtwo4_tree_a00869283dee323acdd3b3caad8570384}\label{classtwo4_tree_a00869283dee323acdd3b3caad8570384} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!rank@{rank}}
+\index{rank@{rank}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{rank()}{rank()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+int \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::rank (\begin{DoxyParamCaption}\item[{Key\+Type}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the rank of a key in the tree. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The key to find the rank of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int The rank of the key 
+\end{DoxyReturn}
+\Hypertarget{classtwo4_tree_a58c539d5841b0e36a6cf25a1c9ec1559}\label{classtwo4_tree_a58c539d5841b0e36a6cf25a1c9ec1559} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!rankActual@{rankActual}}
+\index{rankActual@{rankActual}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{rankActual()}{rankActual()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+int \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::rank\+Actual (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*}}]{ref\+Node,  }\item[{Key\+Type}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the rank of a key in the tree, but actually does the traversal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ref\+Node} & The node currently being traversed \\
+\hline
+{\em key} & The key to find the rank of \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int The rank of the key 
+\end{DoxyReturn}
+\Hypertarget{classtwo4_tree_a872bf03d5e9ed15f2bda3ee269e41540}\label{classtwo4_tree_a872bf03d5e9ed15f2bda3ee269e41540} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!remove@{remove}}
+\index{remove@{remove}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{remove()}{remove()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+int \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::remove (\begin{DoxyParamCaption}\item[{Key\+Type}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Removes a key from the tree. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The key to remove \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Indicates if operation was successful 
+\end{DoxyReturn}
+\Hypertarget{classtwo4_tree_a1f66b34a86b3656d4f0bda8578af8a87}\label{classtwo4_tree_a1f66b34a86b3656d4f0bda8578af8a87} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!search@{search}}
+\index{search@{search}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{search()}{search()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+Value\+Type \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::search (\begin{DoxyParamCaption}\item[{Key\+Type}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the value associated with a key in the tree. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & The key to search for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Value\+Type\texorpdfstring{$\ast$}{*} A pointer to the value associated with the key 
+\end{DoxyReturn}
+\Hypertarget{classtwo4_tree_a99fbcc1ca4f020d9184b6d1b0cedc3d4}\label{classtwo4_tree_a99fbcc1ca4f020d9184b6d1b0cedc3d4} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!select@{select}}
+\index{select@{select}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{select()}{select()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+Key\+Type \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::select (\begin{DoxyParamCaption}\item[{int}]{pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the key at a given position in the tree. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & The position of the key to find \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Key\+Type The key at the given position 
+\end{DoxyReturn}
+\Hypertarget{classtwo4_tree_acf7835cb0a4be037a9d0d3f119d973ac}\label{classtwo4_tree_acf7835cb0a4be037a9d0d3f119d973ac} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!selectActual@{selectActual}}
+\index{selectActual@{selectActual}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{selectActual()}{selectActual()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+Key\+Type \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::select\+Actual (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_node}{Node}}$<$ Key\+Type, Value\+Type $>$ \texorpdfstring{$\ast$}{*}}]{ref\+Node,  }\item[{int}]{pos }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the key at a given position in the tree, but actually does the traversal. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ref\+Node} & The node currently being traversed \\
+\hline
+{\em pos} & The position of the key to find \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Key\+Type The key at the given position 
+\end{DoxyReturn}
+\Hypertarget{classtwo4_tree_ab9ead1f245edd10f36be937e8636154b}\label{classtwo4_tree_ab9ead1f245edd10f36be937e8636154b} 
+\index{two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}!size@{size}}
+\index{size@{size}!two4Tree$<$ KeyType, ValueType $>$@{two4Tree$<$ KeyType, ValueType $>$}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily template$<$typename Key\+Type , typename Value\+Type $>$ \\
+int \mbox{\hyperlink{classtwo4_tree}{two4\+Tree}}$<$ Key\+Type, Value\+Type $>$\+::size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the number of keys in the tree. 
+
+\begin{DoxyReturn}{Returns}
+int The number of keys in the tree 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+two4\+Tree.\+cpp\end{DoxyCompactItemize}
