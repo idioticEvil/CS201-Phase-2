@@ -270,6 +270,39 @@ template <class K, class V> class Node {
         }
 
         /**
+         * @brief Merges the node with a sibling node
+         * 
+         * @param sibling Sibling node to merge with
+         */
+        void merge(Node* sibling) {
+            // Merge the sibling node into this node
+            for (int i = 0; i < sibling->size; i++) {
+                elements.addEnd(sibling->elements[i]);
+            }
+
+            // Update the size of the node
+            size += sibling->size;
+
+            // Update the children of the node
+            for (int i = 0; i < sibling->children.length(); i++) {
+                children.addEnd(sibling->children[i]);
+            }
+
+            // Update the parent of the children
+            for (int i = 0; i < sibling->children.length(); i++) {
+                sibling->children[i]->parent = this;
+            }
+
+            // Remove the sibling node from the parent
+            if (parent != nullptr) {
+                parent->removeChildNode(sibling);
+            }
+
+            // Delete the sibling node
+            delete sibling;
+        }
+
+        /**
          * @brief Remove a key from the node
          * 
          * @param key The key to remove

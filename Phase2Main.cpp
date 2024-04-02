@@ -29,7 +29,7 @@ int main(){
 	cout << T1.select(3) << endl;
 	//Should output C 
 	
-	cout << T2.remove("D") << endl;
+	//cout << T2.remove("D") << endl;
 	//Should output 1
 	
 	T2.preorder();

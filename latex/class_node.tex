@@ -39,6 +39,8 @@ int \mbox{\hyperlink{class_node_a372c27944758f815bbaa51f95207d361}{get\+Total\+S
 \Hypertarget{class_node_a100fed8563e68a0b113206d3e893fa94}\label{class_node_a100fed8563e68a0b113206d3e893fa94} 
 void {\bfseries print\+Keys} ()
 \begin{DoxyCompactList}\small\item\em Prints the keys of the node. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_node_ae15a33fb1bdbc8d4d9c5a2d124656930}{find\+Key\+Index}} (K key)
+\begin{DoxyCompactList}\small\item\em Returns the index of the key in the node, or -\/1 if not found. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{class_node_a9bfb39d7acfd510d157e1f6a302007e0}{remove\+Key}} (K key)
 \begin{DoxyCompactList}\small\item\em Remove a key from the node. \end{DoxyCompactList}\item 
 \Hypertarget{class_node_a84859ffc6319ba75f09289b75d88c10d}\label{class_node_a84859ffc6319ba75f09289b75d88c10d} 
@@ -194,6 +196,25 @@ Inserts a child node into the node at the correct spot.
 {\em child} & Child node to insert \\
 \hline
 \end{DoxyParams}
+\Hypertarget{class_node_ae15a33fb1bdbc8d4d9c5a2d124656930}\label{class_node_ae15a33fb1bdbc8d4d9c5a2d124656930} 
+\index{Node$<$ K, V $>$@{Node$<$ K, V $>$}!findKeyIndex@{findKeyIndex}}
+\index{findKeyIndex@{findKeyIndex}!Node$<$ K, V $>$@{Node$<$ K, V $>$}}
+\doxysubsubsection{\texorpdfstring{findKeyIndex()}{findKeyIndex()}}
+{\footnotesize\ttfamily template$<$class K , class V $>$ \\
+int \mbox{\hyperlink{class_node}{Node}}$<$ K, V $>$\+::find\+Key\+Index (\begin{DoxyParamCaption}\item[{K}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Returns the index of the key in the node, or -\/1 if not found. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & Key to find \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int Index of the key in the node 
+\end{DoxyReturn}
 \Hypertarget{class_node_a372c27944758f815bbaa51f95207d361}\label{class_node_a372c27944758f815bbaa51f95207d361} 
 \index{Node$<$ K, V $>$@{Node$<$ K, V $>$}!getTotalSubtreeSize@{getTotalSubtreeSize}}
 \index{getTotalSubtreeSize@{getTotalSubtreeSize}!Node$<$ K, V $>$@{Node$<$ K, V $>$}}

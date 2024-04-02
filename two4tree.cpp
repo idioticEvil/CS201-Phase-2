@@ -304,6 +304,95 @@ template <typename KeyType, typename ValueType> class two4Tree {
             // Delete the key from the appropriate child node
             refNode->removeKey(key);
         }
+        
+        /**
+         * @brief Restructures the tree after a key is removed
+         * 
+         * @param refNode The node to restructure after removal
+         */
+        void restructureAfterRemoval(Node<KeyType, ValueType>* refNode) {
+            // Check if the node is null
+            if (refNode == rootNode) {
+                if (refNode->size == 0) {
+                    rootNode = refNode->children[0];
+                    delete refNode;
+                }
+                return;
+            }
+
+            int minKeys = refNode->isLeaf ? 1 : 2;
+
+            if (refNode->size >= minKeys) {
+                return;
+            }
+
+            // Find the parent node of the node to restructure
+            Node<KeyType, ValueType>* parentNode = refNode->parent;
+            int nodeIndex = parentNode->findKeyIndex(refNode->elements[0].getKey());
+
+            // Find the left and right siblings of the node
+            Node<KeyType, ValueType>* leftSibling = (nodeIndex > 0) ? parentNode->children[nodeIndex - 1] : nullptr;
+            Node<KeyType, ValueType>* rightSibling = (nodeIndex < parentNode->size) ? parentNode->children[nodeIndex + 1] : nullptr;
+
+            // Check if the left sibling has more than the minimum number of keys
+            if (leftSibling && leftSibling->size > minKeys) {
+                NodeElement<KeyType, ValueType> borrowedKey = leftSibling->elements[leftSibling->size - 1];
+                refNode->insertKeyValPair(borrowedKey);
+
+                // Check if the left sibling has children
+                if (!refNode->isLeaf) {
+                    Node<KeyType, ValueType>* borrowedChild = leftSibling->children[leftSibling->size];
+                    refNode->addChildNode(borrowedChild);
+                    leftSibling->removeChildNode(leftSibling->children[leftSibling->size]);
+                }
+
+                // Check if the left sibling has more than one key
+                parentNode->elements[nodeIndex - 1].setKey(leftSibling->elements[leftSibling->size - 2].getKey());
+                leftSibling->removeKey(leftSibling->elements[leftSibling->size - 2].getKey());
+                return;
+            }
+
+            // Check if the right sibling has more than the minimum number of keys
+            if (rightSibling && rightSibling->size > minKeys) {
+                NodeElement<KeyType, ValueType> borrowedKey = rightSibling->elements[0];
+                refNode->insertKeyValPair(borrowedKey);
+
+                // Check if the right sibling has children
+                if (!refNode->isLeaf) {
+                    Node<KeyType, ValueType>* borrowedChild = rightSibling->children[0];
+                    refNode->addChildNode(borrowedChild);
+                    rightSibling->removeChildNode(rightSibling->children[0]);
+                }
+
+                // Check if the right sibling has more than one key
+                if (rightSibling->size > 1) {
+                    parentNode->elements[nodeIndex].setKey(rightSibling->elements[1].getKey());
+                    rightSibling->removeKey(rightSibling->elements[1].getKey());
+                } else {
+                    parentNode->elements[nodeIndex].setKey(borrowedKey.getKey());
+                    rightSibling->removeKey(borrowedKey.getKey());
+                }
+                return;
+            }
+
+            // Merge with a sibling or move children up to parent
+            if (leftSibling) {
+                leftSibling->insertKeyValPair(parentNode->elements[nodeIndex - 1]);
+                leftSibling->merge(refNode);
+                parentNode->removeChildNode(parentNode->children[nodeIndex]);
+            } else if (rightSibling) {
+                refNode->insertKeyValPair(parentNode->elements[nodeIndex]);
+                refNode->merge(rightSibling);
+                parentNode->removeChildNode(parentNode->children[nodeIndex + 1]);
+            } else {
+                for (int i = 0; i < refNode->size; i++) {
+                    parentNode->insertKeyValPair(refNode->elements[i]);
+                }
+                parentNode->removeChildNode(refNode);
+            }
+
+            restructureAfterRemoval(parentNode);
+        }
 
     public:
         /**
@@ -433,7 +522,7 @@ template <typename KeyType, typename ValueType> class two4Tree {
             if (currentNode == nullptr) return 0;
             else if (!currentNode->isLeaf) { // Node is an internal node
                 // Swap the key with its inorder successor or predecessor
-                inorderRemovalSwap(currentNode, key);
+                //inorderRemovalSwap(currentNode, key);
                 return 1;
             } else { // Node is a leaf node
                 // remove key from node, restructure if necessary
@@ -441,11 +530,13 @@ template <typename KeyType, typename ValueType> class two4Tree {
                     case 0: // Key not found
                         return 0;
                     case 1: // Key removed, restructuring needed
+                        //restructureAfterRemoval(currentNode);
                         return 1;
                     case 2: // Key removed, restructuring not needed
                         return 1;
                 }
             }
+            return 0;
         }
 
         /**

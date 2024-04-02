@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['search_0',['search',['../classtwo4_tree.html#a1f66b34a86b3656d4f0bda8578af8a87',1,'two4Tree']]],
-  ['select_1',['select',['../classtwo4_tree.html#a99fbcc1ca4f020d9184b6d1b0cedc3d4',1,'two4Tree']]],
-  ['selectactual_2',['selectActual',['../classtwo4_tree.html#acf7835cb0a4be037a9d0d3f119d973ac',1,'two4Tree']]],
-  ['setsubtreesize_3',['setSubtreeSize',['../class_node_element.html#a180d183e7ad0ae8e20485729f19be0a2',1,'NodeElement']]],
-  ['size_4',['size',['../classtwo4_tree.html#ab9ead1f245edd10f36be937e8636154b',1,'two4Tree']]],
-  ['sort_5',['Sort',['../class_circular_dynamic_array.html#a45e99eebbaf7b5ddd3c9a993f2c10b81',1,'CircularDynamicArray']]]
+  ['rank_0',['rank',['../classtwo4_tree.html#a00869283dee323acdd3b3caad8570384',1,'two4Tree']]],
+  ['remove_1',['remove',['../classtwo4_tree.html#a872bf03d5e9ed15f2bda3ee269e41540',1,'two4Tree']]],
+  ['removeat_2',['removeAt',['../class_circular_dynamic_array.html#a0005da80e7017da292cd58a7b7d901be',1,'CircularDynamicArray']]],
+  ['removechildnode_3',['removeChildNode',['../class_node.html#a0b55d2b102d5ab5dbe2ac5e2bf45b2b4',1,'Node']]],
+  ['removekey_4',['removeKey',['../class_node.html#a9bfb39d7acfd510d157e1f6a302007e0',1,'Node']]],
+  ['removekeyvalpair_5',['removeKeyValPair',['../class_node.html#a4417ceb47ff291c9d40f865ece1a8beb',1,'Node']]],
+  ['removevalue_6',['removeValue',['../class_node_element.html#a025e52f7b81b52c05aa288792fcb8b40',1,'NodeElement']]]
 ];

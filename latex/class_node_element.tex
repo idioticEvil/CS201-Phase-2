@@ -39,7 +39,11 @@ void \mbox{\hyperlink{class_node_element_a180d183e7ad0ae8e20485729f19be0a2}{set\
 \begin{DoxyCompactList}\small\item\em Sets the subtree size stored in the node element. \end{DoxyCompactList}\item 
 \Hypertarget{class_node_element_ade3ddb4176e874311c08d3a131085f92}\label{class_node_element_ade3ddb4176e874311c08d3a131085f92} 
 void {\bfseries increment\+Subtree\+Size} ()
-\begin{DoxyCompactList}\small\item\em Increments the subtree size stored in the node element. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Increments the subtree size stored in the node element. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_node_element_aed2a6586b1bf6fabebc79b642f7e8a0d}{set\+Key}} (Key k)
+\begin{DoxyCompactList}\small\item\em Set the Key object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_node_element_a828d25c2a490fec651ed1586e2464666}{set\+Values}} (\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ Value $>$ \&v)
+\begin{DoxyCompactList}\small\item\em Set the Values object. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -159,6 +163,22 @@ Removes a value from the node element.
 {\em v} & Value to remove \\
 \hline
 \end{DoxyParams}
+\Hypertarget{class_node_element_aed2a6586b1bf6fabebc79b642f7e8a0d}\label{class_node_element_aed2a6586b1bf6fabebc79b642f7e8a0d} 
+\index{NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}!setKey@{setKey}}
+\index{setKey@{setKey}!NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}}
+\doxysubsubsection{\texorpdfstring{setKey()}{setKey()}}
+{\footnotesize\ttfamily template$<$class Key , class Value $>$ \\
+void \mbox{\hyperlink{class_node_element}{Node\+Element}}$<$ Key, Value $>$\+::set\+Key (\begin{DoxyParamCaption}\item[{Key}]{k }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set the Key object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em k} & Key object to set \\
+\hline
+\end{DoxyParams}
 \Hypertarget{class_node_element_a180d183e7ad0ae8e20485729f19be0a2}\label{class_node_element_a180d183e7ad0ae8e20485729f19be0a2} 
 \index{NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}!setSubtreeSize@{setSubtreeSize}}
 \index{setSubtreeSize@{setSubtreeSize}!NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}}
@@ -173,6 +193,22 @@ Sets the subtree size stored in the node element.
 
 \begin{DoxyParams}{Parameters}
 {\em size} & Subtree size to set \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_node_element_a828d25c2a490fec651ed1586e2464666}\label{class_node_element_a828d25c2a490fec651ed1586e2464666} 
+\index{NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}!setValues@{setValues}}
+\index{setValues@{setValues}!NodeElement$<$ Key, Value $>$@{NodeElement$<$ Key, Value $>$}}
+\doxysubsubsection{\texorpdfstring{setValues()}{setValues()}}
+{\footnotesize\ttfamily template$<$class Key , class Value $>$ \\
+void \mbox{\hyperlink{class_node_element}{Node\+Element}}$<$ Key, Value $>$\+::set\+Values (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_circular_dynamic_array}{Circular\+Dynamic\+Array}}$<$ Value $>$ \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Set the Values object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & Values object to set \\
 \hline
 \end{DoxyParams}
 

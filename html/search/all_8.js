@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['merge_0',['merge',['../class_circular_dynamic_array.html#a42ba328429ce9937f222c0952abee580',1,'CircularDynamicArray']]],
-  ['mergesort_1',['mergesort',['../class_circular_dynamic_array.html#a5874b53bf22abde3994d73bac3b6db29',1,'CircularDynamicArray']]]
+  ['length_0',['length',['../class_circular_dynamic_array.html#ad85b368c47b489bd2ab61e5b93718042',1,'CircularDynamicArray']]],
+  ['linearsearch_1',['linearSearch',['../class_circular_dynamic_array.html#adff942eaead18612129c9901307bee72',1,'CircularDynamicArray']]]
 ];

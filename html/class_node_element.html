@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Phase 2: NodeElement&lt; Key, Value &gt; Class Template Reference</title>
+<title>My Project: NodeElement&lt; Key, Value &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">Phase 2<span id="projectnumber">&#160;1</span>
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -125,6 +125,12 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>incrementSubtreeSize</b> ()</td></tr>
 <tr class="memdesc:ade3ddb4176e874311c08d3a131085f92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increments the subtree size stored in the node element. <br /></td></tr>
 <tr class="separator:ade3ddb4176e874311c08d3a131085f92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed2a6586b1bf6fabebc79b642f7e8a0d" id="r_aed2a6586b1bf6fabebc79b642f7e8a0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed2a6586b1bf6fabebc79b642f7e8a0d">setKey</a> (Key k)</td></tr>
+<tr class="memdesc:aed2a6586b1bf6fabebc79b642f7e8a0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Key object.  <br /></td></tr>
+<tr class="separator:aed2a6586b1bf6fabebc79b642f7e8a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a828d25c2a490fec651ed1586e2464666" id="r_a828d25c2a490fec651ed1586e2464666"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a828d25c2a490fec651ed1586e2464666">setValues</a> (<a class="el" href="class_circular_dynamic_array.html">CircularDynamicArray</a>&lt; Value &gt; &amp;v)</td></tr>
+<tr class="memdesc:a828d25c2a490fec651ed1586e2464666"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Values object.  <br /></td></tr>
+<tr class="separator:a828d25c2a490fec651ed1586e2464666"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class Key, class Value&gt;<br />
@@ -357,6 +363,41 @@ template&lt;class Key , class Value &gt; </div>
 
 </div>
 </div>
+<a id="aed2a6586b1bf6fabebc79b642f7e8a0d" name="aed2a6586b1bf6fabebc79b642f7e8a0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed2a6586b1bf6fabebc79b642f7e8a0d">&#9670;&#160;</a></span>setKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Key , class Value &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_node_element.html">NodeElement</a>&lt; Key, Value &gt;::setKey </td>
+          <td>(</td>
+          <td class="paramtype">Key</td>          <td class="paramname"><span class="paramname"><em>k</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the Key object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">k</td><td>Key object to set </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a180d183e7ad0ae8e20485729f19be0a2" name="a180d183e7ad0ae8e20485729f19be0a2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a180d183e7ad0ae8e20485729f19be0a2">&#9670;&#160;</a></span>setSubtreeSize()</h2>
 
@@ -386,6 +427,41 @@ template&lt;class Key , class Value &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">size</td><td>Subtree size to set </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a828d25c2a490fec651ed1586e2464666" name="a828d25c2a490fec651ed1586e2464666"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a828d25c2a490fec651ed1586e2464666">&#9670;&#160;</a></span>setValues()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Key , class Value &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_node_element.html">NodeElement</a>&lt; Key, Value &gt;::setValues </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_circular_dynamic_array.html">CircularDynamicArray</a>&lt; Value &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>v</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the Values object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">v</td><td>Values object to set </td></tr>
   </table>
   </dd>
 </dl>
