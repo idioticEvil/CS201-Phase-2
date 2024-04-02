@@ -113,9 +113,12 @@ template <class K, class V> class Node {
             } else {
                 // Find the correct spot to insert the key-value pair
                 for (int i = 0; i < size; i++) {
-                    if (element.getKey() <= elements[i].getKey()) {
+                    if (element.getKey() < elements[i].getKey()) {
                         elements.addAt(element, i);
                         size++;
+                        break;
+                    } else if (element.getKey() == elements[i].getKey()) {
+                        elements[i].addValue(element.getValueAt(0));
                         break;
                     } else if (i == size - 1) {
                         elements.addEnd(element);
@@ -251,6 +254,34 @@ template <class K, class V> class Node {
                 else cout << elements[i].getKey();
             }
             cout << endl;
+        }
+
+        /**
+         * @brief Remove a key from the node
+         * 
+         * @param key The key to remove
+         */
+        int removeKey(K key) {
+            // Find and remove the key from the node
+            for (int i = 0; i < size; i++) {
+                if (elements[i].getKey() == key) {
+                    elements.removeAt(i);
+                    size--;
+                    break;
+                } else if (elements[i].getKey() > key) {
+                    return 0; // Key not found
+                }
+            }
+
+            // If the node is empty, delete it
+            if (size == 0) {
+                if (parent != nullptr) {
+                    parent->removeChildNode(this);
+                }
+                delete this;
+                return 1; // Key found, removed, node deleted, restructuring needed
+            }
+            return 2; // Key found and removed, no restructuring needed
         }
 
         /**

@@ -5,13 +5,13 @@ using namespace std;
 int main() {
     //int valInsert1[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     //string keyInsert1[9] = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
-    int valInsert2[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    string keyInsert2[10] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+    int valInsert2[11] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+    string keyInsert2[11] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "J"};
 
     //two4Tree<string, int> test1(keyInsert1, valInsert1, 9);
     two4Tree<string, int> test2;
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 11; i++) {
         test2.insert(keyInsert2[i], valInsert2[i]);
     }
 
@@ -39,6 +39,7 @@ int main() {
     cout << "Rank I: " << test2.rank("I") << endl;
     cout << "Rank J: " << test2.rank("J") << endl;
     cout << "Search A: " << *(test2.search("A")) << endl;
+    cout << "Duplicates J: " << test2.duplicates("J") << endl;
 
     two4Tree<int,int> X;
 	for (int i=1;i<1001000;i++) X.insert(i,i);

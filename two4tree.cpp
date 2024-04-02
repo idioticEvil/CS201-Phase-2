@@ -10,8 +10,7 @@ using namespace std;
 TODO:
 - Implement remove function
 - Implement duplicates function
-- Update tree traversal functions to print out duplicate keys
-- Update logic to treat duplicates as multiple keys
+- Update inorder, rank, and select functions to deal with duplicates
 */
 
 /**
@@ -148,9 +147,11 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @return ValueType* A pointer to the value associated with the key
          */
         ValueType *search(KeyType key) {
-            Node<KeyType, ValueType>* currentNode = rootNode; // Use a temporary variable to traverse the tree
+            // Use a pointer to reference the current node being traversed
+            Node<KeyType, ValueType>* currentNode = rootNode;
+
+            // Traverse the tree to find the correct leaf node
             while (currentNode != nullptr) {
-                // Traverse the tree to find the correct leaf node
                 for (int i = 0; i < currentNode->size; i++) {
                     if (key == currentNode->elements[i].getKey()) { 
                         // If the key is found, return the value
@@ -166,7 +167,8 @@ template <typename KeyType, typename ValueType> class two4Tree {
                     }
                 }
             }
-            return nullptr; // Return nullptr if the key is not found
+            // Return nullptr if the key is not found
+            return nullptr; 
         }
 
         /**
@@ -209,7 +211,41 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @return int Indicates if operation was successful
          */
         int remove(KeyType key) {
-            // IMPLEMENT THIS
+            // Use a pointer to reference the current node being traversed
+            Node<KeyType, ValueType>* currentNode = rootNode;
+
+            // Traverse the tree to find the correct leaf node
+            while (currentNode != nullptr) {
+                for (int i = 0; i < currentNode->size; i++) {
+                    if (key == currentNode->elements[i].getKey()) { 
+                        break; 
+                    } else if (key < currentNode->elements[i].getKey()) { 
+                        // If the key is less than the current key, traverse left
+                        currentNode = currentNode->children[i];
+                        break;
+                    } else if (i == currentNode->size - 1) { 
+                        // If the key is greater than the last key, traverse right
+                        currentNode = currentNode->children[currentNode->size];
+                        break;
+                    }
+                }
+            }
+
+            // If the key is not found, return 0
+            if (currentNode == nullptr) return 0;
+            else if (!currentNode->isLeaf) { // Node is an internal node
+                // swap with the next inorder key
+            } else { // Node is a leaf node
+                // remove key from node, restructure if necessary
+                switch (currentNode->removeKey(key)) {
+                    case 0: // Key not found
+                        return 0;
+                    case 1: // Key removed, restructuring needed
+                        return 1;
+                    case 2: // Key removed, restructuring not needed
+                        return 1;
+                }
+            }
         }
 
         /**
@@ -298,7 +334,37 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @return int The number of duplicates of the key
          */
         int duplicates(KeyType key) {
-            // IMPLEMENT THIS
+            int count = 0;
+            return duplicatesActual(rootNode, key, count);
+        }
+
+        /**
+         * @brief Returns the number of duplicates of a specific key in the tree, but actually does the traversal
+         * 
+         * @param refNode The node currently being traversed
+         * @param key The key to find the number of duplicates of
+         * @return int The number of duplicates of the key
+         */
+        int duplicatesActual(Node<KeyType, ValueType>* refNode, KeyType key, int& count) {
+            if (refNode == nullptr) return count; // Base case
+
+            // Traverse the children of the node
+            for (int i = 0; i < refNode->size; i++) {
+                // Visit the child before the key
+                if (!refNode->isLeaf) duplicatesActual(refNode->children[i], key, count);
+
+                // Check if the key is a duplicate
+                if (key == refNode->elements[i].getKey() && refNode->elements[i].getNumValues() > 0) {
+                    for (int j = 0; j < refNode->elements[i].getNumValues(); j++) {
+                        count++;
+                    }
+                }
+            }
+
+            // Visit the last child after the last key, if the node is not a leaf
+            if (!refNode->isLeaf) duplicatesActual(refNode->children[refNode->size], key, count);
+
+            return count;
         }
 
         /**
@@ -388,8 +454,10 @@ template <typename KeyType, typename ValueType> class two4Tree {
                 // Visit the child before the key
                 if (!refNode->isLeaf) inorderActual(refNode->children[i]);
 
-                // Print the key
-                cout << refNode->elements[i].getKey() << " ";
+                // Print all the duplicates of the key
+                for (int j = 0; j < refNode->elements[i].getNumValues(); j++) {
+                    cout << refNode->elements[i].getKey() << " ";
+                }
             }
 
             // Visit the last child after the last key, if the node is not a leaf
