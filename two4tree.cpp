@@ -6,11 +6,6 @@
 #include "CircularDynamicArray.h"
 using namespace std;
 
-/*
-TODO:
-- Implement remove function
-*/
-
 /**
  * @brief A 2-4 tree that can store any type of data
  * 
@@ -434,27 +429,27 @@ template <typename KeyType, typename ValueType> class two4Tree {
          * @return ValueType* A pointer to the value associated with the key
          */
         ValueType *search(KeyType key) {
-            // Use a pointer to reference the current node being traversed
             Node<KeyType, ValueType>* currentNode = rootNode;
 
-            // Traverse the tree to find the correct leaf node
             while (currentNode != nullptr) {
                 for (int i = 0; i < currentNode->size; i++) {
                     if (key == currentNode->elements[i].getKey()) { 
-                        // If the key is found, return the value
                         return &(currentNode->elements[i].getValues()[0]);
                     } else if (key < currentNode->elements[i].getKey()) { 
-                        // If the key is less than the current key, traverse left
                         currentNode = currentNode->children[i];
                         break;
                     } else if (i == currentNode->size - 1) { 
-                        // If the key is greater than the last key, traverse right
-                        currentNode = currentNode->children[currentNode->size];
+                        // Check if the right child node exists before trying to access it
+                        if (currentNode->size < currentNode->children.length()) {
+                            currentNode = currentNode->children[currentNode->size];
+                        } else {
+                            // If the right child node doesn't exist, the key is not in the tree
+                            return nullptr;
+                        }
                         break;
                     }
                 }
             }
-            // Return nullptr if the key is not found
             return nullptr; 
         }
 
